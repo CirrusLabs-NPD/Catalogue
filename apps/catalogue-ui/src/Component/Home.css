@@ -1,0 +1,13 @@
+.home_header{
+    color: #2C4B84;
+    font-size: 46px;
+    padding: 5px 0px 0px 30px;
+
+}
+.filter_align{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+    width: 10%;
+}
