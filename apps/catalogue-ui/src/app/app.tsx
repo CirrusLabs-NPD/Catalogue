@@ -4,6 +4,7 @@ import Header from '../Component/Header';
 import Sidebar from '../Component/Sidebar';
 import Home from '../Component/Home';
 import Analytics from '../Component/Analytics';
+import AddPage from '../Component/AddProject/AddPage';
 // import Page1 from '../Component/Page1'; 
 // import Page2 from '../Component/Page2';
 
@@ -18,7 +19,7 @@ export function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/analytics" element={<Analytics />} />
-              {/* <Route path="/page2" element={<Page2 />} /> */}
+              <Route path="/addpage" element={<AddPage />} />
               {/* Add more routes here */}
             </Routes>
           </div>

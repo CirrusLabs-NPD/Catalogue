@@ -15,14 +15,18 @@ function Sidebar() {
   return (
     <div>
       <div className="sidebar">
-        <button className="sidebar__button">
-          <img
-            src={plus}
-            alt="Logo"
-            style={{ verticalAlign: "middle", marginRight: "8px" }}
-          />
-          <span style={{ verticalAlign: "middle" }}>Add Project</span>
-        </button>
+      <Link to="/addpage" className="sidebar_link">
+  <button className="sidebar__button">
+    <img
+      src={plus}
+      alt="Logo"
+      style={{ verticalAlign: "middle", marginRight: "8px" }}
+    />
+    <span style={{ verticalAlign: "middle" }}>Add Project</span>
+  </button>
+</Link>
+
+        
         <div className="sidebar__links">
           <Link to="/analytics" className="sidebar__link">
             <img
