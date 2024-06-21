@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from '../Component/Header';
 import Sidebar from '../Component/Sidebar';
 import Home from '../Component/Home';
+import Analytics from '../Component/Analytics';
 // import Page1 from '../Component/Page1'; 
 // import Page2 from '../Component/Page2';
 
@@ -16,8 +17,8 @@ export function App() {
           <div style={{ flex: 1, padding: '20px' }}>
             <Routes>
               <Route path="/" element={<Home />} />
-              {/* <Route path="/page1" element={<Page1 />} />
-              <Route path="/page2" element={<Page2 />} /> */}
+              <Route path="/analytics" element={<Analytics />} />
+              {/* <Route path="/page2" element={<Page2 />} /> */}
               {/* Add more routes here */}
             </Routes>
           </div>

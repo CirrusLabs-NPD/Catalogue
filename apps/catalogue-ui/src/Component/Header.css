@@ -52,4 +52,6 @@
     top: 27px; /* Align to the top */
     cursor: pointer; /* Make it clickable if needed */
     margin-right: 20px;
+    display: flex;
+    justify-content: space-evenly;
   }
