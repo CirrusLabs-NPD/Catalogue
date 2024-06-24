@@ -1,0 +1,37 @@
+.Analytics {
+    font-family: 'Quicksand', sans-serif;
+}
+
+.analytics-container {
+    font-family: 'Quicksand', sans-serif;
+    padding: 20px;
+    font-weight: 400;
+  }
+  
+  .title-h1 {
+    font-size: 2rem;
+    
+  }
+  
+  .filter_align {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .subheading-h2 {
+    font-size: 1.5rem;
+    font-weight: semi-bold;
+  }
+  
+  .container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center children horizontally */
+  }
+  
+  .flex-center {
+    justify-content: center; /* Center children vertically if needed */
+  }
+  
