@@ -2,6 +2,7 @@ import React from 'react';
 import './Home.css';
 import downarr from '../app/assets/arrow-down.png';
 import filter from '../app/assets/filter.png';
+import { Link } from "react-router-dom";
 
 function Home() {
   return (
@@ -29,6 +30,7 @@ function Home() {
             <li>Ensures that the user stories align with best practices and project goals.</li>
           </ul>
       </div> */}
+      <Link to="/CirrusInshightsNow" className="sidebar__link">
       <div className='container border border-gray-300 w-1/4 mt-12 bg-gray-100 p-4 rounded-[16px]'>
   <h2 className='cirrHeading text-[#5B4BA7] text-xl mt-4 ml-4'>CirrusInsightsNow.AI</h2>
   <p className='pHome text-[#0D062D] text-sm mt-2 ml-4'>Duration: 6 Weeks</p>
@@ -40,6 +42,7 @@ function Home() {
   <span className='pHome text-[#0D062D] text-sm mt-2 ml-4'>Progress </span>
   <span className='ml-24 '>100%</span>
 </div>
+</Link>
 
     </div>
   );
