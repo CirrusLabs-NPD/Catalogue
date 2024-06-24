@@ -5,6 +5,7 @@ import Sidebar from '../Component/Sidebar';
 import Home from '../Component/Home';
 import Analytics from '../Component/Analytics';
 import AddPage from '../Component/AddProject/AddPage';
+import ProjectDetails from '../Component/ProjectDesc/ProjectDesc';
 // import Page1 from '../Component/Page1'; 
 // import Page2 from '../Component/Page2';
 
@@ -20,6 +21,7 @@ export function App() {
               <Route path="/" element={<Home />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/addpage" element={<AddPage />} />
+              <Route path="/CirrusInshightsNow" element={<ProjectDetails/>} />
               {/* Add more routes here */}
             </Routes>
           </div>
