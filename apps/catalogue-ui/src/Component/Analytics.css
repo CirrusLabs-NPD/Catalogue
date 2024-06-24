@@ -2,14 +2,16 @@
     font-family: 'Quicksand', sans-serif;
 }
 
-.analytics-container {
-    font-family: 'Quicksand', sans-serif;
-    padding: 20px;
-    font-weight: 400;
-  }
-  
+.analytics_header{
+  color: #2C4B84;
+  font-size: 46px;
+  padding: 5px 0px 0px 30px;
+ 
+}
   .title-h1 {
-    font-size: 2rem;
+    color: #2C4B84;
+    font-size: 46px;
+    padding: 5px 0px 0px 30px;
     
   }
   
