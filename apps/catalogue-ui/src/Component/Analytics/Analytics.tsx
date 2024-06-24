@@ -1,5 +1,5 @@
-import filter from '../app/assets/filter.png';
-import downarr from '../app/assets/arrow-down.png';
+import filter from '../../app/assets/filter.png';
+import downarr from '../../app/assets/arrow-down.png';
 import './Analytics.css'
 import StickyHeadTable from './Table';
 import BarGraph from './BarGraph';

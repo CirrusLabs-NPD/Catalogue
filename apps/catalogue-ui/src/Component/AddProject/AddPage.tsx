@@ -47,6 +47,7 @@ const AddPage: React.FC = () => {
             <input
               type="text"
               id="projectName"
+              placeholder='Enter project name'
               {...register('projectName', { required: 'Project Name is required' })}
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
                 errors.projectName ? 'border-red-500' : 'border-gray-300'
@@ -65,6 +66,7 @@ const AddPage: React.FC = () => {
             <input
               type="text"
               id="duration"
+              placeholder='Enter duration'
               {...register('duration', { required: 'Duration is required' })}
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
                 errors.duration ? 'border-red-500' : 'border-gray-300'
@@ -83,6 +85,7 @@ const AddPage: React.FC = () => {
             <input
               type="url"
               id="githubLink"
+              placeholder='Enter github link'
               {...register('githubLink', { required: 'Github Link is required' })}
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
                 errors.githubLink ? 'border-red-500' : 'border-gray-300'
@@ -101,6 +104,7 @@ const AddPage: React.FC = () => {
             <input
               type="text"
               id="technology"
+              placeholder='Enter technology'
               {...register('technology', { required: 'Technology is required' })}
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
                 errors.technology ? 'border-red-500' : 'border-gray-300'
@@ -119,6 +123,7 @@ const AddPage: React.FC = () => {
             <input
               type="text"
               id="otherTechnology"
+              placeholder='Enter technology'
               {...register('otherTechnology', { required: 'Other Technology is required' })}
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
                 errors.otherTechnology ? 'border-red-500' : 'border-gray-300'
@@ -161,6 +166,7 @@ const AddPage: React.FC = () => {
           <input
             type="text"
             id="members"
+            placeholder='Enter members'
             {...register('members', { required: 'Members are required' })}
             className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
               errors.members ? 'border-red-500' : 'border-gray-300'
@@ -178,6 +184,7 @@ const AddPage: React.FC = () => {
           </label>
           <textarea
             id="description"
+            placeholder='Enter project description'
             {...register('description', { required: 'Description is required' })}
             className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
               errors.description ? 'border-red-500' : 'border-gray-300'

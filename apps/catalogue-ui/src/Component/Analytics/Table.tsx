@@ -22,24 +22,21 @@ const columns: readonly Column[] = [
   { id: 'projectmanager', label: 'Project Manager', minWidth: 100 },
   {
     id: 'duedate',
-    label: 'Duedate',
+    label: 'Due Date',
     minWidth: 170,
     align: 'right',
-    format: (value: string) => value.toLocaleString('en-US'),
   },
   {
     id: 'status',
     label: 'Status',
     minWidth: 170,
     align: 'right',
-    format: (value: string) => value.toLocaleString('en-US'),
   },
   {
     id: 'progress',
     label: 'Progress',
     minWidth: 170,
     align: 'right',
-    format: (value: string) => value.toFixed(2),
   },
 ];
 
@@ -62,13 +59,11 @@ function createData(
 }
 
 const rows = [
-  createData('Cirrus Insights Now', 'Praveen Raj', '13.04.22', 'Completed','100%'),
-  createData('Cirrus Insights Now', 'Praveen Raj', '13.04.22', 'Completed','100%'),
-  createData('Cirrus Insights Now', 'Praveen Raj', '13.04.22', 'Completed','100%'),
-  createData('Cirrus Insights Now', 'Praveen Raj', '13.04.22', 'Completed','100%'),
-  createData('Cirrus Insights Now', 'Praveen Raj', '13.04.22', 'Completed','100%'),
-  createData('Cirrus Insights Now', 'Praveen Raj', '13.04.22', 'Completed','100%'),
-  createData('Cirrus Insights Now', 'Praveen Raj', '13.04.22', 'Completed','100%'),
+  createData('Cirrus Insights Now', 'Praveen Raj', 'Mar 20th, 2022', 'Completed','100%'),
+  createData('Resume Mining', 'Arjun Rathod', 'Feb 12th, 2022', 'Completed','100%'),
+  createData('GeniBid', 'Rohan Shah', 'Dec 25th, 2023', 'Completed','100%'),
+  createData('Humanoid ChatBot', 'Aakash Bharadwaj', 'Jan 2nd, 2023', 'Ongoing','20%'),
+  createData('Internal Project Catalogue', 'Aakash Bharadwaj', 'Oct 22th, 2024', 'Ongoing','20%'),
 
 ];
 
