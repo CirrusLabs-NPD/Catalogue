@@ -54,15 +54,11 @@ function Sidebar() {
           </div>
         </div>
       </div>
+
       <div className="sidebar">
         <p className="sidebar__button2">
           <div className="project_status">
-            <span style={{ verticalAlign: "middle" }}>MY PROJECT STATUS</span>
-            <img
-              src={addsquare}
-              alt="Add"
-              style={{ verticalAlign: "middle", marginLeft: "20px" }}
-            />
+            <span style={{ verticalAlign: "right", fontWeight:'bold' }}>MY PROJECT STATUS</span>
           </div>
         </p>
         <div className="sidebar__links1">
@@ -70,7 +66,7 @@ function Sidebar() {
             <img
               src={green}
               alt="Ongoing"
-              style={{ verticalAlign: "middle", marginRight: "20px", width: "15px", height: "15px", marginTop: "6px" }}
+              style={{ verticalAlign: "middle", marginRight: "20px", width: "15px", height: "15px", marginTop: "2px" }}
             />
             Ongoing
           </p>
