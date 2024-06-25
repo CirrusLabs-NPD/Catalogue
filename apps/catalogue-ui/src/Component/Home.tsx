@@ -22,12 +22,12 @@ function Home() {
         <div className="filter_align">
           <img src={filter} alt="Logo" className="h-5 m-1" />
           <span>Filter</span>
-          <img src={downarr} alt="Logo" className="h-5 m-1 ml-14" />
+          <img src={downarr} alt="Logo" className="h-5 m-1 ml-4" />
         </div>
         <div className="filter_align">
           <img src={filter} alt="Logo" className="h-5 m-1" />
           <span>Today</span>
-          <img src={downarr} alt="Logo" className="h-5 m-1 ml-12" />
+          <img src={downarr} alt="Logo" className="h-5 m-1 ml-4" />
         </div>
       </div>
       {/* <div className='container'>
