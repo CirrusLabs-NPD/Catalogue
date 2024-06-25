@@ -18,7 +18,7 @@ export function App() {
           <Sidebar />
           <div style={{ flex: 1, padding: '20px' }}>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/addpage" element={<AddPage />} />
               <Route path="/CirrusInshightsNow" element={<ProjectDetails/>} />

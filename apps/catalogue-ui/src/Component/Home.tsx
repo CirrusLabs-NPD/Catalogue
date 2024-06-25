@@ -2,12 +2,9 @@ import React from 'react';
 import './Home.css';
 import downarr from '../app/assets/arrow-down.png';
 import filter from '../app/assets/filter.png';
-<<<<<<< HEAD
 import { Link } from "react-router-dom";
-=======
 import iconlogohome from '../app/assets/iconlogohome.png';
 import commentsimg from '../app/assets/commentsimg.png';
->>>>>>> c2fd40f5598e938a813beca855485ce3a85acec9
 
 function Home() {
   const colors = [
@@ -33,7 +30,6 @@ function Home() {
           <img src={downarr} alt="Logo" className="h-5 m-1 ml-12" />
         </div>
       </div>
-<<<<<<< HEAD
       {/* <div className='container'>
           <h2 className='cirrHeading'>CirrusInsightsNow.AI</h2>
           <p className='pHome'>Duration: 6 Weeks</p>
@@ -57,8 +53,6 @@ function Home() {
   <span className='ml-24 '>100%</span>
 </div>
 </Link>
-=======
->>>>>>> c2fd40f5598e938a813beca855485ce3a85acec9
 
       {/* Project containers */}
       {/* Responsive Grid for Project Blocks */}
