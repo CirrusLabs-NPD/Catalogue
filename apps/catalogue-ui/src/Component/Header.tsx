@@ -10,7 +10,7 @@ function Header() {
   return (
     <header className="header">
       <div className="header__logo">
-      <Link to="/"> {/* Navigate to Home page */}
+      <Link to="/home"> {/* Navigate to Home page */}
   <img src={logo} alt="Logo" />
 </Link>
 
