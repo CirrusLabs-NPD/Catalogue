@@ -16,15 +16,15 @@ function Sidebar() {
     <div>
       <div className="sidebar">
       <Link to="/addpage" className="sidebar_link">
-  <button className="sidebar__button">
-    <img
-      src={plus}
-      alt="Logo"
-      style={{ verticalAlign: "middle", marginRight: "8px" }}
-    />
-    <span style={{ verticalAlign: "middle" }}>Add Project</span>
-  </button>
-</Link>
+        <button className="sidebar__button">
+          <img
+            src={plus}
+            alt="Logo"
+            style={{ verticalAlign: "middle", marginRight: "8px" }}
+          />
+          <span style={{ verticalAlign: "middle" }}>Add Project</span>
+        </button>
+      </Link>
 
         
         <div className="sidebar__links">
@@ -61,7 +61,7 @@ function Sidebar() {
             <img
               src={addsquare}
               alt="Add"
-              style={{ verticalAlign: "middle", marginLeft: "40px" }}
+              style={{ verticalAlign: "middle", marginLeft: "20px" }}
             />
           </div>
         </p>
