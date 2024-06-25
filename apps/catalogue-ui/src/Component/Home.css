@@ -1,0 +1,40 @@
+.home_header{
+    color: #2C4B84;
+    font-size: 46px;
+    padding: 5px 0px 0px 30px;
+   
+}
+.filter_align{
+    margin-top: 20px;
+    border-radius: 6px;
+    display: flex;
+    padding: 10px;
+    flex-direction: row;
+    border: 1px solid #787486;
+    width: 10%;
+    color: #787486;
+    margin-left: 31px;
+
+}
+.header_align_home{
+    display: flex;
+    flex-direction: row;
+}
+/* .container{
+    border: 1px solid #c2c2c2;
+    width: 25%;
+    margin-top: 50px;
+    background-color: #F5F5F5;
+}
+.cirrHeading{
+    color: 5B4BA7;
+    font-size: 22px;
+    margin-top: 15px;
+    margin-left: 15px;
+}
+.pHome{
+    color: #0D062D;
+    font-size: 13px;
+    margin-top: 7px;
+    margin-left: 15px;
+} */
