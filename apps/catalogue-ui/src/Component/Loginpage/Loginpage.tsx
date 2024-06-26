@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { PublicClientApplication, AuthenticationResult } from '@azure/msal-browser';
 import { useNavigate } from 'react-router-dom';
 import { config } from '../../../Config'; 
-import loginImage from '../../app/assets/login4.jpg';
+import loginImage from '../../app/assets/login1.jpg';
 
 type LoginpageProps = {
   setIsLoggedIn: (isLoggedIn: boolean) => void;
