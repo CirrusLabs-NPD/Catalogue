@@ -56,14 +56,22 @@ function Sidebar() {
       </div>
       <div className="sidebar">
         <p className="sidebar__button2">
-          <div className="project_status">
+          {/* <div className="project_status">
             <span style={{ verticalAlign: "middle" }}>MY PROJECT STATUS</span>
             <img
               src={addsquare}
               alt="Add"
               style={{ verticalAlign: "middle", marginLeft: "20px" }}
             />
-          </div>
+          </div> */}
+           <div className="project_status flex items-center justify-between  p-4">
+           <span className="text-sm whitespace-nowrap">MY PROJECT STATUS</span>
+      <img
+        src={addsquare}
+        alt="Add"
+        className="h-6 w-6 object-contain ml-4"
+      />
+    </div>
         </p>
         <div className="sidebar__links1">
           <p className="sidebar__link">
