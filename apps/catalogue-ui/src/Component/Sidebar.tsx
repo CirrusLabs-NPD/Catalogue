@@ -57,9 +57,7 @@ function Sidebar() {
 
       <div className="sidebar">
         <p className="sidebar__button2">
-          <div className="project_status">
-            <span style={{ verticalAlign: "right", fontWeight:'bold' }}>MY PROJECT STATUS</span>
-          </div>
+          <span style={{ verticalAlign: "middle", fontWeight: 'bold' }}>My Project Status</span>
         </p>
         <div className="sidebar__links1">
           <p className="sidebar__link">
