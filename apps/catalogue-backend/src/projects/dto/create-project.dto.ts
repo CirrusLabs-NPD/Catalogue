@@ -17,6 +17,10 @@ export class CreateProjectDto {
     @IsNotEmpty()
     status: string;
 
+    @IsString()
+    @IsNotEmpty()
+    duration: string;
+
     @IsString({each: true})
     @IsNotEmpty({each: true})
     members: string[];

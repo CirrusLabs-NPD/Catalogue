@@ -3,6 +3,7 @@ export interface Project {
   owner: string;
   url: string;
   status: string;
+  duration: string;
   members: string[];
   description: string;
 }
