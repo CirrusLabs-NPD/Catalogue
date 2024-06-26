@@ -26,7 +26,16 @@ function Sidebar() {
         </button>
       </Link>
 
-        
+      {/* <div className="sidebar__link"> */}
+      <Link to="/home" className="sidebar__link">
+            <img
+              src={square}
+              alt="Projects"
+              style={{ verticalAlign: "middle", marginRight: "8px" }}
+            />
+            <span>Projects</span>
+            </Link>
+          {/* </div> */}
         <div className="sidebar__links">
           <Link to="/analytics" className="sidebar__link">
             <img
@@ -36,14 +45,7 @@ function Sidebar() {
             />
             <span>Analytics</span>
           </Link>
-          <div className="sidebar__link">
-            <img
-              src={square}
-              alt="Projects"
-              style={{ verticalAlign: "middle", marginRight: "8px" }}
-            />
-            <span>Projects</span>
-          </div>
+         
           <div className="sidebar__link">
             <img
               src={settings}
@@ -54,17 +56,31 @@ function Sidebar() {
           </div>
         </div>
       </div>
-
       <div className="sidebar">
         <p className="sidebar__button2">
-          <span style={{ verticalAlign: "middle", fontWeight: 'bold' }}>My Project Status</span>
+          {/* <div className="project_status">
+            <span style={{ verticalAlign: "middle" }}>MY PROJECT STATUS</span>
+            <img
+              src={addsquare}
+              alt="Add"
+              style={{ verticalAlign: "middle", marginLeft: "20px" }}
+            />
+          </div> */}
+           <div className="project_status flex items-center justify-between  p-4">
+           <span className="text-sm whitespace-nowrap">MY PROJECT STATUS</span>
+      <img
+        src={addsquare}
+        alt="Add"
+        className="h-6 w-6 object-contain ml-4"
+      />
+    </div>
         </p>
         <div className="sidebar__links1">
           <p className="sidebar__link">
             <img
               src={green}
               alt="Ongoing"
-              style={{ verticalAlign: "middle", marginRight: "20px", width: "15px", height: "15px", marginTop: "2px" }}
+              style={{ verticalAlign: "middle", marginRight: "20px", width: "15px", height: "15px", marginTop: "6px" }}
             />
             Ongoing
           </p>
