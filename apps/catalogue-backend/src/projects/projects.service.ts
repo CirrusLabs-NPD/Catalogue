@@ -28,4 +28,7 @@ export class ProjectsService {
         return project;
     }
     
+    async deleteProject(id: string): Promise<Project> {
+        return await this.projectModel.findByIdAndDelete(id);
+    }
 }
