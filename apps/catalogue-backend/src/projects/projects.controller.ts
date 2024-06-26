@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, ValidationPipe } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { Project } from './interfaces/project.interface'
@@ -15,5 +15,10 @@ export class ProjectsController {
     @Post()
     addProject(@Body(ValidationPipe) createProjectDto: CreateProjectDto): Promise<Project> {
         return this.displayService.addProject(createProjectDto);
+    }
+
+    @Get(':id')
+    getById(@Param('id') id: string): Promise<Project> {
+        return this.displayService.getById(id);
     }
 }
