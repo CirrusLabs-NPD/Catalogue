@@ -15,12 +15,6 @@
     
   }
   
-  .filter_align {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
   .subheading-h2 {
     font-size: 1.5rem;
     font-weight: semi-bold;

@@ -36,7 +36,7 @@ const AddPage: React.FC = () => {
     <div className="flex items-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-8 rounded-lg w-full max-w-8xl">
+        className="bg-gray-100 p-8 rounded-lg ml-7 w-full w-1x9 ">
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Project Name Field */}
@@ -140,7 +140,7 @@ const AddPage: React.FC = () => {
               Project Status
             </label>
             <select
-              id="projectStatus"
+              id="projectStatus" style={{ color: 'gray' }}
               {...register('projectStatus', { required: 'Project Status is required' })}
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
                 errors.projectStatus ? 'border-red-500' : 'border-gray-300'

@@ -92,7 +92,7 @@ export default function StickyHeadTable() {
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
                 >
-                  <Typography variant="h6" component="div" style={{ fontFamily: 'Quicksand', fontWeight: 'regular', fontSize:'5' }}>
+                  <Typography variant="h7" component="div" style={{ fontFamily: 'Quicksand', fontWeight: 'regular', fontSize:'5' }}>
                     {column.label}
                   </Typography>
                 </TableCell>
@@ -109,7 +109,7 @@ export default function StickyHeadTable() {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          <Typography variant="h6" component="div" style={{ fontFamily: 'Quicksand', fontWeight: 'lighter', fontSize:'5' }}>
+                          <Typography variant="h7" component="div" style={{ fontFamily: 'Quicksand', fontWeight: 'lighter', fontSize:'5' }}>
                           {column.format && typeof value === 'number'
                             ? column.format(value)
                             : value}

@@ -45,8 +45,9 @@ function Home() {
       {/* Responsive Grid for Project Blocks */}
       <div className="flex flex-wrap justify-center">
   {Array.from({ length: 6 }).map((_, index) => (
-    <div
+    <Link
       key={index}
+        to="/CirrusInshightsNow"
       className={`container border border-gray-300 w-11/12 sm:w-1/3 md:w-1/4 lg:w-1/4 xl:w-1/4 mt-12 p-4 rounded-lg mx-2 mb-4 ${colors[index % colors.length]}`}
     >
       <div className="flex flex-col items-start">
@@ -80,7 +81,7 @@ function Home() {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   ))}
 </div>
 
