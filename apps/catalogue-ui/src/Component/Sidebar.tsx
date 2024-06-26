@@ -26,7 +26,16 @@ function Sidebar() {
         </button>
       </Link>
 
-        
+      {/* <div className="sidebar__link"> */}
+      <Link to="/home" className="sidebar__link">
+            <img
+              src={square}
+              alt="Projects"
+              style={{ verticalAlign: "middle", marginRight: "8px" }}
+            />
+            <span>Projects</span>
+            </Link>
+          {/* </div> */}
         <div className="sidebar__links">
           <Link to="/analytics" className="sidebar__link">
             <img
@@ -36,14 +45,7 @@ function Sidebar() {
             />
             <span>Analytics</span>
           </Link>
-          <div className="sidebar__link">
-            <img
-              src={square}
-              alt="Projects"
-              style={{ verticalAlign: "middle", marginRight: "8px" }}
-            />
-            <span>Projects</span>
-          </div>
+         
           <div className="sidebar__link">
             <img
               src={settings}
