@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Menu } from '@headlessui/react';
 import calendar from '../../app/assets/calendar.png';
 import downarr from '../../app/assets/arrow-down.png';
+import './filter.css'
 
 const CalendarDropdown: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<string>('Today');
@@ -12,13 +13,15 @@ const CalendarDropdown: React.FC = () => {
       <Menu>
         {({ open }) => (
           <>
-            <Menu.Button className="inline-flex justify-center w-full px-6 py-3 text-sm font-medium text-[#787486] bg-white border border-[#787486] rounded-md hover:bg-gray-100 focus:outline-none ">
-            <img src={calendar} alt="Logo" className="m-1" />
-              Today
-            <img src={downarr} alt="Logo" className="m-1" />
+            <Menu.Button>
+              <div className="filter_align-1 flex items-center">
+                <img src={calendar} alt="Calendar Icon" className="h-5 m-1" />
+                  <span className="text-gray-600">Today</span>
+                <img src={downarr} alt="Dropdown Icon" className="h-5 m-1 ml-auto" />
+              </div>
             </Menu.Button>
             {open && (
-              <Menu.Items className="absolute left-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 rounded-md shadow-lg ">
+              <Menu.Items className="absolute left-2 w-56 mt-2 origin-top-right bg-white border border-gray-200 rounded-md shadow-lg ">
                 <div className="py-1">
                   <Menu.Item>
                     {({ active }) => (

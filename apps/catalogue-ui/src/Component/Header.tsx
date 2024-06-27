@@ -36,7 +36,7 @@ function Header() {
   };
 
   return (
-    <header className="header">
+    <header className="header fixed top-0 left-0 w-full">
       <div className="header__logo">
         <Link to="/home">
           {' '}
