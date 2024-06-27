@@ -78,22 +78,20 @@ export function App() {
 
   return (
     <Router>
-      <div>
+      <div className="h-screen overflow-hidden">
         {isLoggedIn && <Header />}
-        <div style={{ display: 'flex' }}>
-          {isLoggedIn && <Sidebar />}
-          <div style={{ flex: 1, padding: '20px' }}>
-            <Routes>
-              <Route path="/" element={<Loginpage setIsLoggedIn={handleLogin} />} />
-              <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
-              <Route path="/analytics" element={<ProtectedRoute element={<Analytics />} />} />
-              <Route path="/addpage" element={<ProtectedRoute element={<AddPage />} />} />
-              <Route path="/CirrusInshightsNow" element={<ProtectedRoute element={<ProjectDetails />} />} />
-              {/* Add more routes here */}
-              <Route path="*" element={<Navigate to="/" />} /> {/* Redirect to login if route not found */}
-            </Routes>
+        {isLoggedIn && <Sidebar />}
+          <div className="ml-64 mt-6 h-full overflow-y-scroll">
+              <Routes>
+                <Route path="/" element={<Loginpage setIsLoggedIn={handleLogin} />} />
+                <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
+                <Route path="/analytics" element={<ProtectedRoute element={<Analytics />} />} />
+                <Route path="/addpage" element={<ProtectedRoute element={<AddPage />} />} />
+                <Route path="/CirrusInshightsNow" element={<ProtectedRoute element={<ProjectDetails />} />} />
+                {/* Add more routes here */}
+                <Route path="*" element={<Navigate to="/" />} /> {/* Redirect to login if route not found */}
+              </Routes>
           </div>
-        </div>
       </div>
     </Router>
   );

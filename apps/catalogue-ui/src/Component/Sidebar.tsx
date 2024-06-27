@@ -13,7 +13,7 @@ import blue from "../app/assets/Ellipse 11.png";
 
 function Sidebar() {
   return (
-    <div>
+    <aside className="fixed top-18 left-0 h-full w-64">
       <div className="sidebar">
       <Link to="/addpage" className="sidebar_link">
         <button className="sidebar__button">
@@ -110,7 +110,7 @@ function Sidebar() {
           </p>
         </div>
       </div>
-    </div>
+    </aside>
   );
 }
 
