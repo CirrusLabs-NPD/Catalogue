@@ -8,7 +8,7 @@ export default function Analytics() {
   return (
     <div className="analytics-container">
         <h1 className="analytics_header">Analytics</h1>
-        <div className="ml-8 mt-4 mb-4 ">
+        <div className="mt-4 mb-4 ">
           <FilterDropdown />
         </div>
 
