@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Project } from './interfaces/project.interface';
 import { ProjectClass } from './schemas/project.schemas';
+import { UpdateProjectDto } from './dto/update-project.dto';
 
 @Injectable()
 export class ProjectsService {
@@ -31,4 +32,18 @@ export class ProjectsService {
     async deleteProject(id: string): Promise<Project> {
         return await this.projectModel.findByIdAndDelete(id);
     }
+
+    async updateProject(id: string, updateProjectDto: UpdateProjectDto): Promise<Project> {
+        const existingProject = await this.projectModel.findByIdAndUpdate(
+          id,
+          { $set: updateProjectDto },
+          { new: true }
+        ).exec();
+    
+        if (!existingProject) {
+            throw new NotFoundException(`Project with ID "${id}" not found`);
+        }
+    
+        return existingProject;
+      }
 }
