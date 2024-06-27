@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Project } from './interfaces/project.interface';
@@ -13,37 +13,57 @@ export class ProjectsService {
     ) {}
 
     async getProjects(): Promise<Project[]> {
-        return await this.projectModel.find().exec();
+        try {
+            return await this.projectModel.find().exec();
+        } catch (error) {
+            throw error;
+        }
     }
 
     async addProject(project: Project): Promise<Project> {
-        const newProject = new this.projectModel(project);
-        return await newProject.save();
+        try {
+            const newProject = new this.projectModel(project);
+            return await newProject.save();
+        } catch (error) {
+            throw error;
+        }
     }
 
     async getById(id: string): Promise<Project> {
-        const project = await this.projectModel.findById(id).exec();
-        if (!project) {
-            throw new NotFoundException(`Project with ID "${id}" not found`);
+        try {
+            const project = await this.projectModel.findById(id).exec();
+            if (!project) {
+                throw new NotFoundException(`Project with ID "${id}" not found`);
+            }
+            return project;
+        } catch (error) {
+            throw error;
         }
-        return project;
     }
     
     async deleteProject(id: string): Promise<Project> {
-        return await this.projectModel.findByIdAndDelete(id);
+        try {
+            return await this.projectModel.findByIdAndDelete(id);
+        } catch (error) {
+            throw error;
+        }
     }
 
     async updateProject(id: string, updateProjectDto: UpdateProjectDto): Promise<Project> {
-        const existingProject = await this.projectModel.findByIdAndUpdate(
-          id,
-          { $set: updateProjectDto },
-          { new: true }
-        ).exec();
-    
-        if (!existingProject) {
-            throw new NotFoundException(`Project with ID "${id}" not found`);
+        try {
+            const existingProject = await this.projectModel.findByIdAndUpdate(
+                id,
+                { $set: updateProjectDto },
+                { new: true }
+              ).exec();
+          
+              if (!existingProject) {
+                  throw new NotFoundException(`Project with ID "${id}" not found`);
+              }
+          
+              return existingProject;
+        } catch (error) {
+            throw error;
         }
-    
-        return existingProject;
-      }
+    }
 }
