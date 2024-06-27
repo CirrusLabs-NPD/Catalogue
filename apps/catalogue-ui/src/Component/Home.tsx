@@ -5,6 +5,8 @@ import filter from '../app/assets/filter.png';
 import { Link } from 'react-router-dom';
 import iconlogohome from '../app/assets/iconlogohome.png';
 import commentsimg from '../app/assets/commentsimg.png';
+import FilterDropdown from './FilterDropdown/filter';
+import CalendarDropdown from './FilterDropdown/calendarDropdown';
 
 function Home() {
   const colors = [
@@ -16,19 +18,11 @@ function Home() {
     'bg-blue-200',
   ];
   return (
-    <div>
+    <div className="overflow-y-auto h-full">
        <h1 className="home_header">Project Catalogue</h1>
-      <div className="flex space-x-4">
-        <div className="filter_align flex items-center">
-          <img src={filter} alt="Filter Icon" className="h-5 m-1" />
-          <span className="text-gray-600">Filter</span>
-          <img src={downarr} alt="Dropdown Icon" className="h-5 m-1 ml-auto" />
-        </div>
-        <div className="filter_align flex items-center">
-          <img src={filter} alt="Filter Icon" className="h-5 m-1" />
-          <span className="text-gray-600">Today</span>
-          <img src={downarr} alt="Dropdown Icon" className="h-5 m-1 ml-auto" />
-        </div>
+      <div className="flex space-x-4 mt-4 mb-4">
+        <FilterDropdown/>
+        <CalendarDropdown/>
       </div>
       {/* <div className='container'>
           <h2 className='cirrHeading'>CirrusInsightsNow.AI</h2>
@@ -48,7 +42,7 @@ function Home() {
     <Link
       key={index}
         to="/CirrusInshightsNow"
-      className={`container border border-gray-300 w-11/12 sm:w-1/3 md:w-1/4 lg:w-1/4 xl:w-1/4 mt-12 p-4 rounded-lg mx-2 mb-4 ${colors[index % colors.length]}`}
+      className={`container border border-gray-300 w-11/12 sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 mt-12 p-4 rounded-lg mx-2 mb-4 ${colors[index % colors.length]}`}
     >
       <div className="flex flex-col items-start">
         <h2 className="cirrHeading text-[#5B4BA7] text-xl mt-4 ml-4 mb-2">
