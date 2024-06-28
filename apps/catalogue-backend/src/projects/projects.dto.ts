@@ -1,27 +1,44 @@
-import { IsNotEmpty, IsString, IsUrl } from "class-validator";
+import { IsNotEmpty, IsString, IsUrl, IsArray, IsOptional } from "class-validator";
 
-export class ProjectsDto {
+export class UpdateProjectDto {
     @IsString()
     @IsNotEmpty()
-    name: string;
+    @IsOptional()
+    projectName?: string;
 
     @IsString()
     @IsNotEmpty()
-    owner: string;
+    @IsOptional()
+    duration?: string;
 
     @IsUrl()
     @IsNotEmpty()
-    url: string;
+    @IsOptional()
+    gitHubLinks?: string;
 
     @IsString()
     @IsNotEmpty()
-    status: string;
-
-    @IsString({each: true})
-    @IsNotEmpty({each: true})
-    members: string[];
+    @IsOptional()
+    technology?: string;
 
     @IsString()
     @IsNotEmpty()
-    description: string;
+    @IsOptional()
+    otherTechnology?: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    projectStatus?: string;
+
+    @IsArray()
+    @IsString({ each: true })
+    @IsNotEmpty({ each: true })
+    @IsOptional()
+    members?: string[];
+
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    description?: string;
 }

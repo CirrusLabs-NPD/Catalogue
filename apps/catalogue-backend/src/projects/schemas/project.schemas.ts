@@ -3,25 +3,28 @@ import { Document } from 'mongoose';
 
 @Schema()
 export class ProjectClass extends Document {
-    @Prop({unique : true, required : true})
-    name : string;
+    @Prop({ unique: true, required: true })
+    projectName: string;
     
-    @Prop({required : true})
-    owner: string;
-    
-    @Prop({required : true})
-    url: string;
-    
-    @Prop({required : true})
-    status: string;
-
-    @Prop({required : true})
+    @Prop({ required: true })
     duration: string;
     
-    @Prop({required : true})
+    @Prop({ required: true })
+    gitHubLinks: string;
+    
+    @Prop({ required: true })
+    technology: string;
+    
+    @Prop({ required: true })
+    otherTechnology: string;
+    
+    @Prop({ required: true })
+    projectStatus: string;
+    
+    @Prop({ required: true })
     members: string[];
     
-    @Prop({required : true})
+    @Prop({ required: true })
     description: string;
 }
 
