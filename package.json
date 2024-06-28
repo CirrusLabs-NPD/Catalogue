@@ -2,7 +2,10 @@
   "name": "@catalogue/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start:frontend": "nx serve catalogue-ui",
+    "start:backend": "nx serve catalogue-backend"
+  },
   "private": true,
   "dependencies": {
     "@azure/msal-browser": "^3.17.0",
