@@ -1,7 +1,10 @@
-
-
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from 'react-router-dom';
 import Header from '../Component/Header';
 import Sidebar from '../Component/Sidebar';
 import Home from '../Component/Home';
@@ -46,17 +49,28 @@ export function App() {
       <div className="h-screen overflow-hidden">
         {isLoggedIn && <Header />}
         {isLoggedIn && <Sidebar />}
-          <div className="ml-64 mt-6 h-full overflow-y-scroll">
-              <Routes>
-                <Route path="/" element={<Loginpage setIsLoggedIn={handleLogin} />} />
-                <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
-                <Route path="/analytics" element={<ProtectedRoute element={<Analytics />} />} />
-                <Route path="/addpage" element={<ProtectedRoute element={<AddPage />} />} />
-                <Route path="/CirrusInshightsNow" element={<ProtectedRoute element={<ProjectDetails />} />} />
-                {/* Add more routes here */}
-                <Route path="*" element={<Navigate to="/" />} /> {/* Redirect to login if route not found */}
-              </Routes>
-          </div>
+        <Routes>
+          <Route path="/" element={<Loginpage setIsLoggedIn={handleLogin} />} />
+          <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
+          <Route
+            path="/analytics"
+            element={<ProtectedRoute element={<Analytics />} />}
+          />
+          <Route
+            path="/addpage"
+            element={<ProtectedRoute element={<AddPage />} />}
+          />
+          <Route
+            path="/description/:name"
+            element={<ProtectedRoute element={<ProjectDetails />} />}
+          />
+          {/* Add more routes here */}
+          <Route path="*" element={<Navigate to="/" />} />{' '}
+          {/* Redirect to login if route not found */}
+        </Routes>
+        {/* <div className="mt-6 h-full overflow-y-scroll">
+         
+        </div> */}
       </div>
     </Router>
   );

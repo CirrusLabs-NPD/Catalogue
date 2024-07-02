@@ -1,7 +1,7 @@
 // import React, { Component } from 'react';
 // import { PublicClientApplication, AuthenticationResult } from '@azure/msal-browser';
 // import { useNavigate } from 'react-router-dom';
-// import { config } from '../../../Config'; 
+// import { config } from '../../../Config';
 // import loginImage from '../../app/assets/login.png';
 
 // type LoginpageProps = {
@@ -112,14 +112,16 @@
 
 // export default LoginpageWithNavigate;
 
-
-
 import React, { Component } from 'react';
-import { PublicClientApplication, AuthenticationResult } from '@azure/msal-browser';
+import {
+  PublicClientApplication,
+  AuthenticationResult,
+} from '@azure/msal-browser';
 import { useNavigate } from 'react-router-dom';
 import { config } from '../../../Config';
 import loginImage from '../../app/assets/loginblank.png';
 import logo from '../../app/assets/CirrusLabsLogo.png';
+import { json } from 'stream/consumers';
 
 type LoginpageProps = {
   setIsLoggedIn: (isLoggedIn: boolean) => void;
@@ -140,7 +142,7 @@ class Loginpage extends Component<LoginpageProps, LoginpageState> {
     this.state = {
       error: null,
       isAuthenticated: false,
-      user: {}
+      user: {},
     };
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -148,12 +150,12 @@ class Loginpage extends Component<LoginpageProps, LoginpageState> {
       auth: {
         clientId: config.appId,
         redirectUri: config.redirectUri,
-        authority: config.authority
+        authority: config.authority,
       },
       cache: {
-        cacheLocation: "sessionStorage",
-        storeAuthStateInCookie: true
-      }
+        cacheLocation: 'sessionStorage',
+        storeAuthStateInCookie: true,
+      },
     });
   }
 
@@ -163,24 +165,26 @@ class Loginpage extends Component<LoginpageProps, LoginpageState> {
 
   async login() {
     try {
-      console.log("Attempting to log in...");
-      const response: AuthenticationResult = await this.publicClientApplication.loginPopup({
-        scopes: config.scopes,
-        prompt: "select_account"
-      });
-      console.log("Login successful:", response);
+      console.log('Attempting to log in...');
+      const response: AuthenticationResult =
+        await this.publicClientApplication.loginPopup({
+          scopes: config.scopes,
+          prompt: 'select_account',
+        });
+
+      localStorage.setItem('pc_auth_token', JSON.stringify(response));
       this.setState({
         isAuthenticated: true,
-        user: response.account
+        user: response.account,
       });
       this.props.setIsLoggedIn(true);
       this.props.navigate('/home');
     } catch (err) {
-      console.error("Login error:", err);
+      console.error('Login error:', err);
       this.setState({
         isAuthenticated: false,
         user: {},
-        error: err
+        error: err,
       });
     }
   }
@@ -213,7 +217,10 @@ class Loginpage extends Component<LoginpageProps, LoginpageState> {
         <div className="absolute inset-0 flex items-center justify-start pl-16">
           <div className="">
             <h1 className="text-6xl font-normal mb-4">Project Catalogue</h1>
-            <p className="mb-6 ml-3 text-2xl">The one stop integrated platform for all the POC's across CirrusLabs</p>
+            <p className="mb-6 ml-3 text-2xl">
+              The one stop integrated platform for all the POC's across
+              CirrusLabs
+            </p>
             {this.state.isAuthenticated ? (
               <button
                 onClick={this.logout}
@@ -242,4 +249,3 @@ function LoginpageWithNavigate(props: any) {
 }
 
 export default LoginpageWithNavigate;
-
