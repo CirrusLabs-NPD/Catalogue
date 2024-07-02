@@ -3,6 +3,7 @@ import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { ProjectClass } from './schemas/project.schemas';
 import { ApiTags, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger'; // Import Swagger decorators
+import { CloneRepoDto } from './dto/clone-repo.dto';
 
 @ApiTags('projects') // Tag for Swagger documentation
 @Controller('projects')
@@ -45,5 +46,13 @@ export class ProjectsController {
     @ApiResponse({ status: 200, description: 'Deletes a project by ID.' })
     deleteProject(@Param('id') id: string): Promise<ProjectClass> {
         return this.projectsService.deleteProject(id);
+    }
+
+    @Post(':id/clone-repo')
+    @ApiParam({ name: 'id', type: String })
+    @ApiBody({ type: CloneRepoDto })
+    @ApiResponse({ status: 200, description: 'Clones the repo for a project by ID.' })
+    cloneRepo(@Param('id') id: string, @Body() cloneRepoDto: CloneRepoDto): Promise<void> {
+        return this.projectsService.cloneRepo(id, cloneRepoDto);
     }
 }

@@ -4,6 +4,14 @@ import { Model } from 'mongoose';
 import { ProjectClass } from './schemas/project.schemas';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { CloneRepoDto } from './dto/clone-repo.dto';
+import simpleGit from 'simple-git';
+import * as fs from 'fs';
+import * as path from 'path';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execPromise = promisify(exec);
 
 @Injectable()
 export class ProjectsService {
@@ -50,4 +58,22 @@ export class ProjectsService {
 
         return existingProject;
     }
+
+    async cloneRepo(id: string, cloneRepoDto: CloneRepoDto): Promise<void> {
+        const project = await this.projectModel.findById(id).exec();
+        if (!project) {
+          throw new NotFoundException(`Project with ID "${id}" not found`);
+        }
+    
+        const { repoUrl, personalAccessToken } = cloneRepoDto;
+        const repoName = repoUrl.split('/').pop().replace('.git', '');
+        const destinationPath = path.join('libs', repoName);
+    
+        fs.mkdirSync(destinationPath, { recursive: true });
+    
+        const git = simpleGit();
+        await git.clone(`https://${personalAccessToken}@${repoUrl.replace('https://', '')}`, destinationPath);
+    
+        await execPromise(`npx nx g lib ${repoName}`);
+      }
 }
