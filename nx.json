@@ -1,7 +1,10 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
     "production": [
       "default",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
@@ -36,7 +39,10 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": ["apps/catalogue-backend-e2e/**/*"]
+      "exclude": [
+        "apps/catalogue-backend-e2e/**/*",
+        "repos"
+      ]
     },
     {
       "plugin": "@nx/webpack/plugin",

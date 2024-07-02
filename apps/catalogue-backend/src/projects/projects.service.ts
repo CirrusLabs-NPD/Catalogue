@@ -67,13 +67,12 @@ export class ProjectsService {
     
         const { repoUrl, personalAccessToken } = cloneRepoDto;
         const repoName = repoUrl.split('/').pop().replace('.git', '');
-        const destinationPath = path.join('libs', repoName);
+        const destinationPath = path.join('repos', repoName);
     
         fs.mkdirSync(destinationPath, { recursive: true });
     
         const git = simpleGit();
+        // could also use git submodule here?
         await git.clone(`https://${personalAccessToken}@${repoUrl.replace('https://', '')}`, destinationPath);
-    
-        await execPromise(`npx nx g lib ${repoName}`);
       }
 }
