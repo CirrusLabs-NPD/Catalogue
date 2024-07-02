@@ -1,5 +1,5 @@
 # Build image from Catalogue directory:
-# docker build -f apps/catalogue-backend/Dockerfile -t catalogue-backend .
+# docker build -f apps/catalogue-ui/Dockerfile -t catalogue-ui .
 
 FROM node
 
@@ -15,8 +15,8 @@ COPY .eslintrc.json .
 
 RUN npm install
 
-EXPOSE 3000
+EXPOSE 4200
 
-COPY apps/catalogue-backend/ ./apps/catalogue-backend/
+COPY apps/catalogue-ui/ ./apps/catalogue-ui/
 
-CMD ["npm", "run", "start:backend"]
+CMD ["npm", "run", "start:frontend"]
