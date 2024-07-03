@@ -19,6 +19,7 @@
     "@mui/material": "^5.15.20",
     "@mui/x-charts": "^7.7.0",
     "@nestjs/common": "^10.0.2",
+    "@nestjs/config": "^3.2.3",
     "@nestjs/core": "^10.0.2",
     "@nestjs/mongoose": "^10.0.6",
     "@nestjs/passport": "^10.0.3",

@@ -3,7 +3,7 @@
 
 FROM node
 
-WORKDIR /app
+WORKDIR /apps
 
 COPY package*.json .
 COPY nx.json .

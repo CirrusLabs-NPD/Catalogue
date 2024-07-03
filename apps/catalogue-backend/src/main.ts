@@ -23,12 +23,13 @@ async function bootstrap() {
   SwaggerModule.setup('api-docs', app, document); // Setup Swagger UI at '/api-docs'
 
   // Start listening
-  const port = process.env.PORT || 3000;
-  await app.listen(port);
+  const port = process.env.PORT;
+  const host = process.env.HOST;
+  await app.listen(port, host);
   Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
 
   // Additional logging if needed
-  Logger.log(`🚀 Swagger UI available at: http://localhost:${port}/${globalPrefix}/api-docs`);
+  Logger.log(`🚀 Swagger UI available at: http://localhost:${port}/api-docs`);
 }
 
 bootstrap();
