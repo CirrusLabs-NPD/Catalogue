@@ -7,8 +7,6 @@ export default defineConfig( ({mode}) =>
 {
   const env = loadEnv(mode, process.cwd(), '');
 
-  console.log(env.HOST);
-
   return {
     root: __dirname,
     cacheDir: '../../node_modules/.vite/apps/catalogue-ui',
