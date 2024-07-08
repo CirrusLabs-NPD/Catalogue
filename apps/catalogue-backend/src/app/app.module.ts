@@ -6,7 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
-  imports: [MongooseModule.forRoot(`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/`), ProjectsModule, AuthModule],
+  imports: [MongooseModule.forRoot(process.env.MONGODB_URI), ProjectsModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
