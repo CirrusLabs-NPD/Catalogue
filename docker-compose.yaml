@@ -1,4 +1,4 @@
-services:
+services:  
   backend:
     container_name: catalogue-backend
     build:
@@ -8,7 +8,8 @@ services:
       - "3000:3000"
     environment:
       - HOST=0.0.0.0
-      - MONGO_HOST=database
+    env_file:
+      - ".env"
   frontend:
     container_name: catalogue-frontend
     build:
@@ -18,8 +19,5 @@ services:
       - "4200:4200"
     environment:
       - HOST=0.0.0.0
-  database:
-    image: mongo
-    container_name: mongoDB
-    ports:
-      - "27018:27017"
+    env_file:
+      - ".env"

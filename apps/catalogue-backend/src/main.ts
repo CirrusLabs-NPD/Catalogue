@@ -8,6 +8,8 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 async function bootstrap() {
+  console.log(process.env.MONGODB_URI);
+
   const app = await NestFactory.create(AppModule);
 
   // Set global prefix
@@ -26,7 +28,7 @@ async function bootstrap() {
   SwaggerModule.setup('api-docs', app, document); // Setup Swagger UI at '/api-docs'
 
   // Start listening
-  const port = process.env.PORT;
+  const port = process.env.BACKEND_PORT;
   const host = process.env.HOST;
   await app.listen(port, host);
   Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
