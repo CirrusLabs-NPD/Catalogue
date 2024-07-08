@@ -12,7 +12,7 @@ export default defineConfig( ({mode}) =>
     cacheDir: '../../node_modules/.vite/apps/catalogue-ui',
 
     server: {
-      port: 4200,
+      port: parseInt(env.FRONTEND_PORT),
       host: env.HOST,
     },
 
