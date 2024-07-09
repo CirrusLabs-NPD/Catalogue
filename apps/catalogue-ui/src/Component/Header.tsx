@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const modalRef = useRef(null);
   const navigate = useNavigate();
 
@@ -30,7 +31,7 @@ function Header() {
 
   const handleLogout = () => {
     sessionStorage.removeItem('isLoggedIn');
-    setIsModalOpen(false); 
+    setIsModalOpen(false);
     navigate('/');
     window.location.reload();
   };
@@ -48,8 +49,8 @@ function Header() {
         <input type="text" placeholder="Search..." />
       </div>
       <div className="header__user-info">
-        <div className="header__name">Rohan Shah</div>
-        <div className="header__location">Darjeeling, WB</div>
+        <div className="header__name">Aakash B.</div>
+        <div className="header__location">Sr. Analyst</div>
       </div>
       <div className="header__icon" onClick={handleIconClick}>
         <FontAwesomeIcon icon={faAngleDown} size="xl" />
@@ -75,4 +76,3 @@ function Header() {
 }
 
 export default Header;
-

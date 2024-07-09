@@ -1,0 +1,23 @@
+services:  
+  backend:
+    container_name: catalogue-backend
+    build:
+      context: ./
+      dockerfile: ./apps/catalogue-backend/Dockerfile
+    ports: 
+      - "3000:3000"
+    environment:
+      - HOST=0.0.0.0
+    env_file:
+      - ".env"
+  frontend:
+    container_name: catalogue-frontend
+    build:
+      context: ./
+      dockerfile: ./apps/catalogue-ui/Dockerfile
+    ports: 
+      - "4200:4200"
+    environment:
+      - HOST=0.0.0.0
+    env_file:
+      - ".env"

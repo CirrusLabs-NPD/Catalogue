@@ -28,6 +28,7 @@
   }
 
 .header__user-info {
+  
     display: flex;
     flex-direction: column;
     align-items: flex-end; /* Align text to the right */
