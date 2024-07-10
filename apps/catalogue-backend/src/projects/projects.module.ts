@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ProjectsController } from './projects.controller';
 import { ProjectsService } from './projects.service';
 import { ProjectClass, ProjectSchema } from './schemas/project.schemas'
-import { AzureStrategy } from '../auth/azure.strategy';
+import { AzureStrategy } from '../auth/strategies/azure.strategy';
 
 @Module({
     imports: [
