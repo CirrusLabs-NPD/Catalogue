@@ -4,17 +4,17 @@ import { AuthService } from './auth.service';
 import { AzureStrategy } from './strategies/azure.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from '../users/users.module';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
     UsersModule,
     JwtModule.register({
-      global: true,
       secret: 'secret',
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '60m' },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, AzureStrategy]
+  providers: [AuthService, AzureStrategy, JwtStrategy]
 })
 export class AuthModule {}
