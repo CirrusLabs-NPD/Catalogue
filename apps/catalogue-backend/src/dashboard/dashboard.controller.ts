@@ -9,4 +9,9 @@ export class DashboardController {
     getMonthlyCompletion() {
         return this.dashboardService.getMonthlyCompletion();
     }
+
+    @Get('percentDash')
+    getPercentDash() {
+        return this.dashboardService.getPercentDash();
+    }
 }

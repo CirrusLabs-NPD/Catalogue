@@ -45,5 +45,7 @@ export class UpdateProjectDto {
     @IsNumber()
     @Min(0)
     @Max(100)
+    @IsNotEmpty()
+    @IsOptional()
     completionPercentage?: number;
 }

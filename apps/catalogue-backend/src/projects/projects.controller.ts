@@ -37,7 +37,7 @@ export class ProjectsController {
     @Put(':id')
     @UseGuards(AuthGuard('jwt'))
     @ApiParam({ name: 'id', type: String })
-    @ApiBody({ type: CreateProjectDto })
+    @ApiBody({ type: UpdateProjectDto })
     @ApiResponse({ status: 200, description: 'Updates a project by ID.' })
     updateProject(
         @Param('id') id: string,

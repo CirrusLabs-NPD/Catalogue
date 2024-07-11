@@ -8,6 +8,10 @@ export class DashboardService {
     constructor(@InjectModel(ProjectClass.name) private projectModel: Model<ProjectClass>) {}
 
     async getMonthlyCompletion() {
-        return this.projectModel.find().exec();
+        return await this.projectModel.find().exec();
+    }
+
+    async getPercentDash() {
+        return await this.projectModel.find({}, 'projectName duration projectStatus progressPercentage').exec();
     }
 }

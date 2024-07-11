@@ -37,5 +37,6 @@ export class CreateProjectDto {
     @IsNumber()
     @Min(0)
     @Max(100)
+    @IsNotEmpty()
     projectPercentage: number;
 }
