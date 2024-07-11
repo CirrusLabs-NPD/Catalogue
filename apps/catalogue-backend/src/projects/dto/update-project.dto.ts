@@ -47,7 +47,7 @@ export class UpdateProjectDto {
     @Max(100)
     @IsNotEmpty()
     @IsOptional()
-    completionPercentage?: number;
+    progressPercent?: number;
 
     @IsDateString()
     @IsOptional()

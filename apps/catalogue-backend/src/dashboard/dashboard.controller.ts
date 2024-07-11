@@ -13,9 +13,15 @@ export class DashboardController {
         return this.dashboardService.getMonthlyCompletion();
     }
 
-    @Get('percentDash')
+    @Get('percent-dash')
     @ApiResponse({ status: 200, description: 'Returns name, duration, status and percentage for all projects.' })
     getPercentDash() {
         return this.dashboardService.getPercentDash();
+    }
+
+    @Get('status-count')
+    @ApiResponse({ status: 200, description: 'Returns a list of the number of projects for each status.' })
+    getStatusCount() {
+        return this.dashboardService.getStatusCount();
     }
 }

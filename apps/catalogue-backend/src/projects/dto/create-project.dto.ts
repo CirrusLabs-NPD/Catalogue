@@ -38,7 +38,7 @@ export class CreateProjectDto {
     @Min(0)
     @Max(100)
     @IsNotEmpty()
-    projectPercentage: number;
+    progressPercent: number;
 
     @IsDateString()
     @IsOptional()

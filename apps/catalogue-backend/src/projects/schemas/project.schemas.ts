@@ -28,7 +28,7 @@ export class ProjectClass extends Document {
     description: string;
 
     @Prop({ required: true, min: 0, max: 100 })
-    progressPercentage: number;
+    progressPercent: number;
 
     @Prop({ required: false })
     completionDate: string;

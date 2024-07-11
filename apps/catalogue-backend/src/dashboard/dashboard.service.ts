@@ -26,6 +26,21 @@ export class DashboardService {
     }
 
     async getPercentDash() {
-        return await this.projectModel.find({}, 'projectName duration projectStatus progressPercentage').exec();
+        return await this.projectModel.find({}, 'projectName duration projectStatus progressPercent').exec();
+    }
+
+    async getStatusCount() {
+        const aggregation = await this.projectModel.aggregate([
+            { $group: { _id: "$projectStatus", count: { $sum: 1 } } },
+            { $project: { _id: 0, projectStatus: "$_id", count: 1 } }
+        ]).exec();
+
+        let statusCount = {}
+
+        aggregation.forEach(agg => {
+            statusCount[agg.projectStatus] = agg.count;
+        })
+
+        return statusCount;
     }
 }
