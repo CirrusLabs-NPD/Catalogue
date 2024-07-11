@@ -6,83 +6,84 @@ const ProjectDetails = () => {
   const [project, setProject] = useState(null);
   useEffect(() => {
     const appName = window.location.pathname.split('/')[2];
-    const projectExists = projectData.filter((e) => e.id == appName);
-    if (projectExists && projectExists.length > 0) {
-      setProject(projectExists[0]);
+    const projectExists = projectData.find((e) => e.id === appName);
+    if (projectExists) {
+      setProject(projectExists);
     }
   }, []);
+
   if (!project) {
     return (
       <div className="ml-64 mt-6 h-full overflow-y-scroll">
-        <h1 className="home_header mb-5 ">Loading ...</h1>
+        <h1 className="home_header mb-5">Loading ...</h1>
       </div>
     );
   }
+
   return (
     <div className="ml-64 mt-6 h-full overflow-y-scroll">
-      <h1 className="home_header mb-5 ">{project.name}</h1>
-      <div style={{ padding: '0 1rem 0 1rem' }}>
+      <h1 className="home_header mb-5">{project.name}</h1>
+      <div style={{ padding: '0 1rem' }}>
         <div className="project-info-item bg-white rounded-lg w-full max-w-7xl">
           <h2 className="project-info-heading">Description</h2>
           <p className="project-info-detail">{project.description}</p>
-          <p className="project-info-detail">{project.description1}</p>
-          <p className="project-info-detail">{project.description2}</p>
-          <p className="project-info-detail">{project.description3}</p>
+          {project.description1 && <p className="project-info-detail">{project.description1}</p>}
+          {project.description2 && <p className="project-info-detail">{project.description2}</p>}
+          {project.description3 && <p className="project-info-detail">{project.description3}</p>}
         </div>
-        <div className="project-info-item ">
+        <div className="project-info-item mt-4">
           <h2 className="project-info-heading">GitHub Links</h2>
-          {project.githubLinks.map((link, index) => (
-            <p key={index} className="project-info-detail">
-              <a href={link} target="_blank" rel="noopener noreferrer">
+          <div className="flex flex-col">
+            {project.githubLinks.map((link, index) => (
+              <a
+                key={index}
+                href={link}
+                className="text-blue-500 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {link}
               </a>
-            </p>
-          ))}
+            ))}
+          </div>
         </div>
-        <div className="project-info-item ">
+        <div className="project-info-item mt-4">
+          <h2 className="project-info-heading">Website</h2>
+          <a
+            href={project.Web_URL}
+            className="text-blue-500 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {project.Web_URL}
+          </a>
+        </div>
+        <div className="project-info-item mt-4">
           <h2 className="project-info-heading">Technology</h2>
           <p className="project-info-detail">{project.technology}</p>
         </div>
-        <div className="project-info-item ">
+        <div className="project-info-item mt-4">
           <h2 className="project-info-heading">Other Technology</h2>
           <p className="project-info-detail">{project.otherTechnology}</p>
         </div>
-        <div className="project-info-item ">
+        <div className="project-info-item mt-4">
           <h2 className="project-info-heading">Duration</h2>
           <p className="project-info-detail">{project.duration}</p>
         </div>
-        <div className="project-info-item ">
+        <div className="project-info-item mt-4">
           <h2 className="project-info-heading">Members</h2>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              justifyContent: 'space-evenly',
-              width: '500px',
-            }}
-          >
+          <div className="flex flex-wrap gap-2">
             {project.members.map((member, index) => (
               <div
                 key={index}
-                style={{
-                  backgroundColor: '#f0f0f0',
-                  padding: '0.5rem',
-                  borderRadius: '10px',
-                  minWidth: '100px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  margin: '1rem',
-                }}
+                className="bg-gray-200 px-3 py-1 rounded-lg"
               >
-                {' '}
                 <p className="project-info-detail">{member}</p>
               </div>
             ))}
           </div>
         </div>
-        <div className="project-info-item ">
+        <div className="project-info-item mt-4">
           <h2 className="project-info-heading">Status</h2>
           <p className="project-info-detail">{project.status}</p>
         </div>
