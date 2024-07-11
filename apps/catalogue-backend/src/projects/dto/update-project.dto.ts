@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsUrl, IsArray, IsOptional } from "class-validator";
+import { IsNotEmpty, IsString, IsUrl, IsArray, IsOptional, IsNumber, Max, Min } from "class-validator";
 
 export class UpdateProjectDto {
     @IsString()
@@ -41,4 +41,9 @@ export class UpdateProjectDto {
     @IsNotEmpty()
     @IsOptional()
     description?: string;
+
+    @IsNumber()
+    @Min(0)
+    @Max(100)
+    completionPercentage?: number;
 }
