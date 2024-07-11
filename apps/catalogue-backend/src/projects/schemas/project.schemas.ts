@@ -29,6 +29,9 @@ export class ProjectClass extends Document {
 
     @Prop({ required: true, min: 0, max: 100 })
     progressPercentage: number;
+
+    @Prop({ required: false })
+    completionDate: string;
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(ProjectClass);
