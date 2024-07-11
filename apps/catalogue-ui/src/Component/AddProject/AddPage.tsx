@@ -1,4 +1,3 @@
-// AddPage.tsx
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import './AddPage.css';
@@ -12,6 +11,7 @@ interface FormData {
   projectStatus: string;
   members: string;
   description: string;
+  websiteLink: string; // New field for Website Link
 }
 
 const AddPage: React.FC = () => {
@@ -103,9 +103,9 @@ const AddPage: React.FC = () => {
                 <input
                   type="url"
                   id="githubLink"
-                  placeholder="Enter github link"
+                  placeholder="Enter GitHub link"
                   {...register('githubLink', {
-                    required: 'Github Link is required',
+                    required: 'GitHub Link is required',
                   })}
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
                     errors.githubLink ? 'border-red-500' : 'border-gray-300'
@@ -155,19 +155,71 @@ const AddPage: React.FC = () => {
                 <input
                   type="text"
                   id="otherTechnology"
-                  placeholder="Enter technology"
+                  placeholder="Enter other technology"
                   {...register('otherTechnology', {
                     required: 'Other Technology is required',
                   })}
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.otherTechnology
-                      ? 'border-red-500'
-                      : 'border-gray-300'
+                    errors.otherTechnology ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
                 {errors.otherTechnology && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.otherTechnology.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Members Field (Displayed on the left) */}
+              <div className="mb-4 col-span-1">
+                <label
+                  htmlFor="members"
+                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                >
+                  Members
+                </label>
+                <input
+                  type="text"
+                  id="members"
+                  placeholder="Enter members"
+                  {...register('members', { required: 'Members are required' })}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                    errors.members ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                />
+                {errors.members && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.members.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Website Link Field (Displayed on the right) */}
+              <div className="mb-4 col-span-1">
+                <label
+                  htmlFor="websiteLink"
+                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                >
+                  Website Link
+                </label>
+                <input
+                  type="url"
+                  id="websiteLink"
+                  placeholder="Enter website link"
+                  {...register('websiteLink', {
+                    required: 'Website Link is required',
+                    pattern: {
+                      value: /^(ftp|http|https):\/\/[^ "]+$/,
+                      message: 'Enter a valid URL',
+                    },
+                  })}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                    errors.websiteLink ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                />
+                {errors.websiteLink && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.websiteLink.message}
                   </p>
                 )}
               </div>
@@ -182,7 +234,6 @@ const AddPage: React.FC = () => {
                 </label>
                 <select
                   id="projectStatus"
-                  style={{ color: 'gray' }}
                   {...register('projectStatus', {
                     required: 'Project Status is required',
                   })}
@@ -202,58 +253,34 @@ const AddPage: React.FC = () => {
                   </p>
                 )}
               </div>
+
+              {/* Description Field */}
+              <div className="mb-4 col-span-2">
+                <label
+                  htmlFor="description"
+                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                >
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  placeholder="Enter project description"
+                  {...register('description', {
+                    required: 'Description is required',
+                  })}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                    errors.description ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                />
+                {errors.description && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.description.message}
+                  </p>
+                )}
+              </div>
             </div>
 
-            {/* Members Field */}
-            <div className="mb-4">
-              <label
-                htmlFor="members"
-                className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
-              >
-                Members
-              </label>
-              <input
-                type="text"
-                id="members"
-                placeholder="Enter members"
-                {...register('members', { required: 'Members are required' })}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                  errors.members ? 'border-red-500' : 'border-gray-300'
-                }`}
-              />
-              {errors.members && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.members.message}
-                </p>
-              )}
-            </div>
-
-            {/* Description Field */}
-            <div className="mb-4">
-              <label
-                htmlFor="description"
-                className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
-              >
-                Description
-              </label>
-              <textarea
-                id="description"
-                placeholder="Enter project description"
-                {...register('description', {
-                  required: 'Description is required',
-                })}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                  errors.description ? 'border-red-500' : 'border-gray-300'
-                }`}
-              />
-              {errors.description && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.description.message}
-                </p>
-              )}
-            </div>
-
-            {/* Submit and Cancel Buttons */}
+            {/* Submitand Cancel Buttons */}
             <div className="flex justify-start mt-4 space-x-4">
               <button
                 type="submit"

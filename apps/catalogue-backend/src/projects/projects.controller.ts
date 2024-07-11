@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Put, Delete, Param, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Delete, Param, ValidationPipe, UseGuards } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { ProjectClass } from './schemas/project.schemas';
 import { ApiTags, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger'; // Import Swagger decorators
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('projects') // Tag for Swagger documentation
 @Controller('projects')
@@ -10,12 +11,14 @@ export class ProjectsController {
     constructor(private readonly projectsService: ProjectsService) {}
 
     @Get()
+    @UseGuards(AuthGuard('jwt'))
     @ApiResponse({ status: 200, description: 'Returns all projects.' })
     getProjects(): Promise<ProjectClass[]> {
         return this.projectsService.getProjects();
     }
 
     @Post()
+    @UseGuards(AuthGuard('jwt'))
     @ApiBody({ type: CreateProjectDto })
     @ApiResponse({ status: 201, description: 'Creates a new project.' })
     addProject(@Body(ValidationPipe) createProjectDto: CreateProjectDto): Promise<ProjectClass> {
@@ -23,6 +26,7 @@ export class ProjectsController {
     }
 
     @Get(':id')
+    @UseGuards(AuthGuard('jwt'))
     @ApiParam({ name: 'id', type: String })
     @ApiResponse({ status: 200, description: 'Returns a project by ID.' })
     getById(@Param('id') id: string): Promise<ProjectClass> {
@@ -30,6 +34,7 @@ export class ProjectsController {
     }
 
     @Put(':id')
+    @UseGuards(AuthGuard('jwt'))
     @ApiParam({ name: 'id', type: String })
     @ApiBody({ type: CreateProjectDto })
     @ApiResponse({ status: 200, description: 'Updates a project by ID.' })
@@ -41,6 +46,7 @@ export class ProjectsController {
     }
 
     @Delete(':id')
+    @UseGuards(AuthGuard('jwt'))
     @ApiParam({ name: 'id', type: String })
     @ApiResponse({ status: 200, description: 'Deletes a project by ID.' })
     deleteProject(@Param('id') id: string): Promise<ProjectClass> {

@@ -1,3 +1,4 @@
+
 export const projectData = [
   {
     id: 'CirrusInsightsNow',
@@ -17,6 +18,7 @@ export const projectData = [
     members: ['Praveenraj', 'Abhishek', 'Rashmi'],
     status: 'Deployed',
     progress: '100%',
+    Web_URL: 'https://cirrusinsightai.azurewebsites.net'
   },
   {
     id: 'ResumeMiner',
@@ -34,6 +36,7 @@ export const projectData = [
     members: ['Aakash', 'Keith', 'Rashmi', 'Farhan', 'Rajesab', 'Rohan'],
     status: 'Deployed',
     progress: '80%',
+    Web_URL: 'https://resumeminner.azurewebsites.net'
   },
   {
     id: 'ProjectCatalogue',
@@ -48,5 +51,6 @@ export const projectData = [
     members: ['Aakash', 'Keith', 'Rashmi', 'Farhan', 'Rajesab', 'Rohan'],
     status: 'Deployed',
     progress: '40%',
+     Web_URL: 'https://projectcatalogue.azurewebsites.net'
   },
 ];
