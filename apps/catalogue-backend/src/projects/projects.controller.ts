@@ -4,6 +4,7 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { ProjectClass } from './schemas/project.schemas';
 import { ApiTags, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger'; // Import Swagger decorators
 import { AuthGuard } from '@nestjs/passport';
+import { UpdateProjectDto } from './dto/update-project.dto';
 
 @ApiTags('projects') // Tag for Swagger documentation
 @Controller('projects')
@@ -40,7 +41,7 @@ export class ProjectsController {
     @ApiResponse({ status: 200, description: 'Updates a project by ID.' })
     updateProject(
         @Param('id') id: string,
-        @Body(ValidationPipe) updateProjectDto: CreateProjectDto
+        @Body(ValidationPipe) updateProjectDto: UpdateProjectDto
     ): Promise<ProjectClass> {
         return this.projectsService.updateProject(id, updateProjectDto);
     }
