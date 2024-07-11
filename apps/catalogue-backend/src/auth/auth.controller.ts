@@ -1,6 +1,7 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
+import { SignInDto } from './dto/sign-in.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -15,5 +16,10 @@ export class AuthController {
     @UseGuards(AuthGuard('azure'))
     protected() {
         return 'protected';
+    }
+
+    @Post('login')
+    signIn(@Body(ValidationPipe) signInDto: SignInDto) {
+        return this.authService.signIn(signInDto.email);
     }
 }

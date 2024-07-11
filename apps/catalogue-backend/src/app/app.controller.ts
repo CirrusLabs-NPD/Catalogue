@@ -1,5 +1,4 @@
 import { Controller, Post, Req, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller()
 export class AppController {
