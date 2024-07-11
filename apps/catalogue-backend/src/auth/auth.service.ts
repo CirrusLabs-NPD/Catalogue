@@ -11,8 +11,8 @@ export class AuthService {
         if (!user) {
             throw new UnauthorizedException();
         }
-        return { 
-            accessToken: await this.jwtService.signAsync(user),
+        return {
+            accessToken: await this.jwtService.signAsync({ email: user.email }),
         }
     }
 }
