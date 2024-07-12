@@ -58,4 +58,22 @@ export class DashboardService {
     async getProjectsByTechnology(tech: string[]) {
         return await this.projectModel.find({ technology: { $in: tech } }).exec();
     }
+
+    async getProjectsByFilters(filters: any) {
+        const query: any = {};
+
+        if (filters.statuses && filters.statuses.length > 0) {
+            query.projectStatus = { $in: filters.statuses };
+        }
+
+        if (filters.members && filters.members.length > 0) {
+            query.members = { $in: filters.members };
+        }
+
+        if (filters.technologies && filters.technologies.length > 0) {
+            query.technology = { $in: filters.technologies };
+        }
+
+        return await this.projectModel.find(query).exec();
+    }
 }
