@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ProjectClass } from '../projects/schemas/project.schemas';
 import { Model } from 'mongoose';
 import { ProjectStatus } from '../projects/schemas/project-status.enum';
-import { SearchProjectDto } from './dto/search.project.dto';
 
 @Injectable()
 export class DashboardService {
@@ -11,7 +10,7 @@ export class DashboardService {
 
     async getMonthlyCompletion() {
         const completedProjects = await this.projectModel.find({
-            'completionDate': { $ne: null }
+            completionDate: { $ne: null },
         }).exec();
 
         let monthlyCompletions = Array(12).fill(0);
@@ -52,16 +51,16 @@ export class DashboardService {
         return await this.projectModel.find({ projectStatus: { $in: statuses } }).exec();
     }
 
-    async searchProject(searchProjectDto: SearchProjectDto) {
+    async searchProjects(search: string) {
         const queryParam = {
-            $regex: new RegExp(searchProjectDto.search),
+            $regex: new RegExp(search),
             $options: 'i'
         };
 
         return await this.projectModel.find({
             $or: [
-                { 'projectName': queryParam },
-                { 'description': queryParam },
+                { projectName: queryParam },
+                { description: queryParam },
             ]
         }).exec();
     }
@@ -72,6 +71,15 @@ export class DashboardService {
 
     async getProjectsByTechnology(tech: string[]) {
         return await this.projectModel.find({ technology: { $in: tech } }).exec();
+    }
+
+    async getProjectsByCompletionDate(startDate: string, endDate: string) {
+        return await this.projectModel.find({
+            completionDate: {
+                $gte: startDate,
+                $lte: endDate
+            }
+        }).exec();
     }
 
     async getProjectsByFilters(filters: any) {

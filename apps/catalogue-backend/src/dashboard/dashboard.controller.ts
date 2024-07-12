@@ -3,7 +3,6 @@ import { DashboardService } from './dashboard.service';
 import { ApiTags, ApiResponse, ApiParam, ApiBody, ApiQuery } from '@nestjs/swagger';
 import { ProjectStatus } from '../projects/schemas/project-status.enum';
 import { AuthGuard } from '@nestjs/passport';
-import { SearchProjectDto } from './dto/search.project.dto';
 
 @ApiTags('dashboard')
 @Controller('dashboard')
@@ -39,8 +38,8 @@ export class DashboardController {
     @UseGuards(AuthGuard('jwt'))
     @ApiQuery({ name: 'search', required: true })
     @ApiResponse({ status: 200, description: 'Searches projects by a text string.' })
-    searchProject(@Query(ValidationPipe) searchProjectDto: SearchProjectDto) {
-        return this.dashboardService.searchProject(searchProjectDto);
+    searchProjects(@Query('search') search: string) {
+        return this.dashboardService.searchProjects(search);
     }
 
     @Get('projects-by-members')
@@ -55,6 +54,14 @@ export class DashboardController {
     @ApiQuery({ name: 'technology', isArray: true, type: String, required: true })
     getProjectsByTechnology(@Query('technology') technology: string[]) {
         return this.dashboardService.getProjectsByTechnology(technology);
+    }
+
+    @Get('projects-by-completion-date')
+    @ApiResponse({ status: 200, description: 'Returns projects filtered by completion date.'})
+    @ApiQuery({ name: 'start-date', type: String, required: true, description: 'Format as YYYY-MM-DD' })
+    @ApiQuery({ name: 'end-date', type: String, required: true, description: 'Format as YYYY-MM-DD' })
+    getProjectsByCompletionDate(@Query('start-date') startDate: string, @Query('end-date') endDate: string){
+        return this.dashboardService.getProjectsByCompletionDate(startDate, endDate);
     }
 
     @Get('projects-by-filters')
