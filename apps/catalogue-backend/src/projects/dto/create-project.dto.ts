@@ -14,13 +14,15 @@ export class CreateProjectDto {
     @IsNotEmpty()
     gitHubLinks: string;
 
-    @IsString()
-    @IsNotEmpty()
-    technology: string;
+    @IsArray()
+    @IsString({ each: true })
+    @IsNotEmpty({ each: true })
+    technology: string[];
 
-    @IsString()
-    @IsNotEmpty()
-    otherTechnology: string;
+    @IsArray()
+    @IsString({ each: true })
+    @IsNotEmpty({ each: true })
+    otherTechnology: string[];
 
     @IsString()
     @IsNotEmpty()

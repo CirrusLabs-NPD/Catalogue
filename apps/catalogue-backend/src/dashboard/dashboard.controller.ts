@@ -1,6 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
-import { ApiTags, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiResponse, ApiParam, ApiBody, ApiQuery } from '@nestjs/swagger';
+import { ProjectStatus } from '../projects/schemas/project-status.enum';
 
 @ApiTags('dashboard')
 @Controller('dashboard')
@@ -23,5 +24,12 @@ export class DashboardController {
     @ApiResponse({ status: 200, description: 'Returns a list of the number of projects for each status.' })
     getStatusCount() {
         return this.dashboardService.getStatusCount();
+    }
+    
+    @Get('projects-by-status')
+    @ApiResponse({ status: 200, description: 'Returns projects filtered by status.' })
+    @ApiQuery({ name: 'status', enum: ProjectStatus, required: true })
+    getProjectsByStatus(@Query('status') statuses: ProjectStatus[]) {
+        return this.dashboardService.getProjectsByStatus(statuses);
     }
 }

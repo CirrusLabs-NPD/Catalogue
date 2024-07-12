@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ProjectClass } from '../projects/schemas/project.schemas';
 import { Model } from 'mongoose';
+import { ProjectStatus } from '../projects/schemas/project-status.enum';
 
 @Injectable()
 export class DashboardService {
@@ -42,5 +43,9 @@ export class DashboardService {
         })
 
         return statusCount;
+    }
+
+    async getProjectsByStatus(statuses: ProjectStatus[]) {
+        return await this.projectModel.find({ projectStatus: { $in: statuses } }).exec();
     }
 }

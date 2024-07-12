@@ -17,15 +17,17 @@ export class UpdateProjectDto {
     @IsOptional()
     gitHubLinks?: string;
 
-    @IsString()
-    @IsNotEmpty()
+    @IsArray()
+    @IsString({ each: true })
+    @IsNotEmpty({ each: true })
     @IsOptional()
-    technology?: string;
+    technology?: string[];
 
-    @IsString()
-    @IsNotEmpty()
+    @IsArray()
+    @IsString({ each: true })
+    @IsNotEmpty({ each: true })
     @IsOptional()
-    otherTechnology?: string;
+    otherTechnology?: string[];
 
     @IsString()
     @IsNotEmpty()

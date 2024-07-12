@@ -14,10 +14,10 @@ export class ProjectClass extends Document {
     gitHubLinks: string;
     
     @Prop({ required: true })
-    technology: string;
+    technology: string[];
     
     @Prop({ required: true })
-    otherTechnology: string;
+    otherTechnology: string[];
     
     @Prop({ required: true, enum: ProjectStatus })
     projectStatus: string;
