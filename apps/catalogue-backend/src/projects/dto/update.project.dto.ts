@@ -23,11 +23,11 @@ export class UpdateProjectDto {
     @IsOptional()
     technology?: string[];
 
-    @IsArray()
+    /* @IsArray()
     @IsString({ each: true })
     @IsNotEmpty({ each: true })
     @IsOptional()
-    otherTechnology?: string[];
+    otherTechnology?: string[]; */
 
     @IsString()
     @IsNotEmpty()

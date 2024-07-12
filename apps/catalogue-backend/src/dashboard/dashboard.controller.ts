@@ -32,4 +32,18 @@ export class DashboardController {
     getProjectsByStatus(@Query('status') statuses: ProjectStatus[]) {
         return this.dashboardService.getProjectsByStatus(statuses);
     }
+
+    @Get('projects-by-members')
+    @ApiResponse({ status: 200, description: 'Returns projects filtered by members.' })
+    @ApiQuery({ name: 'members', isArray: true, type: String, required: true })
+    getProjectsByMembers(@Query('members') members: string[]) {
+        return this.dashboardService.getProjectsByMembers(members);
+    }
+
+    @Get('projects-by-technology')
+    @ApiResponse({ status: 200, description: 'Returns projects filtered by technology.' })
+    @ApiQuery({ name: 'technology', isArray: true, type: String, required: true })
+    getProjectsByTechnology(@Query('technology') technology: string[]) {
+        return this.dashboardService.getProjectsByTechnology(technology);
+    }
 }

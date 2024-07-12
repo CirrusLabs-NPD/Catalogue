@@ -19,10 +19,10 @@ export class CreateProjectDto {
     @IsNotEmpty({ each: true })
     technology: string[];
 
-    @IsArray()
+    /* @IsArray()
     @IsString({ each: true })
     @IsNotEmpty({ each: true })
-    otherTechnology: string[];
+    otherTechnology: string[]; */
 
     @IsString()
     @IsNotEmpty()

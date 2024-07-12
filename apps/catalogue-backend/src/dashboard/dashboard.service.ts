@@ -50,4 +50,12 @@ export class DashboardService {
     async getProjectsByStatus(statuses: ProjectStatus[]) {
         return await this.projectModel.find({ projectStatus: { $in: statuses } }).exec();
     }
+
+    async getProjectsByMembers(members: string[]) {
+        return await this.projectModel.find({ members: { $in: members } }).exec();
+    }
+
+    async getProjectsByTechnology(tech: string[]) {
+        return await this.projectModel.find({ technology: { $in: tech } }).exec();
+    }
 }
