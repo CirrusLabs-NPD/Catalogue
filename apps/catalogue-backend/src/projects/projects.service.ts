@@ -2,8 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ProjectClass } from './schemas/project.schemas';
-import { CreateProjectDto } from './dto/create-project.dto';
-import { UpdateProjectDto } from './dto/update-project.dto';
+import { CreateProjectDto } from './dto/create.project.dto';
+import { UpdateProjectDto } from './dto/update.project.dto';
+import { SearchProjectDto } from './dto/search.project.dto';
 
 @Injectable()
 export class ProjectsService {
@@ -49,5 +50,19 @@ export class ProjectsService {
         }
 
         return existingProject;
+    }
+
+    async searchProject(searchProjectDto: SearchProjectDto) {
+        const queryParam = {
+            $regex: new RegExp(searchProjectDto.searchString),
+            $options: 'i'
+        };
+
+        return await this.projectModel.find({
+            $or: [
+                { 'projectName': queryParam },
+                { 'description': queryParam },
+            ]
+        }).exec();
     }
 }

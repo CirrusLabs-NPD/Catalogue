@@ -1,10 +1,11 @@
 import { Body, Controller, Get, Post, Put, Delete, Param, ValidationPipe, UseGuards } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
-import { CreateProjectDto } from './dto/create-project.dto';
+import { CreateProjectDto } from './dto/create.project.dto';
 import { ProjectClass } from './schemas/project.schemas';
 import { ApiTags, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger'; // Import Swagger decorators
 import { AuthGuard } from '@nestjs/passport';
-import { UpdateProjectDto } from './dto/update-project.dto';
+import { UpdateProjectDto } from './dto/update.project.dto';
+import { SearchProjectDto } from './dto/search.project.dto';
 
 @ApiTags('projects') // Tag for Swagger documentation
 @Controller('projects')
@@ -24,6 +25,14 @@ export class ProjectsController {
     @ApiResponse({ status: 201, description: 'Creates a new project.' })
     addProject(@Body(ValidationPipe) createProjectDto: CreateProjectDto): Promise<ProjectClass> {
         return this.projectsService.addProject(createProjectDto);
+    }
+
+    @Get('search')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBody({ type: SearchProjectDto })
+    @ApiResponse({ status: 200, description: 'Searches projects by a text string.' })
+    searchProject(@Body(ValidationPipe) searchProjectDto: SearchProjectDto) {
+        return this.projectsService.searchProject(searchProjectDto);
     }
 
     @Get(':id')

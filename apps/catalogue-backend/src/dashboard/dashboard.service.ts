@@ -8,7 +8,9 @@ export class DashboardService {
     constructor(@InjectModel(ProjectClass.name) private projectModel: Model<ProjectClass>) {}
 
     async getMonthlyCompletion() {
-        const completedProjects = await this.projectModel.find({ 'completionDate': { $ne: null } }).exec();
+        const completedProjects = await this.projectModel.find({
+            'completionDate': { $ne: null }
+        }).exec();
 
         let monthlyCompletions = Array(12).fill(0);
         completedProjects.forEach(project => {
