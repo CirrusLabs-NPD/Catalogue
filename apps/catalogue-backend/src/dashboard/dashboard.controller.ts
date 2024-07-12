@@ -10,24 +10,28 @@ export class DashboardController {
     constructor(private readonly dashboardService: DashboardService) {}
 
     @Get('monthly-completion')
+    @UseGuards(AuthGuard('jwt'))
     @ApiResponse({ status: 200, description: 'Returns an array containing the numer of projects completed per month in the current year.'})
     getMonthlyCompletion() {
         return this.dashboardService.getMonthlyCompletion();
     }
 
     @Get('percent-dash')
+    @UseGuards(AuthGuard('jwt'))
     @ApiResponse({ status: 200, description: 'Returns name, duration, status and percentage for all projects.' })
     getPercentDash() {
         return this.dashboardService.getPercentDash();
     }
 
     @Get('status-count')
+    @UseGuards(AuthGuard('jwt'))
     @ApiResponse({ status: 200, description: 'Returns a list of the number of projects for each status.' })
     getStatusCount() {
         return this.dashboardService.getStatusCount();
     }
     
     @Get('projects-by-status')
+    @UseGuards(AuthGuard('jwt'))
     @ApiResponse({ status: 200, description: 'Returns projects filtered by status.' })
     @ApiQuery({ name: 'status', enum: ProjectStatus, required: true })
     getProjectsByStatus(@Query('status') statuses: ProjectStatus[]) {
@@ -36,6 +40,7 @@ export class DashboardController {
 
     @Get('search')
     @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'))
     @ApiQuery({ name: 'search', required: true })
     @ApiResponse({ status: 200, description: 'Searches projects by a text string.' })
     searchProjects(@Query('search') search: string) {
@@ -43,6 +48,7 @@ export class DashboardController {
     }
 
     @Get('projects-by-members')
+    @UseGuards(AuthGuard('jwt'))
     @ApiResponse({ status: 200, description: 'Returns projects filtered by members.' })
     @ApiQuery({ name: 'members', isArray: true, type: String, required: true })
     getProjectsByMembers(@Query('members') members: string[]) {
@@ -50,6 +56,7 @@ export class DashboardController {
     }
 
     @Get('projects-by-technology')
+    @UseGuards(AuthGuard('jwt'))
     @ApiResponse({ status: 200, description: 'Returns projects filtered by technology.' })
     @ApiQuery({ name: 'technology', isArray: true, type: String, required: true })
     getProjectsByTechnology(@Query('technology') technology: string[]) {
@@ -57,6 +64,7 @@ export class DashboardController {
     }
 
     @Get('projects-by-completion-date')
+    @UseGuards(AuthGuard('jwt'))
     @ApiResponse({ status: 200, description: 'Returns projects filtered by completion date.'})
     @ApiQuery({ name: 'start-date', type: String, required: true, description: 'Format as YYYY-MM-DD' })
     @ApiQuery({ name: 'end-date', type: String, required: true, description: 'Format as YYYY-MM-DD' })
@@ -65,6 +73,7 @@ export class DashboardController {
     }
 
     @Get('projects-by-filters')
+    @UseGuards(AuthGuard('jwt'))
     @ApiResponse({ status: 200, description: 'Returns projects filtered by multiple fields.' })
     @ApiQuery({ name: 'status', enum: ProjectStatus, required: false })
     @ApiQuery({ name: 'members', isArray: true, type: String, required: false })
