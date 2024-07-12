@@ -1,7 +1,9 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards, ValidationPipe } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import { ApiTags, ApiResponse, ApiParam, ApiBody, ApiQuery } from '@nestjs/swagger';
 import { ProjectStatus } from '../projects/schemas/project-status.enum';
+import { AuthGuard } from '@nestjs/passport';
+import { SearchProjectDto } from './dto/search.project.dto';
 
 @ApiTags('dashboard')
 @Controller('dashboard')
@@ -31,6 +33,14 @@ export class DashboardController {
     @ApiQuery({ name: 'status', enum: ProjectStatus, required: true })
     getProjectsByStatus(@Query('status') statuses: ProjectStatus[]) {
         return this.dashboardService.getProjectsByStatus(statuses);
+    }
+
+    @Get('search')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiQuery({ name: 'search', required: true })
+    @ApiResponse({ status: 200, description: 'Searches projects by a text string.' })
+    searchProject(@Query(ValidationPipe) searchProjectDto: SearchProjectDto) {
+        return this.dashboardService.searchProject(searchProjectDto);
     }
 
     @Get('projects-by-members')

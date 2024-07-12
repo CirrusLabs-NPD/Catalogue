@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ProjectClass } from '../projects/schemas/project.schemas';
 import { Model } from 'mongoose';
 import { ProjectStatus } from '../projects/schemas/project-status.enum';
+import { SearchProjectDto } from './dto/search.project.dto';
 
 @Injectable()
 export class DashboardService {
@@ -49,6 +50,20 @@ export class DashboardService {
 
     async getProjectsByStatus(statuses: ProjectStatus[]) {
         return await this.projectModel.find({ projectStatus: { $in: statuses } }).exec();
+    }
+
+    async searchProject(searchProjectDto: SearchProjectDto) {
+        const queryParam = {
+            $regex: new RegExp(searchProjectDto.search),
+            $options: 'i'
+        };
+
+        return await this.projectModel.find({
+            $or: [
+                { 'projectName': queryParam },
+                { 'description': queryParam },
+            ]
+        }).exec();
     }
 
     async getProjectsByMembers(members: string[]) {
