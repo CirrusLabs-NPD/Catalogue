@@ -5,6 +5,7 @@ import { ProjectsService } from './projects.service';
 import { ProjectClass, ProjectSchema } from './schemas/project.schemas'
 import { AzureStrategy } from '../auth/strategies/azure.strategy';
 import { JwtStrategy } from '../auth/strategies/jwt.strategy';
+import { Mongoose } from 'mongoose';
 
 @Module({
     imports: [
@@ -13,6 +14,7 @@ import { JwtStrategy } from '../auth/strategies/jwt.strategy';
         ]),
     ],
     controllers: [ProjectsController],
-    providers: [ProjectsService, AzureStrategy, JwtStrategy]
+    providers: [ProjectsService, AzureStrategy, JwtStrategy],
+    exports: [MongooseModule]
 })
 export class ProjectsModule {}

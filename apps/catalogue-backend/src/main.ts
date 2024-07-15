@@ -20,8 +20,11 @@ async function bootstrap() {
     .setDescription('API documentation for Your Project')
     .setVersion('1.0')
     .addTag('projects') // Add tag for 'projects' controller
-    .build();
-  
+    .addBearerAuth(
+      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      'access-token', // This is the name of the field that will be added to the Swagger UI
+    )
+    .build();  
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document); // Setup Swagger UI at '/api-docs'
 
