@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, IsUrl, IsArray, IsNumber, Min, Max, IsOptional, IsDateString, IsEnum } from "class-validator";
-import { ProjectStatus } from "../schemas/project-status.enum";
+import { ProjectStatus } from "../../statuses/data/project-status.enum";
 
 export class UpdateProjectDto {
     @IsString()
@@ -31,7 +31,6 @@ export class UpdateProjectDto {
 
     @IsString()
     @IsNotEmpty()
-    @IsEnum(ProjectStatus)
     @IsOptional()
     projectStatus?: string;
 

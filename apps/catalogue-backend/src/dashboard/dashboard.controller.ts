@@ -1,7 +1,7 @@
 import { Controller, Get, Query, UseGuards, ValidationPipe } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import { ApiTags, ApiResponse, ApiParam, ApiBody, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
-import { ProjectStatus } from '../projects/schemas/project-status.enum';
+import { ProjectStatus } from '../statuses/data/project-status.enum';
 import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('dashboard')
