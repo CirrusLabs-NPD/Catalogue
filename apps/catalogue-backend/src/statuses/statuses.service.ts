@@ -7,10 +7,7 @@ import { UpdateStatusDto } from './dto/update-status.dto';
 
 @Injectable()
 export class StatusesService {
-    constructor(
-        @InjectModel(StatusClass.name) 
-        private statusModel: Model<StatusClass>
-    ) {}
+    constructor(@InjectModel(StatusClass.name) private statusModel: Model<StatusClass>) {}
 
     async getStatuses(): Promise<StatusClass[]> {
         return await this.statusModel.find().exec();
@@ -49,5 +46,13 @@ export class StatusesService {
         }
 
         return existingStatus;
+    }
+
+    async getByName(statusName: string): Promise<StatusClass> {
+        const status = await this.statusModel.findOne({ projectStatus: statusName }).exec();
+        if (!status) {
+            throw new NotFoundException(`Status "${statusName}" not found`);
+        }
+        return status;
     }
 }

@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { ProjectStatus } from '../../statuses/data/project-status.enum';
 
 @Schema()
 export class ProjectClass extends Document {

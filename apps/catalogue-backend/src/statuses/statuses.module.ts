@@ -15,6 +15,6 @@ import { Mongoose } from 'mongoose';
     ],
     controllers: [StatusesController],
     providers: [StatusesService, AzureStrategy, JwtStrategy],
-    exports: [MongooseModule]
+    exports: [StatusesService]
 })
 export class StatusesModule {}

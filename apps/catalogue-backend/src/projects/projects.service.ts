@@ -19,7 +19,7 @@ export class ProjectsService {
     }
 
     async addProject(createProjectDto: CreateProjectDto): Promise<ProjectClass> {
-        this.statusesService.validateStatus(createProjectDto.projectStatus);
+        await this.statusesService.getByName(createProjectDto.projectStatus);
         const newProject = new this.projectModel(createProjectDto);
         return await newProject.save();
     }
@@ -41,7 +41,9 @@ export class ProjectsService {
     }
 
     async updateProject(id: string, updateProjectDto: UpdateProjectDto): Promise<ProjectClass> {
-        this.statusesService.validateStatus(updateProjectDto.projectStatus);
+        if (updateProjectDto.projectStatus) {
+            await this.statusesService.getByName(updateProjectDto.projectStatus);
+        }
         const existingProject = await this.projectModel.findByIdAndUpdate(
             id,
             { $set: updateProjectDto },

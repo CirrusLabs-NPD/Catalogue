@@ -10,9 +10,7 @@ import { StatusesModule } from '../statuses/statuses.module';
 
 @Module({
     imports: [
-        MongooseModule.forFeature([
-            { name: ProjectClass.name, schema: ProjectSchema}
-        ]),
+        MongooseModule.forFeature([{ name: ProjectClass.name, schema: ProjectSchema}]),
         forwardRef(() => StatusesModule)
     ],
     controllers: [ProjectsController],

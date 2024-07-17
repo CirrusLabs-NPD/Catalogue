@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsString, IsUrl, IsArray, IsNumber, Min, Max, IsOptional, IsDateString, IsEnum } from "class-validator";
-import { ProjectStatus } from "../../statuses/data/project-status.enum";
 
 export class CreateProjectDto {
     @IsString()

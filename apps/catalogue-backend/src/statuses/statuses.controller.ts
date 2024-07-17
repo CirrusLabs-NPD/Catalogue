@@ -58,4 +58,13 @@ export class StatusesController {
     deleteProject(@Param('id') id: string): Promise<StatusClass> {
         return this.statusesService.deleteStatus(id);
     }
+
+    @Get('name/:name')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
+    @ApiParam({ name: 'name', required: true })
+    @ApiResponse({ status: 200, description: 'Returns a status by name.' })
+    async getStatusByName(@Param('name') name: string) {
+        return this.statusesService.getByName(name);
+    }
 }
