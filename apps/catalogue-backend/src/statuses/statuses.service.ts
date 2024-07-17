@@ -1,52 +1,53 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import path from 'path';
-import fs from 'fs';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { StatusClass } from './schema/status.schema';
+import { CreateStatusDto } from './dto/create-status.dto';
+import { UpdateStatusDto } from './dto/update-status.dto';
 
 @Injectable()
 export class StatusesService {
-    private readonly statusesFilePath = path.resolve('apps/catalogue-backend/src/statuses/data/project-statuses.json');
+    constructor(
+        @InjectModel(StatusClass.name) 
+        private statusModel: Model<StatusClass>
+    ) {}
 
-    private readStatuses(): string[] {
-        if (!fs.existsSync(this.statusesFilePath)) {
-            throw new Error(`Statuses file not found at ${this.statusesFilePath}`);
+    async getStatuses(): Promise<StatusClass[]> {
+        return await this.statusModel.find().exec();
+    }
+
+    async addStatus(createStatusDto: CreateStatusDto): Promise<StatusClass> {
+        const newStatus = new this.statusModel(createStatusDto);
+        return await newStatus.save();
+    }
+
+    async getById(id: string): Promise<StatusClass> {
+        const status = await this.statusModel.findById(id).exec();
+        if (!status) {
+            throw new NotFoundException(`Status with ID "${id}" not found`);
         }
-        const data = fs.readFileSync(this.statusesFilePath, 'utf8');
-        return JSON.parse(data);
+        return status;
     }
 
-    private writeStatuses(statuses: string[]): void {
-        fs.writeFileSync(this.statusesFilePath, JSON.stringify(statuses, null, 2));
-    }
-
-    addStatus(statusName: string): string[] {
-        const statuses = this.readStatuses();
-        if (!statuses.includes(statusName)) {
-            statuses.push(statusName);
-            this.writeStatuses(statuses);
+    async deleteStatus(id: string): Promise<StatusClass> {
+        const status = await this.statusModel.findByIdAndDelete(id);
+        if (!status) {
+            throw new NotFoundException(`Project with ID "${id}" not found`);
         }
-        return statuses;
+        return status;
     }
 
-    deleteStatus(statusName: string): string[] {
-        const statuses = this.readStatuses();
-        const statusIndex = statuses.indexOf(statusName);
-        console.log(statusIndex);
-        if (statusIndex === -1) {
-            throw new BadRequestException(`Status ${statusName} not found`);
+    async updateStatus(id: string, updateStatusDto: UpdateStatusDto): Promise<StatusClass> {
+        const existingStatus = await this.statusModel.findByIdAndUpdate(
+            id,
+            { $set: updateStatusDto },
+            { new: true }
+        ).exec();
+
+        if (!existingStatus) {
+            throw new NotFoundException(`Project with ID "${id}" not found`);
         }
-        statuses.splice(statusIndex, 1);
-        this.writeStatuses(statuses);
-        return statuses;
-    }
 
-    getStatuses(): string[] {
-        return this.readStatuses();
-    }
-
-    validateStatus(status: string): void {
-        const statuses = this.getStatuses();
-        if (!statuses.includes(status)) {
-            throw new BadRequestException(`Invalid project status: ${status}`);
-        }
+        return existingStatus;
     }
 }

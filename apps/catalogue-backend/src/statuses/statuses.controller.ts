@@ -1,37 +1,61 @@
 import { Body, Controller, Get, Post, Put, Delete, Param, ValidationPipe, UseGuards } from '@nestjs/common';
+import { StatusesService } from './statuses.service';
+import { CreateStatusDto } from './dto/create-status.dto';
+import { StatusClass } from './schema/status.schema';
 import { ApiTags, ApiResponse, ApiParam, ApiBody, ApiBearerAuth } from '@nestjs/swagger'; // Import Swagger decorators
 import { AuthGuard } from '@nestjs/passport';
-import { StatusesService } from './statuses.service';
+import { UpdateStatusDto } from './dto/update-status.dto';
 
-@ApiTags('statuses')
+@ApiTags('statuses') // Tag for Swagger documentation
 @Controller('statuses')
 export class StatusesController {
-    constructor(private readonly statusService: StatusesService) {}
-
-    @Post()
-    // @UseGuards(AuthGuard('jwt'))
-    @ApiBearerAuth('access-token')
-    @ApiBody({ schema: { type: 'object', properties: { statusName: { type: 'string' } } } })
-    @ApiResponse({ status: 200, description: 'Adds a new project status.' })
-    addStatus(@Body('statusName') statusName: string) {
-        return this.statusService.addStatus(statusName);
-    }
+    constructor(private readonly statusesService: StatusesService) {}
 
     @Get()
-    // @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
-    @ApiResponse({ status: 200, description: 'Returns all project statuses.' })
-    getStatuses() {
-        return this.statusService.getStatuses();
+    @ApiResponse({ status: 200, description: 'Returns all statuses.' })
+    getProjects(): Promise<StatusClass[]> {
+        return this.statusesService.getStatuses();
     }
 
-    @Delete()
-    // @UseGuards(AuthGuard('jwt'))
+    @Post()
+    @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
-    @ApiBody({ schema: { type: 'object', properties: { statusName: { type: 'string' } } } })
-    @ApiResponse({ status: 200, description: 'Deletes a specified project status.' })
-    deleteStatues(@Body('statusName') statusName: string) {
-        return this.statusService.deleteStatus(statusName);
+    @ApiBody({ type: CreateStatusDto })
+    @ApiResponse({ status: 201, description: 'Creates a new status.' })
+    addProject(@Body(ValidationPipe) createStatusDto: CreateStatusDto): Promise<StatusClass> {
+        return this.statusesService.addStatus(createStatusDto);
     }
-    
+
+    @Get(':id')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
+    @ApiParam({ name: 'id', type: String })
+    @ApiResponse({ status: 200, description: 'Returns a status by ID.' })
+    getById(@Param('id') id: string): Promise<StatusClass> {
+        return this.statusesService.getById(id);
+    }
+
+    @Put(':id')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
+    @ApiParam({ name: 'id', type: String })
+    @ApiBody({ type: UpdateStatusDto })
+    @ApiResponse({ status: 200, description: 'Updates a status by ID.' })
+    updateProject(
+        @Param('id') id: string,
+        @Body(ValidationPipe) updateStatusDto: UpdateStatusDto
+    ): Promise<StatusClass> {
+        return this.statusesService.updateStatus(id, updateStatusDto);
+    }
+
+    @Delete(':id')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
+    @ApiParam({ name: 'id', type: String })
+    @ApiResponse({ status: 200, description: 'Deletes a status by ID.' })
+    deleteProject(@Param('id') id: string): Promise<StatusClass> {
+        return this.statusesService.deleteStatus(id);
+    }
 }
