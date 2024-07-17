@@ -97,10 +97,8 @@ export class DashboardController {
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
     @ApiResponse({ status: 200, description: 'Returns projects sorted by name.' })
-    @ApiQuery({ name: 'order', required: true, description: 'Specify \'ascending\' or \'descending\' for sort order'})
+    @ApiQuery({ name: 'order', required: true, description: 'Specify `ascending` or `descending` for sort order' })
     sortProjectsByName(@Query('order') order: SortOrder) {
-        console.log(`ORDER: ${order}`);
-
         return this.dashboardService.sortProjects('projectName', order);
     }
 
@@ -108,7 +106,7 @@ export class DashboardController {
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
     @ApiResponse({ status: 200, description: 'Returns projects sorted by status.' })
-    @ApiQuery({ name: 'order', required: true, description: 'Specify \'ascending\' or \'descending\' for sort order'})
+    @ApiQuery({ name: 'order', required: true, description: 'Specify `ascending` or `descending` for sort order' })
     sortProjectsByStatus(@Query('order') order: SortOrder) {
         return this.dashboardService.sortProjects('projectStatus', order);
     }
@@ -117,7 +115,7 @@ export class DashboardController {
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
     @ApiResponse({ status: 200, description: 'Returns projects sorted by progress percent.' })
-    @ApiQuery({ name: 'order', required: true, description: 'Specify \'ascending\' or \'descending\' for sort order'})
+    @ApiQuery({ name: 'order', required: true, description: 'Specify `ascending` or `descending` for sort order' })
     sortProjectsByProgress(@Query('order') order: SortOrder) {
         return this.dashboardService.sortProjects('progressPercent', order);
     }
