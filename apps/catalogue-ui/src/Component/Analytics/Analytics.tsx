@@ -6,7 +6,7 @@ import FilterDropdown from '../FilterDropdown/filter';
 
 export default function Analytics() {
   return (
-    <div className="ml-64 mt-6  h-[calc(100%-100px)] overflow-y-scroll">
+    <div className="ml-64 mt-6 h-[calc(100%-100px)] overflow-y-scroll">
       <div className="analytics-container">
         <h1 className="analytics_header">Analytics</h1>
         <div className="mt-4 mb-4 ">

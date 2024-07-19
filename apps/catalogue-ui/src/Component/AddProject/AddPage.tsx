@@ -160,7 +160,9 @@ const AddPage: React.FC = () => {
                     required: 'Other Technology is required',
                   })}
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.otherTechnology ? 'border-red-500' : 'border-gray-300'
+                    errors.otherTechnology
+                      ? 'border-red-500'
+                      : 'border-gray-300'
                   }`}
                 />
                 {errors.otherTechnology && (
