@@ -101,6 +101,10 @@ export class DashboardService {
             query.technology = { $in: filters.technologies };
         }
 
+        if (filters.resources && filters.resources.length > 0) {
+            query.resources = { $in: filters.resources };
+        }
+
         return await this.projectModel.find(query).exec();
     }
 }
