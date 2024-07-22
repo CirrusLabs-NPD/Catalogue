@@ -61,6 +61,12 @@ export class UpdateProjectDto {
     @ApiProperty({ example: 50, description: 'Percent completion of project', required: false })
     progressPercent?: number;
 
+    @IsUrl()
+    @IsNotEmpty()
+    @IsOptional()
+    @ApiProperty({ example: 'https://example.azurewebsites.net/', description: 'Link to demo video', required: false })
+    demoURL?: string;
+
     @IsDateString()
     @IsOptional()
     @ApiProperty({ example: '2020-01-31', description: 'Completion date of project in YYYY-MM-DD format', required: false })
