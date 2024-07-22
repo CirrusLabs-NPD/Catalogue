@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { ProjectStatus } from './project-status.enum';
 
 @Schema()
 export class ProjectClass extends Document {
@@ -19,7 +18,7 @@ export class ProjectClass extends Document {
     @Prop({ required: true })
     resources: string[];
     
-    @Prop({ required: true, enum: ProjectStatus })
+    @Prop({ required: true})
     projectStatus: string;
     
     @Prop({ required: true })

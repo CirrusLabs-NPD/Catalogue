@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ProjectClass } from '../projects/schemas/project.schemas';
 import { Model } from 'mongoose';
-import { ProjectStatus } from '../projects/schemas/project-status.enum';
 
 @Injectable()
 export class DashboardService {
@@ -47,10 +46,6 @@ export class DashboardService {
         return statusCount;
     }
 
-    async getProjectsByStatus(statuses: ProjectStatus[]) {
-        return await this.projectModel.find({ projectStatus: { $in: statuses } }).exec();
-    }
-
     async searchProjects(search: string) {
         const queryParam = {
             $regex: new RegExp(search),
@@ -65,11 +60,24 @@ export class DashboardService {
         }).exec();
     }
 
+    async getProjectsByStatus(statuses: string[]) {
+        if (!Array.isArray(statuses)) {
+            statuses = [statuses];
+        }
+        return await this.projectModel.find({ projectStatus: { $in: statuses } }).exec();
+    }
+
     async getProjectsByMembers(members: string[]) {
+        if (!Array.isArray(members)) {
+            members = [members];
+        }
         return await this.projectModel.find({ members: { $in: members } }).exec();
     }
 
     async getProjectsByTechnology(tech: string[]) {
+        if (!Array.isArray(tech)) {
+            tech = [tech];
+        }
         return await this.projectModel.find({ technology: { $in: tech } }).exec();
     }
 

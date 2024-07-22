@@ -1,7 +1,6 @@
 import { Controller, Get, Query, UseGuards, ValidationPipe } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import { ApiTags, ApiResponse, ApiParam, ApiBody, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
-import { ProjectStatus } from '../projects/schemas/project-status.enum';
 import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('dashboard')
@@ -32,15 +31,6 @@ export class DashboardController {
     getStatusCount() {
         return this.dashboardService.getStatusCount();
     }
-    
-    @Get('projects-by-status')
-    @UseGuards(AuthGuard('jwt'))
-    @ApiBearerAuth('access-token')
-    @ApiResponse({ status: 200, description: 'Returns projects filtered by status.' })
-    @ApiQuery({ name: 'status', enum: ProjectStatus, required: true })
-    getProjectsByStatus(@Query('status') statuses: ProjectStatus[]) {
-        return this.dashboardService.getProjectsByStatus(statuses);
-    }
 
     @Get('search')
     @UseGuards(AuthGuard('jwt'))
@@ -49,6 +39,15 @@ export class DashboardController {
     @ApiResponse({ status: 200, description: 'Searches projects by a text string.' })
     searchProjects(@Query('search') search: string) {
         return this.dashboardService.searchProjects(search);
+    }
+
+    @Get('projects-by-statuses')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
+    @ApiResponse({ status: 200, description: 'Returns projects filtered by statuses.' })
+    @ApiQuery({ name: 'statuses', isArray: true, type: String, required: true })
+    getProjectsByStatus(@Query('statuses') statuses: string[]) {
+        return this.dashboardService.getProjectsByStatus(statuses);
     }
 
     @Get('projects-by-members')
@@ -92,7 +91,7 @@ export class DashboardController {
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
     @ApiResponse({ status: 200, description: 'Returns projects filtered by multiple fields.' })
-    @ApiQuery({ name: 'status', enum: ProjectStatus, required: false })
+    @ApiQuery({ name: 'statuses', isArray: true, type: String, required: true })
     @ApiQuery({ name: 'members', isArray: true, type: String, required: false })
     @ApiQuery({ name: 'technology', isArray: true, type: String, required: false })
     @ApiQuery({ name: 'resources', isArray: true, type: String, required: false })

@@ -4,12 +4,14 @@ import { Model } from 'mongoose';
 import { ProjectClass } from './schemas/project.schemas';
 import { CreateProjectDto } from './dto/create.project.dto';
 import { UpdateProjectDto } from './dto/update.project.dto';
+import { StatusesService } from '../statuses/statuses.service';
 
 @Injectable()
 export class ProjectsService {
     constructor(
         @InjectModel(ProjectClass.name) 
-        private projectModel: Model<ProjectClass>
+        private projectModel: Model<ProjectClass>,
+        private statusesService: StatusesService
     ) {}
 
     async getProjects(): Promise<ProjectClass[]> {
@@ -17,6 +19,7 @@ export class ProjectsService {
     }
 
     async addProject(createProjectDto: CreateProjectDto): Promise<ProjectClass> {
+        await this.statusesService.getByName(createProjectDto.projectStatus);
         const newProject = new this.projectModel(createProjectDto);
         return await newProject.save();
     }
@@ -38,6 +41,9 @@ export class ProjectsService {
     }
 
     async updateProject(id: string, updateProjectDto: UpdateProjectDto): Promise<ProjectClass> {
+        if (updateProjectDto.projectStatus) {
+            await this.statusesService.getByName(updateProjectDto.projectStatus);
+        }
         const existingProject = await this.projectModel.findByIdAndUpdate(
             id,
             { $set: updateProjectDto },

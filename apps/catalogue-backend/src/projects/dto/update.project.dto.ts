@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsString, IsUrl, IsArray, IsNumber, Min, Max, IsOptional, IsDateString, IsEnum } from "class-validator";
-import { ProjectStatus } from "../schemas/project-status.enum";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class UpdateProjectDto {
@@ -37,7 +36,6 @@ export class UpdateProjectDto {
 
     @IsString()
     @IsNotEmpty()
-    @IsEnum(ProjectStatus)
     @IsOptional()
     @ApiProperty({ example: 'Ongoing', description: 'Status of project', required: false })
     projectStatus?: string;
