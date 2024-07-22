@@ -31,7 +31,7 @@ const AddPage: React.FC = () => {
   };
 
   return (
-    <div className="ml-64 mt-6 h-full overflow-y-scroll">
+    <div className="ml-64 mt-6 h-[calc(100%-100px)] overflow-y-scroll">
       <div className="AddPage">
         <h1 className="home_header mb-1">Add Project</h1>
         <div className="flex items-center">
@@ -160,7 +160,9 @@ const AddPage: React.FC = () => {
                     required: 'Other Technology is required',
                   })}
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.otherTechnology ? 'border-red-500' : 'border-gray-300'
+                    errors.otherTechnology
+                      ? 'border-red-500'
+                      : 'border-gray-300'
                   }`}
                 />
                 {errors.otherTechnology && (
