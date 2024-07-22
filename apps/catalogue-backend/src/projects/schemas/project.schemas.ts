@@ -16,8 +16,8 @@ export class ProjectClass extends Document {
     @Prop({ required: true })
     technology: string[];
     
-    /* @Prop({ required: true })
-    otherTechnology: string[]; */
+    @Prop({ required: true })
+    resources: string[];
     
     @Prop({ required: true, enum: ProjectStatus })
     projectStatus: string;
