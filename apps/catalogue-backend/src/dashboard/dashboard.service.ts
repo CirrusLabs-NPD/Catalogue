@@ -81,6 +81,10 @@ export class DashboardService {
         return await this.projectModel.find({ technology: { $in: tech } }).exec();
     }
 
+    async getProjectsByResources(resources: string[]) {
+        return await this.projectModel.find({ resources: { $in: resources } }).exec();
+    }
+
     async getProjectsByCompletionDate(startDate: string, endDate: string) {
         return await this.projectModel.find({
             completionDate: {
@@ -103,6 +107,10 @@ export class DashboardService {
 
         if (filters.technologies && filters.technologies.length > 0) {
             query.technology = { $in: filters.technologies };
+        }
+
+        if (filters.resources && filters.resources.length > 0) {
+            query.resources = { $in: filters.resources };
         }
 
         return await this.projectModel.find(query).exec();

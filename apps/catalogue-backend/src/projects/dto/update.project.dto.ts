@@ -27,11 +27,12 @@ export class UpdateProjectDto {
     @ApiProperty({ example: ["Technology 1", "Technology 2"], description: 'Technologies used in project', required: false })
     technology?: string[];
 
-    /* @IsArray()
+    @IsArray()
     @IsString({ each: true })
     @IsNotEmpty({ each: true })
     @IsOptional()
-    otherTechnology?: string[]; */
+    @ApiProperty({ example: ["Resoruce 1", "Resource 2"], description: 'Resources used in project', required: false })
+    resources?: string[];
 
     @IsString()
     @IsNotEmpty()

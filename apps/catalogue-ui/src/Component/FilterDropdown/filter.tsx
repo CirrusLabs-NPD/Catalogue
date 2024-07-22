@@ -9,7 +9,7 @@ const FilterDropdown: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<string>('Low to High');
 
   return (
-    <div className="relative inline-block text-left font-quicksand">
+    <div className="relative inline-block text-left font-quicksand z-10">
       <Menu>
         {({ open }) => (
           <>
