@@ -73,6 +73,10 @@ export class DashboardService {
         return await this.projectModel.find({ technology: { $in: tech } }).exec();
     }
 
+    async getProjectsByResources(resources: string[]) {
+        return await this.projectModel.find({ resources: { $in: resources } }).exec();
+    }
+
     async getProjectsByCompletionDate(startDate: string, endDate: string) {
         return await this.projectModel.find({
             completionDate: {

@@ -69,6 +69,15 @@ export class DashboardController {
         return this.dashboardService.getProjectsByTechnology(technology);
     }
 
+    @Get('projects-by-resources')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
+    @ApiResponse({ status: 200, description: 'Returns projects filtered by resources.' })
+    @ApiQuery({ name: 'resources', isArray: true, type: String, required: true })
+    getProjectsByResources(@Query('resources') resources: string[]) {
+        return this.dashboardService.getProjectsByResources(resources);
+    }
+
     @Get('projects-by-completion-date')
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
