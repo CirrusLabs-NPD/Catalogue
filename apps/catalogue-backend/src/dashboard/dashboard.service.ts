@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ProjectClass } from '../projects/schemas/project.schemas';
-import { Model } from 'mongoose';
+import { Model, SortOrder } from 'mongoose';
 
 @Injectable()
 export class DashboardService {
@@ -114,5 +114,11 @@ export class DashboardService {
         }
 
         return await this.projectModel.find(query).exec();
+    }
+
+    async sortProjects(field: string, order: SortOrder) {
+        let sortQuery = {};
+        sortQuery[field] = order;
+        return await this.projectModel.find().sort(sortQuery).exec();
     }
 }

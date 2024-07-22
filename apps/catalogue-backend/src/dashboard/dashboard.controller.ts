@@ -1,7 +1,9 @@
-import { Controller, Get, Query, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import { ApiTags, ApiResponse, ApiParam, ApiBody, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { SortOrder } from 'mongoose';
+
 
 @ApiTags('dashboard')
 @Controller('dashboard')
@@ -41,7 +43,7 @@ export class DashboardController {
         return this.dashboardService.searchProjects(search);
     }
 
-    @Get('projects-by-statuses')
+    @Get('filter/status')
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
     @ApiResponse({ status: 200, description: 'Returns projects filtered by statuses.' })
@@ -49,8 +51,7 @@ export class DashboardController {
     getProjectsByStatus(@Query('statuses') statuses: string[]) {
         return this.dashboardService.getProjectsByStatus(statuses);
     }
-
-    @Get('projects-by-members')
+    @Get('filter/member')
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
     @ApiResponse({ status: 200, description: 'Returns projects filtered by members.' })
@@ -59,7 +60,7 @@ export class DashboardController {
         return this.dashboardService.getProjectsByMembers(members);
     }
 
-    @Get('projects-by-technology')
+    @Get('filter/technology')
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
     @ApiResponse({ status: 200, description: 'Returns projects filtered by technology.' })
@@ -68,7 +69,7 @@ export class DashboardController {
         return this.dashboardService.getProjectsByTechnology(technology);
     }
 
-    @Get('projects-by-resources')
+    @Get('filter/resource')
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
     @ApiResponse({ status: 200, description: 'Returns projects filtered by resources.' })
@@ -77,7 +78,7 @@ export class DashboardController {
         return this.dashboardService.getProjectsByResources(resources);
     }
 
-    @Get('projects-by-completion-date')
+    @Get('filter/completion-date')
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
     @ApiResponse({ status: 200, description: 'Returns projects filtered by completion date.'})
@@ -87,15 +88,42 @@ export class DashboardController {
         return this.dashboardService.getProjectsByCompletionDate(startDate, endDate);
     }
 
-    @Get('projects-by-filters')
+    @Get('filter/multiple')
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
     @ApiResponse({ status: 200, description: 'Returns projects filtered by multiple fields.' })
-    @ApiQuery({ name: 'statuses', isArray: true, type: String, required: true })
+    @ApiQuery({ name: 'statuses', isArray: true, type: String, required: false })
     @ApiQuery({ name: 'members', isArray: true, type: String, required: false })
     @ApiQuery({ name: 'technology', isArray: true, type: String, required: false })
     @ApiQuery({ name: 'resources', isArray: true, type: String, required: false })
-    getProjectsByFilters(@Query('status') statuses: ProjectStatus[], @Query('members') members: string[], @Query('technology') technology: string[], @Query('resources') resources: string[]) {
+    getProjectsByFilters(@Query('statuses') statuses: string[], @Query('members') members: string[], @Query('technology') technology: string[], @Query('resources') resources: string[]) {
         return this.dashboardService.getProjectsByFilters({statuses, members, technology, resources});
+    }
+
+    @Get('sort/name')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
+    @ApiResponse({ status: 200, description: 'Returns projects sorted by name.' })
+    @ApiQuery({ name: 'order', required: true, description: 'Specify `ascending` or `descending` for sort order' })
+    sortProjectsByName(@Query('order') order: SortOrder) {
+        return this.dashboardService.sortProjects('projectName', order);
+    }
+
+    @Get('sort/status')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
+    @ApiResponse({ status: 200, description: 'Returns projects sorted by status.' })
+    @ApiQuery({ name: 'order', required: true, description: 'Specify `ascending` or `descending` for sort order' })
+    sortProjectsByStatus(@Query('order') order: SortOrder) {
+        return this.dashboardService.sortProjects('projectStatus', order);
+    }
+
+    @Get('sort/progress')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
+    @ApiResponse({ status: 200, description: 'Returns projects sorted by progress percent.' })
+    @ApiQuery({ name: 'order', required: true, description: 'Specify `ascending` or `descending` for sort order' })
+    sortProjectsByProgress(@Query('order') order: SortOrder) {
+        return this.dashboardService.sortProjects('progressPercent', order);
     }
 }
