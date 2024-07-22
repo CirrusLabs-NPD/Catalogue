@@ -95,7 +95,7 @@ export class DashboardController {
     @ApiQuery({ name: 'status', enum: ProjectStatus, required: false })
     @ApiQuery({ name: 'members', isArray: true, type: String, required: false })
     @ApiQuery({ name: 'technology', isArray: true, type: String, required: false })
-    @ApiQuery({ name: 'resources', isArray: true, type: String, required: true })
+    @ApiQuery({ name: 'resources', isArray: true, type: String, required: false })
     getProjectsByFilters(@Query('status') statuses: ProjectStatus[], @Query('members') members: string[], @Query('technology') technology: string[], @Query('resources') resources: string[]) {
         return this.dashboardService.getProjectsByFilters({statuses, members, technology, resources});
     }
