@@ -21,7 +21,7 @@ export class DashboardController {
     @Get('percent-dash')
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
-    @ApiResponse({ status: 200, description: 'Returns name, duration, status and percentage for all projects.' })
+    @ApiResponse({ status: 200, description: 'Returns name, members, duration, status and percentage for all projects.' })
     getPercentDash() {
         return this.dashboardService.getPercentDash();
     }

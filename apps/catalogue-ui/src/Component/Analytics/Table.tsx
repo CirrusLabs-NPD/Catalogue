@@ -8,9 +8,11 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
+import { getPercentDash } from '../../api/analytics';
 
 interface Column {
-  id: 'name' | 'projectmanager' | 'duedate' | 'status' | 'progress';
+  id: 'projectName' | 'members' | 'duration' | 'projectStatus' | 'progressPercent';
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -18,58 +20,49 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  { id: 'name', label: 'Name', minWidth: 170 },
-  { id: 'projectmanager', label: 'Project Manager', minWidth: 100 },
+  { id: 'projectName', label: 'Project Name', minWidth: 170 },
+  { id: 'members', label: 'Members', minWidth: 100 },
+  { id: 'duration', label: 'Duration', minWidth: 100 },
   {
-    id: 'duedate',
-    label: 'Due Date',
+    id: 'projectStatus',
+    label: 'Project Status',
     minWidth: 170,
     align: 'right',
   },
   {
-    id: 'status',
-    label: 'Status',
+    id: 'progressPercent',
+    label: 'Progress Percent',
     minWidth: 170,
     align: 'right',
-  },
-  {
-    id: 'progress',
-    label: 'Progress',
-    minWidth: 170,
-    align: 'right',
+    format: (value: number) => `${value}%`,
   },
 ];
 
-interface Data {
-  name: string;
-  projectmanager: string;
-  duedate: string;
-  status: string;
-  progress: string;
+interface RowData {
+  projectName: string;
+  members: string[];
+  duration: string;
+  projectStatus: string;
+  progressPercent: number;
 }
-
-function createData(
-  name: string,
-  projectmanager: string,
-  duedate: string,
-  status: string,
-  progress: string,
-): Data {
-  return { name, projectmanager, duedate, status, progress };
-}
-
-const rows = [
-  createData('Cirrus Insights Now', 'Praveen Raj', 'Mar 20th, 2022', 'Completed','100%'),
-  createData('Resume Mining', 'Arjun Rathod', 'Feb 12th, 2022', 'Completed','100%'),
-  createData('GeniBid', 'Rohan Shah', 'Dec 25th, 2023', 'Completed','100%'),
-  createData('Humanoid ChatBot', 'Aakash Bharadwaj', 'Jan 2nd, 2023', 'Ongoing','20%'),
-  createData('Internal Project Catalogue', 'Aakash Bharadwaj', 'Oct 22th, 2024', 'Ongoing','20%'),
-
-];
 
 export default function StickyHeadTable() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rows, setRows] = useState<RowData[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getPercentDash();
+        setRows(data);
+      } catch (error) {
+        console.error("Error fetching project data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -92,7 +85,7 @@ export default function StickyHeadTable() {
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
                 >
-                  <Typography variant="h7" component="div" style={{ fontFamily: 'Quicksand', fontWeight: 'regular', fontSize:'5' }}>
+                  <Typography variant="h6" component="div" style={{ fontFamily: 'Quicksand', fontWeight: 'regular', fontSize:'5' }}>
                     {column.label}
                   </Typography>
                 </TableCell>
@@ -104,15 +97,17 @@ export default function StickyHeadTable() {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.projectmanager}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.projectName}>
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          <Typography variant="h7" component="div" style={{ fontFamily: 'Quicksand', fontWeight: 'lighter', fontSize:'5' }}>
-                          {column.format && typeof value === 'number'
-                            ? column.format(value)
-                            : value}
+                          <Typography variant="h6" component="div" style={{ fontFamily: 'Quicksand', fontWeight: 'lighter', fontSize:'5' }}>
+                          {column.id === 'members' && Array.isArray(value)
+                              ? value.join(', ')
+                              : column.format && typeof value === 'number'
+                              ? column.format(value)
+                              : value}
                           </Typography>
                         </TableCell>
                       );

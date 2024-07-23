@@ -28,7 +28,7 @@ export class DashboardService {
     }
 
     async getPercentDash() {
-        return await this.projectModel.find({}, 'projectName duration projectStatus progressPercent').exec();
+        return await this.projectModel.find({}, 'projectName members duration projectStatus progressPercent').exec();
     }
 
     async getStatusCount() {
