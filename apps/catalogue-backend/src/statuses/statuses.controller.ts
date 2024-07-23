@@ -60,8 +60,8 @@ export class StatusesController {
     }
 
     @Get('name/:name')
-    @UseGuards(AuthGuard('jwt'))
-    @ApiBearerAuth('access-token')
+/*     @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token') */
     @ApiParam({ name: 'name', required: true })
     @ApiResponse({ status: 200, description: 'Returns a status by name.' })
     async getStatusByName(@Param('name') name: string) {

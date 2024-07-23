@@ -61,7 +61,7 @@ export function App() {
             element={<ProtectedRoute element={<AddPage />} />}
           />
           <Route
-            path="/description/:name"
+            path="/description/:id"
             element={<ProtectedRoute element={<ProjectDetails />} />}
           />
           {/* Add more routes here */}

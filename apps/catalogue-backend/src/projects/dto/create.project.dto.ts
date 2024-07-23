@@ -54,7 +54,7 @@ export class CreateProjectDto {
 
     @IsUrl()
     @IsNotEmpty()
-    @ApiProperty({ example: 'https://example.azurewebsites.net/', description: 'Link to demo video', required: true })
+    @ApiProperty({ example: 'https://resumeminner.azurewebsites.net/', description: 'Link to demo URL or finished project', required: true })
     demoURL: string;
 
     @IsDateString()

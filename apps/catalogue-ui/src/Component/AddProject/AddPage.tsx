@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import './AddPage.css';
+import { addProject } from '../../api/projects';
+import { useNavigate } from 'react-router-dom';
 
 interface FormData {
   projectName: string;
   duration: string;
-  githubLink: string;
+  gitHubLinks: string;
   technology: string;
-  otherTechnology: string;
+  resources: string;
   projectStatus: string;
   members: string;
   description: string;
-  websiteLink: string; // New field for Website Link
+  progressPercent: number;
+  demoURL: string;
+  completionDate?: string;
 }
 
 const AddPage: React.FC = () => {
@@ -22,8 +26,28 @@ const AddPage: React.FC = () => {
     reset,
   } = useForm<FormData>();
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      const newProject = {
+        projectName: data.projectName,
+        duration: data.duration,
+        gitHubLinks: data.gitHubLinks,
+        technology: data.technology.split(',').map((tech) => tech.trim()),
+        resources: data.resources.split(',').map((resource) => resource.trim()),
+        projectStatus: data.projectStatus,
+        members: data.members.split(',').map((member) => member.trim()),
+        description: data.description,
+        progressPercent: Number(data.progressPercent),
+        demoURL: data.demoURL,
+        completionDate: data.completionDate,
+      };
+      await addProject(newProject);
+      reset();
+      navigate('/home');
+    } catch (error) {
+    }
   };
 
   const handleCancel = () => {
@@ -37,7 +61,7 @@ const AddPage: React.FC = () => {
         <div className="flex items-center">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="bg-gray-100 p-8 rounded-lg ml-7 w-full w-1x9 "
+            className="bg-gray-100 p-8 rounded-lg ml-7 w-full w-1x9"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Project Name Field */}
@@ -92,28 +116,28 @@ const AddPage: React.FC = () => {
                 )}
               </div>
 
-              {/* Github Link Field */}
+              {/* GitHub Links Field */}
               <div className="mb-4">
                 <label
-                  htmlFor="githubLink"
+                  htmlFor="gitHubLinks"
                   className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
                 >
-                  Github Link
+                  GitHub Links
                 </label>
                 <input
-                  type="url"
-                  id="githubLink"
-                  placeholder="Enter GitHub link"
-                  {...register('githubLink', {
-                    required: 'GitHub Link is required',
+                  type="text"
+                  id="gitHubLinks"
+                  placeholder="Enter GitHub links (comma separated)"
+                  {...register('gitHubLinks', {
+                    required: 'GitHub Links are required',
                   })}
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.githubLink ? 'border-red-500' : 'border-gray-300'
+                    errors.gitHubLinks ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
-                {errors.githubLink && (
+                {errors.gitHubLinks && (
                   <p className="text-red-500 text-sm mt-1">
-                    {errors.githubLink.message}
+                    {errors.gitHubLinks.message}
                   </p>
                 )}
               </div>
@@ -129,7 +153,7 @@ const AddPage: React.FC = () => {
                 <input
                   type="text"
                   id="technology"
-                  placeholder="Enter technology"
+                  placeholder="Enter technologies (comma separated)"
                   {...register('technology', {
                     required: 'Technology is required',
                   })}
@@ -144,35 +168,33 @@ const AddPage: React.FC = () => {
                 )}
               </div>
 
-              {/* Other Technology Field */}
+              {/* Resources Field */}
               <div className="mb-4">
                 <label
-                  htmlFor="otherTechnology"
+                  htmlFor="resources"
                   className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
                 >
-                  Other Technology
+                  Resources
                 </label>
                 <input
                   type="text"
-                  id="otherTechnology"
-                  placeholder="Enter other technology"
-                  {...register('otherTechnology', {
-                    required: 'Other Technology is required',
+                  id="resources"
+                  placeholder="Enter resources (comma separated)"
+                  {...register('resources', {
+                    required: 'Resources are required',
                   })}
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.otherTechnology
-                      ? 'border-red-500'
-                      : 'border-gray-300'
+                    errors.resources ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
-                {errors.otherTechnology && (
+                {errors.resources && (
                   <p className="text-red-500 text-sm mt-1">
-                    {errors.otherTechnology.message}
+                    {errors.resources.message}
                   </p>
                 )}
               </div>
 
-              {/* Members Field (Displayed on the left) */}
+              {/* Members Field */}
               <div className="mb-4 col-span-1">
                 <label
                   htmlFor="members"
@@ -183,8 +205,10 @@ const AddPage: React.FC = () => {
                 <input
                   type="text"
                   id="members"
-                  placeholder="Enter members"
-                  {...register('members', { required: 'Members are required' })}
+                  placeholder="Enter members (comma separated)"
+                  {...register('members', {
+                    required: 'Members are required',
+                  })}
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
                     errors.members ? 'border-red-500' : 'border-gray-300'
                   }`}
@@ -192,36 +216,6 @@ const AddPage: React.FC = () => {
                 {errors.members && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.members.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Website Link Field (Displayed on the right) */}
-              <div className="mb-4 col-span-1">
-                <label
-                  htmlFor="websiteLink"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
-                >
-                  Website Link
-                </label>
-                <input
-                  type="url"
-                  id="websiteLink"
-                  placeholder="Enter website link"
-                  {...register('websiteLink', {
-                    required: 'Website Link is required',
-                    pattern: {
-                      value: /^(ftp|http|https):\/\/[^ "]+$/,
-                      message: 'Enter a valid URL',
-                    },
-                  })}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.websiteLink ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.websiteLink && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.websiteLink.message}
                   </p>
                 )}
               </div>
@@ -244,10 +238,10 @@ const AddPage: React.FC = () => {
                   }`}
                 >
                   <option value="">Select status</option>
-                  <option value="ongoing">Ongoing</option>
-                  <option value="completed">Completed</option>
-                  <option value="atrisk">At Risk</option>
-                  <option value="delayed">Delayed</option>
+                  <option value="Ongoing">Ongoing</option>
+                  <option value="Completed">Completed</option>
+                  <option value="At Risk">At Risk</option>
+                  <option value="Delayed">Delayed</option>
                 </select>
                 {errors.projectStatus && (
                   <p className="text-red-500 text-sm mt-1">
@@ -280,20 +274,102 @@ const AddPage: React.FC = () => {
                   </p>
                 )}
               </div>
+
+              {/* Progress Percent Field */}
+              <div className="mb-4">
+                <label
+                  htmlFor="progressPercent"
+                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                >
+                  Progress Percent
+                </label>
+                <input
+                  type="number"
+                  id="progressPercent"
+                  placeholder="Enter progress percentage"
+                  {...register('progressPercent', {
+                    required: 'Progress Percent is required',
+                    min: { value: 0, message: 'Minimum value is 0' },
+                    max: { value: 100, message: 'Maximum value is 100' },
+                  })}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                    errors.progressPercent ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                />
+                {errors.progressPercent && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.progressPercent.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Demo URL Field */}
+              <div className="mb-4">
+                <label
+                  htmlFor="demoURL"
+                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                >
+                  Demo URL
+                </label>
+                <input
+                  type="url"
+                  id="demoURL"
+                  placeholder="Enter demo URL"
+                  {...register('demoURL', {
+                    required: 'Demo URL is required',
+                    pattern: {
+                      value: /^(ftp|http|https):\/\/[^ "]+$/,
+                      message: 'Enter a valid URL',
+                    },
+                  })}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                    errors.demoURL ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                />
+                {errors.demoURL && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.demoURL.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Completion Date Field */}
+              <div className="mb-4">
+                <label
+                  htmlFor="completionDate"
+                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                >
+                  Completion Date
+                </label>
+                <input
+                  type="date"
+                  id="completionDate"
+                  placeholder="Enter completion date"
+                  {...register('completionDate')}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                    errors.completionDate ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                />
+                {errors.completionDate && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.completionDate.message}
+                  </p>
+                )}
+              </div>
             </div>
 
-            {/* Submitand Cancel Buttons */}
+            {/* Submit and Cancel Buttons */}
             <div className="flex justify-start mt-4 space-x-4">
               <button
                 type="submit"
-                className="font-quicksand text-lg  bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:shadow-outline"
+                className="font-quicksand text-lg bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:shadow-outline"
               >
                 Submit
               </button>
               <button
                 type="button"
                 onClick={handleCancel}
-                className="font-quicksand text-lg  bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg focus:outline-none focus:shadow-outline"
+                className="font-quicksand text-lg bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg focus:outline-none focus:shadow-outline"
               >
                 Cancel
               </button>
