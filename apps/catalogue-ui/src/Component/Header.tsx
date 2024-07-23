@@ -6,11 +6,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
+interface User {
+  name: string;
+  username: string;
+}
+
+
 function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const modalRef = useRef(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUser = sessionStorage.getItem('user');
+    if (storedUser) {
+      console.log(storedUser);
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   const handleIconClick = () => {
     setIsModalOpen(!isModalOpen);
@@ -49,8 +63,8 @@ function Header() {
         <input type="text" placeholder="Search..." />
       </div>
       <div className="header__user-info">
-        <div className="header__name">Aakash B.</div>
-        <div className="header__location">Sr. Analyst</div>
+        <div className="header__name">{user ? user.name : 'Guest'}</div>
+        <div className="header__location">{user ? user.username : ''}</div>
       </div>
       <div className="header__icon" onClick={handleIconClick}>
         <FontAwesomeIcon icon={faAngleDown} size="xl" />
