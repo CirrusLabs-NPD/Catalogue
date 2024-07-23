@@ -11,3 +11,8 @@ export const getProjects = async () => {
     const response = await axios.get(API_BASE_URL);
     return response.data;
 };
+
+export const getProjectById = async (id: any) => {
+    const response = await axios.get(`${API_BASE_URL}/${id}`);
+    return response.data;
+};

@@ -29,8 +29,8 @@ export class ProjectsController {
     }
 
     @Get(':id')
-    @UseGuards(AuthGuard('jwt'))
-    @ApiBearerAuth('access-token')
+    /* @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token') */
     @ApiParam({ name: 'id', type: String })
     @ApiResponse({ status: 200, description: 'Returns a project by ID.' })
     getById(@Param('id') id: string): Promise<ProjectClass> {

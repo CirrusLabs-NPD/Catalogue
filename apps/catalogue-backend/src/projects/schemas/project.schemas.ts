@@ -30,6 +30,9 @@ export class ProjectClass extends Document {
     @Prop({ required: true, min: 0, max: 100 })
     progressPercent: number;
 
+    @Prop({ required: true })
+    demoURL: string;
+
     @Prop({ required: false })
     completionDate: string;
 }

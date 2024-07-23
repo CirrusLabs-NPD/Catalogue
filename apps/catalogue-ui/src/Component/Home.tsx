@@ -8,20 +8,7 @@ import commentsimg from '../app/assets/commentsimg.png';
 import FilterDropdown from './FilterDropdown/filter';
 import CalendarDropdown from './FilterDropdown/calendarDropdown';
 import { getProjects } from '../api/projects';
-
-interface Project {
-  id: string;
-  projectName: string;
-  duration: string;
-  gitHubLinks: string;
-  technology: string[];
-  resources: string[];
-  projectStatus: string;
-  members: string[];
-  description: string;
-  progressPercent: number;
-  completionDate?: string;
-}
+import { Project } from './ProjectInterface';
 
 const Home: React.FC = () => {
   const [projectData, setProjects] = useState<Project[]>([]);
@@ -85,7 +72,7 @@ const Home: React.FC = () => {
           {projectData.map((project, index) => (
             <Link
               key={index}
-              to={`/description/${project.id}`}
+              to={`/description/${project._id}`}
               className={`container border border-gray-300 w-11/12 sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 mt-12 p-4 rounded-lg mx-2 mb-4 ${
                 colors[index % colors.length]
               }`}
