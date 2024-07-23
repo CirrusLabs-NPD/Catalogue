@@ -20,8 +20,8 @@ export class ProjectsController {
     }
 
     @Post()
-    @UseGuards(AuthGuard('jwt'))
-    @ApiBearerAuth('access-token')
+    /* @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token') */
     @ApiBody({ type: CreateProjectDto })
     @ApiResponse({ status: 201, description: 'Creates a new project.' })
     addProject(@Body(ValidationPipe) createProjectDto: CreateProjectDto): Promise<ProjectClass> {

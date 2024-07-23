@@ -12,8 +12,8 @@ export class StatusesController {
     constructor(private readonly statusesService: StatusesService) {}
 
     @Get()
-    @UseGuards(AuthGuard('jwt'))
-    @ApiBearerAuth('access-token')
+/*     @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token') */
     @ApiResponse({ status: 200, description: 'Returns all statuses.' })
     getProjects(): Promise<StatusClass[]> {
         return this.statusesService.getStatuses();
@@ -29,8 +29,8 @@ export class StatusesController {
     }
 
     @Get(':id')
-    @UseGuards(AuthGuard('jwt'))
-    @ApiBearerAuth('access-token')
+/*     @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token') */
     @ApiParam({ name: 'id', type: String })
     @ApiResponse({ status: 200, description: 'Returns a status by ID.' })
     getById(@Param('id') id: string): Promise<StatusClass> {
@@ -60,8 +60,8 @@ export class StatusesController {
     }
 
     @Get('name/:name')
-    @UseGuards(AuthGuard('jwt'))
-    @ApiBearerAuth('access-token')
+/*     @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token') */
     @ApiParam({ name: 'name', required: true })
     @ApiResponse({ status: 200, description: 'Returns a status by name.' })
     async getStatusByName(@Param('name') name: string) {
