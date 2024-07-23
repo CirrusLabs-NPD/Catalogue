@@ -20,6 +20,6 @@ export class AuthController {
 
     @Post('login')
     signIn(@Body(ValidationPipe) signInDto: SignInDto) {
-        return this.authService.signIn(signInDto.email);
+        return this.authService.signIn(signInDto);
     }
 }
