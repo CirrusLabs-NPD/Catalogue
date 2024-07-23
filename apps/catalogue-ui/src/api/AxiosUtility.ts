@@ -13,7 +13,7 @@ const AxiosUtility = async ({
   params?: any;
   fileUpload?: boolean;
 }) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('jwt_token');
   const headers = {
     Authorization: `Bearer ${token}`,
     'Content-Type': fileUpload ? 'multipart/form-data' : 'application/json',

@@ -8,6 +8,7 @@ import { config } from '../../../Config';
 import loginImage from '../../app/assets/loginblank.png';
 import logo from '../../app/assets/CirrusLabsLogo.png';
 import { json } from 'stream/consumers';
+import { getToken } from '../../api/auth';
 
 type LoginpageProps = {
   setIsLoggedIn: (isLoggedIn: boolean) => void;
@@ -58,7 +59,10 @@ class Loginpage extends Component<LoginpageProps, LoginpageState> {
           prompt: 'select_account',
         });
 
-      localStorage.setItem('pc_auth_token', JSON.stringify(response));
+      const jwtResponse = await getToken(JSON.stringify({ email: response.account.username }));
+      console.log(jwtResponse.accessToken);
+      localStorage.setItem('jwt_token', jwtResponse.accessToken);
+
       this.setState({
         isAuthenticated: true,
         user: response.account,

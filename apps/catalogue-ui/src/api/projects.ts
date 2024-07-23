@@ -1,18 +1,25 @@
-import axios from 'axios';
+import AxiosUtility from './AxiosUtility';
 
-const API_BASE_URL = 'http://localhost:3000/api/projects'; // Adjust the base URL as necessary
-
-export const addProject = async (project: any) => {
-    const response = await axios.post(API_BASE_URL, project);
-    return response.data;
-};
+const API_BASE_URL = 'http://localhost:3000/api';
 
 export const getProjects = async () => {
-    const response = await axios.get(API_BASE_URL);
-    return response.data;
+  return AxiosUtility({
+    url: `${API_BASE_URL}/projects`,
+    method: 'GET',
+  });
 };
 
 export const getProjectById = async (id: any) => {
-    const response = await axios.get(`${API_BASE_URL}/${id}`);
-    return response.data;
+  return AxiosUtility({
+    url: `${API_BASE_URL}/projects/${id}`,
+    method: 'GET',
+  });
+};
+
+export const addProject = async (project: any) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/projects`,
+    method: 'POST',
+    data: project,
+  });
 };
