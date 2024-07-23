@@ -12,8 +12,8 @@ export class ProjectsController {
     constructor(private readonly projectsService: ProjectsService) {}
 
     @Get()
-    @UseGuards(AuthGuard('jwt'))
-    @ApiBearerAuth('access-token')
+    /* @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token') */
     @ApiResponse({ status: 200, description: 'Returns all projects.' })
     getProjects(): Promise<ProjectClass[]> {
         return this.projectsService.getProjects();

@@ -6,3 +6,8 @@ export const addProject = async (project: any) => {
     const response = await axios.post(API_BASE_URL, project);
     return response.data;
 };
+
+export const getProjects = async () => {
+    const response = await axios.get(API_BASE_URL);
+    return response.data;
+};
