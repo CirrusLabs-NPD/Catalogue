@@ -26,6 +26,7 @@ export const projectData = [
     description:
       '"Resume Mining" is an innovative project built on NestJS, a progressive NodeJS framework. This project leverages the power of Langchain, an AI technology, to offer an advanced resume processing service. With Resume Mining, users can expect efficient and accurate analysis of resumes, unlocking valuable insights and streamlining the recruitment process.',
 
+    
     githubLinks: [
       'https://github.com/CirrusLabs-NPD/Resume-Mining-Nodejs-BE/',
       'https://github.com/CirrusLabs-NPD/Resume-Mining-FE',
