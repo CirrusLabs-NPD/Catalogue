@@ -6,7 +6,7 @@ export class UserClass extends Document {
     @Prop({ required: true })
     email: string;
 
-    @Prop({ default: 'user' })
+    @Prop({ default: 'member' })
     role: string;
 }
 

@@ -12,8 +12,7 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException();
     }
-    return {
-      accessToken: await this.jwtService.signAsync({ email: user.email, role: user.role.trim() }),
-    };
+    const accessToken = await this.jwtService.signAsync({ email: user.email, role: user.role.trim() });
+    return { accessToken, role: user.role };
   }
 }

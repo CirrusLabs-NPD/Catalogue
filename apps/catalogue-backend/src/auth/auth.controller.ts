@@ -24,8 +24,9 @@ export class AuthController {
     }
 
     @Post('login')
-    signIn(@Body(ValidationPipe) signInDto: SignInDto) {
-        return this.authService.signIn(signInDto);
+    async signIn(@Body(ValidationPipe) signInDto: SignInDto) {
+        const { accessToken, role } = await this.authService.signIn(signInDto);
+        return { accessToken, role };
     }
 
     @Post('assign-admin')

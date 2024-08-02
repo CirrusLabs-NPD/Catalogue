@@ -53,22 +53,26 @@ class Loginpage extends Component<LoginpageProps, LoginpageState> {
   async login() {
     try {
       console.log('Attempting to log in...');
-      const response: AuthenticationResult =
-        await this.publicClientApplication.loginPopup({
-          scopes: config.scopes,
-          prompt: 'select_account',
-        });
-
-      sessionStorage.setItem('user', JSON.stringify(response.account));
-      console.log(response);
-
-      const jwtResponse = await getToken(JSON.stringify({ email: response.account.username }));
+      const response: AuthenticationResult = await this.publicClientApplication.loginPopup({
+        scopes: config.scopes,
+        prompt: 'select_account',
+      });
+  
+      const jwtResponse = await getToken({ email: response.account.username });
       console.log(jwtResponse.accessToken);
       localStorage.setItem('jwt_token', jwtResponse.accessToken);
-
+  
+      const user = {
+        name: response.account.name,
+        username: response.account.username,
+        role: jwtResponse.role, // Ensure the role is included
+      };
+  
+      sessionStorage.setItem('user', JSON.stringify(user));
+  
       this.setState({
         isAuthenticated: true,
-        user: response.account,
+        user: user,
       });
       this.props.setIsLoggedIn(true);
       this.props.navigate('/home');
@@ -81,6 +85,7 @@ class Loginpage extends Component<LoginpageProps, LoginpageState> {
       });
     }
   }
+  
 
   logout() {
     this.publicClientApplication.logout();
