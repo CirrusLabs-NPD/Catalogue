@@ -5,6 +5,7 @@ import { StatusClass } from './schema/status.schema';
 import { ApiTags, ApiResponse, ApiParam, ApiBody, ApiBearerAuth } from '@nestjs/swagger'; // Import Swagger decorators
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateStatusDto } from './dto/update-status.dto';
+import { RolesGuard } from '../auth/guards/roles.guards';
 
 @ApiTags('statuses') // Tag for Swagger documentation
 @Controller('statuses')
@@ -20,7 +21,7 @@ export class StatusesController {
     }
 
     @Post()
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @ApiBearerAuth('access-token')
     @ApiBody({ type: CreateStatusDto })
     @ApiResponse({ status: 201, description: 'Creates a new status.' })
@@ -38,7 +39,7 @@ export class StatusesController {
     }
 
     @Put(':id')
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @ApiBearerAuth('access-token')
     @ApiParam({ name: 'id', type: String })
     @ApiBody({ type: UpdateStatusDto })
@@ -51,7 +52,7 @@ export class StatusesController {
     }
 
     @Delete(':id')
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @ApiBearerAuth('access-token')
     @ApiParam({ name: 'id', type: String })
     @ApiResponse({ status: 200, description: 'Deletes a status by ID.' })
@@ -60,8 +61,8 @@ export class StatusesController {
     }
 
     @Get('name/:name')
-/*     @UseGuards(AuthGuard('jwt'))
-    @ApiBearerAuth('access-token') */
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
     @ApiParam({ name: 'name', required: true })
     @ApiResponse({ status: 200, description: 'Returns a status by name.' })
     async getStatusByName(@Param('name') name: string) {

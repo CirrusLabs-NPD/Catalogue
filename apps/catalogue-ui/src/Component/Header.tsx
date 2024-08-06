@@ -9,8 +9,8 @@ import { Link } from 'react-router-dom';
 interface User {
   name: string;
   username: string;
+  role: string;
 }
-
 
 function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,17 +45,20 @@ function Header() {
 
   const handleLogout = () => {
     sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('user');
     setIsModalOpen(false);
     navigate('/');
     window.location.reload();
+  };
+
+  const capitalizeFirstLetter = (string: string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
   return (
     <header className="header fixed top-0 left-0 w-full">
       <div className="header__logo">
         <Link to="/home">
-          {' '}
-          {/* Navigate to Home page */}
           <img src={logo} alt="Logo" />
         </Link>
       </div>
@@ -65,26 +68,24 @@ function Header() {
       <div className="header__user-info">
         <div className="header__name">{user ? user.name : 'Guest'}</div>
         <div className="header__location">{user ? user.username : ''}</div>
+        <div className="header__role">{user ? capitalizeFirstLetter(user.role) : ''}</div>
       </div>
       <div className="header__icon" onClick={handleIconClick}>
         <FontAwesomeIcon icon={faAngleDown} size="xl" />
-      </div>
-      {isModalOpen && (
-        <div
-          ref={modalRef}
-          className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg rounded-lg p-4 mt-40"
-        >
-          <div className="flex flex-col items-center space-y-4 ">
-            <div className="text-sm text-gray-700">Profile Settings</div>
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 text-white px-4 py-2 rounded-md text-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-            >
-              Log Out
-            </button>
+        {isModalOpen && (
+          <div ref={modalRef} className="header__dropdown">
+            <div className="flex flex-col items-center space-y-4">
+              <div className="text-sm text-gray-700">Profile Settings</div>
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 text-white px-4 py-2 rounded-md text-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+              >
+                Log Out
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </header>
   );
 }

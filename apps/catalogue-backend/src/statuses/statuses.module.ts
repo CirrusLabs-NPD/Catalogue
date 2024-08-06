@@ -6,6 +6,8 @@ import { StatusClass, StatusSchema } from './schema/status.schema';
 import { AzureStrategy } from '../auth/strategies/azure.strategy';
 import { JwtStrategy } from '../auth/strategies/jwt.strategy';
 import { Mongoose } from 'mongoose';
+import { JwtService } from '@nestjs/jwt';
+import { RolesGuard } from '../auth/guards/roles.guards';
 
 @Module({
     imports: [
@@ -14,7 +16,7 @@ import { Mongoose } from 'mongoose';
         ])
     ],
     controllers: [StatusesController],
-    providers: [StatusesService, AzureStrategy, JwtStrategy],
+    providers: [StatusesService, AzureStrategy, JwtStrategy, JwtService, RolesGuard],
     exports: [StatusesService]
 })
 export class StatusesModule {}
