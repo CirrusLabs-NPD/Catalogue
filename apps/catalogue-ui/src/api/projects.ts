@@ -23,3 +23,24 @@ export const addProject = async (project: any) => {
     data: project,
   });
 };
+
+export const updateProject = async (id: string, project: any) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/projects/${id}`,
+    method: 'PUT',
+    data: project,
+  });
+};
+
+export const deleteProject = async (id: string) => {
+  try {
+    const response = await AxiosUtility({
+      url: `${API_BASE_URL}/projects/${id}`,
+      method: 'DELETE',
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting project:', error);
+    throw error;
+  }
+};
