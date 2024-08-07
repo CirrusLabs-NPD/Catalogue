@@ -1,6 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Import Link
-import "./Sidebar.css";
+import { Link } from "react-router-dom";
 import plus from "../app/assets/Plus.png";
 import analytics from "../app/assets/category.png";
 import square from "../app/assets/task-square.png";
@@ -13,101 +12,94 @@ import blue from "../app/assets/Ellipse 11.png";
 
 function Sidebar() {
   return (
-    <aside className="fixed top-18 left-0 h-full w-64">
-      <div className="sidebar">
-      <Link to="/addpage" className="sidebar_link">
-        <button className="sidebar__button">
-          <img
-            src={plus}
-            alt="Logo"
-            style={{ verticalAlign: "middle", marginRight: "8px" }}
-          />
-          <span style={{ verticalAlign: "middle" }}>Add Project</span>
-        </button>
-      </Link>
+    <aside className="fixed top-18 left-0 h-full w-64 border-r border-gray-300 p-5">
+      <div>
+        <Link to="/addpage" className="block">
+          <button className="flex items-center justify-center w-full rounded-2xl py-3 px-5 mb-3 bg-red-600 text-white cursor-pointer hover:bg-red-700">
+            <img
+              src={plus}
+              alt="Logo"
+              className="mr-2"
+            />
+            <span>Add Project</span>
+          </button>
+        </Link>
 
-      {/* <div className="sidebar__link"> */}
-      <Link to="/home" className="sidebar__link">
+        <div className="mt-5">
+          <Link to="/home" className="flex items-center py-4 pl-2 cursor-pointer hover:text-red-600">
             <img
               src={square}
               alt="Projects"
-              style={{ verticalAlign: "middle", marginRight: "8px" }}
+              className="mr-2"
             />
             <span>Projects</span>
-            </Link>
-          {/* </div> */}
-        <div className="sidebar__links">
-          <Link to="/analytics" className="sidebar__link">
+          </Link>
+        </div>
+
+        <div className="mt-3 border-b border-gray-300 pb-5">
+          <Link to="/analytics" className="flex items-center py-4 pl-2 cursor-pointer hover:text-red-600">
             <img
               src={analytics}
               alt="Analytics"
-              style={{ verticalAlign: "middle", marginRight: "8px" }}
+              className="mr-2"
             />
             <span>Analytics</span>
           </Link>
-         
-          <div className="sidebar__link">
+          
+          <div className="flex items-center py-4 pl-2 cursor-pointer hover:text-red-600">
             <img
               src={settings}
               alt="Settings"
-              style={{ verticalAlign: "middle", marginRight: "8px" }}
+              className="mr-2"
             />
             <span>Settings</span>
           </div>
         </div>
       </div>
-      <div className="sidebar">
-        <p className="sidebar__button2">
-          {/* <div className="project_status">
-            <span style={{ verticalAlign: "middle" }}>MY PROJECT STATUS</span>
-            <img
-              src={addsquare}
-              alt="Add"
-              style={{ verticalAlign: "middle", marginLeft: "20px" }}
-            />
-          </div> */}
-           <div className="project_status flex items-center justify-between  p-4">
-           <span className="text-sm whitespace-nowrap">MY PROJECT STATUS</span>
-      <img
-        src={addsquare}
-        alt="Add"
-        className="h-6 w-6 object-contain ml-4"
-      />
-    </div>
-        </p>
-        <div className="sidebar__links1">
-          <p className="sidebar__link">
+
+      <div className="mt-5 ml-5">
+        <div className="flex items-center justify-between p-4">
+          <span className="text-sm whitespace-nowrap">MY PROJECT STATUS</span>
+          <img
+            src={addsquare}
+            alt="Add"
+            className="h-6 w-6 object-contain ml-4"
+          />
+        </div>
+        
+        <div className="mt-5">
+          <div className="flex items-center py-2 cursor-pointer">
             <img
               src={green}
               alt="Ongoing"
-              style={{ verticalAlign: "middle", marginRight: "20px", width: "15px", height: "15px", marginTop: "6px" }}
+              className="mr-5 h-4 w-4 mt-1"
             />
-            Ongoing
-          </p>
-          <p className="sidebar__link">
+            <span>Ongoing</span>
+          </div>
+          <div className="flex items-center py-2 cursor-pointer">
             <img
               src={orange}
               alt="Completed"
-              style={{ verticalAlign: "middle", marginRight: "20px", width: "15px", height: "15px", marginTop: "6px" }}
+              className="mr-5 h-4 w-4 mt-1"
             />
-            Completed
-          </p>
-          <p className="sidebar__link">
+            <span>Completed</span>
+          </div>
+          <div className="flex items-center py-2 cursor-pointer">
             <img
               src={purple}
               alt="Delayed"
-              style={{ verticalAlign: "middle", marginRight: "20px", width: "15px", height: "15px", marginTop: "6px" }}
+              className="mr-5 h-4 w-4 mt-1"
             />
-            Delayed
-          </p>
-          <p className="sidebar__link">
+            <span>Delayed</span>
+          </div>
+          <div className="flex items-center py-2 cursor-pointer">
             <img
               src={blue}
               alt="At Risk"
-              style={{ verticalAlign: "middle", marginRight: "20px", width: "15px", height: "15px", marginTop: "6px" }}
+              className="mr-5 h-4 w-4 mt-1"
             />
-            At Risk
-          </p>
+            <span>At Risk</span>
+          </div>
         </div>
       </div>
     </aside>

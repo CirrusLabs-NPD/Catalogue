@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './Home.css';
 import downarr from '../app/assets/arrow-down.png';
 import filter from '../app/assets/filter.png';
 import { Link } from 'react-router-dom';
@@ -50,24 +49,12 @@ const Home: React.FC = () => {
   return (
     <div className="ml-64 mt-6 h-full overflow-y-scroll">
       <div className="overflow-y-auto h-full">
-        <h1 className="home_header">Project Catalogue</h1>
+        <h1 className="text-[#2C4B84] text-4xl py-1 pl-7">Project Catalogue</h1>
         <div className="flex space-x-4 mt-4 mb-4">
           <FilterDropdown />
           <CalendarDropdown />
         </div>
-        {/* <div className='container'>
-          <h2 className='cirrHeading'>CirrusInsightsNow.AI</h2>
-          <p className='pHome'>Duration: 6 Weeks</p>
-          <ul>
-            <li>Simplifies the creation of user stories</li>
-            <li>
-            Allows users to focus on their project's need</li>
-            <li>Ensures that the user stories align with best practices and project goals.</li>
-          </ul>
-      </div> */}
-
         {/* Project containers */}
-        {/* Responsive Grid for Project Blocks */}
         <div className="flex flex-wrap justify-center">
           {projectData.map((project, index) => (
             <Link
@@ -78,10 +65,10 @@ const Home: React.FC = () => {
               }`}
             >
               <div className="flex flex-col items-start">
-                <h2 className="cirrHeading text-[#5B4BA7] text-xl mt-4 ml-4 mb-2">
+                <h2 className="text-[#5B4BA7] text-xl mt-4 ml-4 mb-2">
                   {project.projectName}
                 </h2>
-                <p className="pHome text-[#0D062D] text-sm ml-4">
+                <p className="text-[#0D062D] text-sm ml-4">
                   Duration: {project.duration}
                 </p>
                 <ul className="list-disc ml-8 text-[#787486] text-lg mt-2">
@@ -92,7 +79,7 @@ const Home: React.FC = () => {
                   })}
                 </ul>
                 <div className="flex justify-between items-center w-full mt-2 px-4">
-                  <span className="pHome text-[#0D062D] text-sm">Progress</span>
+                  <span className="text-[#0D062D] text-sm">Progress</span>
                   <span className="text-[#0D062D] text-sm ml-auto">
                     {project.progressPercent}
                   </span>{' '}

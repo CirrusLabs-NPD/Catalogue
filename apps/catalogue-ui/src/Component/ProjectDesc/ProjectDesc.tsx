@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './ProjectDesc.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Project } from '../ProjectInterface';
 import { getProjectById, deleteProject, updateProject } from '../../api/projects';
@@ -65,42 +64,54 @@ const ProjectDetails: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    if (name === 'progressPercent'){
-      setEditedProject(prev => ({ ...prev!, [name]: parseInt(value)}))
+    if (name === 'progressPercent') {
+      setEditedProject((prev) => ({ ...prev!, [name]: parseInt(value) }));
     } else {
-      setEditedProject(prev => ({ ...prev!, [name]: value }));
+      setEditedProject((prev) => ({ ...prev!, [name]: value }));
     }
   };
 
   const handleArrayInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof Project) => {
     const { value } = e.target;
-    setEditedProject(prev => ({ ...prev!, [field]: value.split(',').map(item => item.trim()) }));
+    setEditedProject((prev) => ({ ...prev!, [field]: value.split(',').map((item) => item.trim()) }));
   };
 
   if (loading) {
-    return <div className="ml-64 mt-6 h-full overflow-y-scroll"><h1 className="home_header mb-5">Loading ...</h1></div>;
+    return (
+      <div className="ml-64 mt-6 h-full overflow-y-scroll">
+        <h1 className="home_header mb-5">Loading ...</h1>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="ml-64 mt-6 h-full overflow-y-scroll"><h1 className="home_header mb-5">{error}</h1></div>;
+    return (
+      <div className="ml-64 mt-6 h-full overflow-y-scroll">
+        <h1 className="home_header mb-5">{error}</h1>
+      </div>
+    );
   }
 
   if (!project) {
-    return <div className="ml-64 mt-6 h-full overflow-y-scroll"><h1 className="home_header mb-5">Project not found</h1></div>;
+    return (
+      <div className="ml-64 mt-6 h-full overflow-y-scroll">
+        <h1 className="home_header mb-5">Project not found</h1>
+      </div>
+    );
   }
 
   return (
-    <div className="ml-64 mt-6 h-[calc(100%-125px)] overflow-y-scroll">
-      <h1 className="home_header mb-5">{isEditing ? 'Edit Project' : project.projectName}</h1>
-      <div style={{ padding: '0 1rem' }}>
+    <div className="ml-64 mt-6 h-[calc(100%-125px)] overflow-y-scroll font-quicksand">
+      <h1 className="text-[#2C4B84] text-4xl border-b-2 border-[#DBDBDB] py-2 px-4 inline-block w-full mt-5">Project Details</h1>
+      <div className="px-4">
         {isEditing ? (
           <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="projectName">
+              <label className="block text-black text-2xl font-medium mb-2" htmlFor="projectName">
                 Project Name
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="projectName"
                 type="text"
                 name="projectName"
@@ -109,11 +120,11 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
+              <label className="block text-black text-2xl font-medium mb-2" htmlFor="description">
                 Description
               </label>
               <textarea
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="description"
                 name="description"
                 value={editedProject!.description}
@@ -121,11 +132,11 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="gitHubLinks">
+              <label className="block text-black text-2xl font-medium mb-2" htmlFor="gitHubLinks">
                 GitHub Link
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="gitHubLinks"
                 type="text"
                 name="gitHubLinks"
@@ -134,11 +145,11 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="demoURL">
+              <label className="block text-black text-2xl font-medium mb-2" htmlFor="demoURL">
                 Demo URL
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="demoURL"
                 type="text"
                 name="demoURL"
@@ -147,11 +158,11 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="technology">
+              <label className="block text-black text-2xl font-medium mb-2" htmlFor="technology">
                 Technology (comma-separated)
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="technology"
                 type="text"
                 name="technology"
@@ -160,11 +171,11 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="resources">
+              <label className="block text-black text-2xl font-medium mb-2" htmlFor="resources">
                 Resources (comma-separated)
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="resources"
                 type="text"
                 name="resources"
@@ -173,11 +184,11 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="duration">
+              <label className="block text-black text-2xl font-medium mb-2" htmlFor="duration">
                 Duration
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="duration"
                 type="text"
                 name="duration"
@@ -186,11 +197,11 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="members">
+              <label className="block text-black text-2xl font-medium mb-2" htmlFor="members">
                 Members (comma-separated)
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="members"
                 type="text"
                 name="members"
@@ -199,10 +210,10 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="projectStatus">
+              <label className="block text-black text-2xl font-medium mb-2" htmlFor="projectStatus">
                 Project Status
                 <select
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="projectStatus"
                 name="projectStatus"
                 value={editedProject!.projectStatus}
@@ -216,11 +227,11 @@ const ProjectDetails: React.FC = () => {
               </label>
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="progressPercent">
+              <label className="block text-black text-2xl font-medium mb-2" htmlFor="progressPercent">
                 Progress Percentage
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="progressPercent"
                 type="number"
                 name="progressPercent"
@@ -229,11 +240,11 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="completionDate">
+              <label className="block text-black text-2xl font-medium mb-2" htmlFor="completionDate">
                 Completion Date
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="completionDate"
                 type="date"
                 name="completionDate"
@@ -259,67 +270,67 @@ const ProjectDetails: React.FC = () => {
           </form>
         ) : (
           <>
-            <div className="project-info-item bg-white rounded-lg w-full max-w-7xl">
-              <h2 className="project-info-heading">Description</h2>
-              <p className="project-info-detail">{project.description}</p>
+            <div className="bg-white rounded-lg w-full max-w-7xl mb-5">
+              <h2 className="text-2xl font-medium text-black mb-2">Description</h2>
+              <p className="text-lg text-[#787486] mb-5">{project.description}</p>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">GitHub Link</h2>
+            <div className="mb-5">
+              <h2 className="text-2xl font-medium text-black mb-2">GitHub Link</h2>
               <a href={project.gitHubLinks} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">
                 {project.gitHubLinks}
               </a>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Website</h2>
+            <div className="mb-5">
+              <h2 className="text-2xl font-medium text-black mb-2">Website</h2>
               <a href={project.demoURL} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">
                 {project.demoURL}
               </a>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Technology</h2>
+            <div className="mb-5">
+              <h2 className="text-2xl font-medium text-black mb-2">Technology</h2>
               <div className="flex flex-wrap gap-2">
                 {project.technology.map((tech, index) => (
                   <div key={index} className="bg-gray-200 px-3 py-1 rounded-lg">
-                    <p className="project-info-detail">{tech}</p>
+                    <p className="text-lg text-[#787486]">{tech}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Resources</h2>
+            <div className="mb-5">
+              <h2 className="text-2xl font-medium text-black mb-2">Resources</h2>
               <div className="flex flex-wrap gap-2">
                 {project.resources.map((res, index) => (
                   <div key={index} className="bg-gray-200 px-3 py-1 rounded-lg">
-                    <p className="project-info-detail">{res}</p>
+                    <p className="text-lg text-[#787486]">{res}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Duration</h2>
-              <p className="project-info-detail">{project.duration}</p>
+            <div className="mb-5">
+              <h2 className="text-2xl font-medium text-black mb-2">Duration</h2>
+              <p className="text-lg text-[#787486]">{project.duration}</p>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Members</h2>
+            <div className="mb-5">
+              <h2 className="text-2xl font-medium text-black mb-2">Members</h2>
               <div className="flex flex-wrap gap-2">
                 {project.members.map((member, index) => (
                   <div key={index} className="bg-gray-200 px-3 py-1 rounded-lg">
-                    <p className="project-info-detail">{member}</p>
+                    <p className="text-lg text-[#787486]">{member}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Status</h2>
-              <p className="project-info-detail">{project.projectStatus}</p>
+            <div className="mb-5">
+              <h2 className="text-2xl font-medium text-black mb-2">Status</h2>
+              <p className="text-lg text-[#787486]">{project.projectStatus}</p>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Progress Percentage</h2>
-              <p className="project-info-detail">{project.progressPercent}%</p>
+            <div className="mb-5">
+              <h2 className="text-2xl font-medium text-black mb-2">Progress Percentage</h2>
+              <p className="text-lg text-[#787486]">{project.progressPercent}%</p>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Completion Date</h2>
-              <p className="project-info-detail">{project.completionDate || 'N/A'}</p>
+            <div className="mb-5">
+              <h2 className="text-2xl font-medium text-black mb-2">Completion Date</h2>
+              <p className="text-lg text-[#787486]">{project.completionDate || 'N/A'}</p>
             </div>
             <div className="mt-6 flex space-x-4">
               <button
@@ -327,12 +338,6 @@ const ProjectDetails: React.FC = () => {
                 onClick={handleEdit}
               >
                 Edit
-              </button>
-              <button
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                onClick={handleDelete}
-              >
-                Delete
               </button>
             </div>
           </>
@@ -343,4 +348,3 @@ const ProjectDetails: React.FC = () => {
 };
 
 export default ProjectDetails;
-//New Branch

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import './AddPage.css';
 import { addProject } from '../../api/projects';
 import { useNavigate } from 'react-router-dom';
 
@@ -56,8 +55,8 @@ const AddPage: React.FC = () => {
 
   return (
     <div className="ml-64 mt-6 h-[calc(100%-100px)] overflow-y-scroll">
-      <div className="AddPage">
-        <h1 className="home_header mb-1">Add Project</h1>
+      <div className="font-quicksand">
+        <h1 className="text-[#2C4B84] text-4xl p-2">Add Project</h1>
         <div className="flex items-center">
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -68,7 +67,7 @@ const AddPage: React.FC = () => {
               <div className="mb-4">
                 <label
                   htmlFor="projectName"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                  className="text-black text-2xl block mb-2"
                 >
                   Project Name
                 </label>
@@ -94,7 +93,7 @@ const AddPage: React.FC = () => {
               <div className="mb-4">
                 <label
                   htmlFor="duration"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                  className="text-black text-2xl block mb-2"
                 >
                   Duration
                 </label>
@@ -120,7 +119,7 @@ const AddPage: React.FC = () => {
               <div className="mb-4">
                 <label
                   htmlFor="gitHubLinks"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                  className="text-black text-2xl block mb-2"
                 >
                   GitHub Links
                 </label>
@@ -146,7 +145,7 @@ const AddPage: React.FC = () => {
               <div className="mb-4">
                 <label
                   htmlFor="technology"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                  className="text-black text-2xl block mb-2"
                 >
                   Technology
                 </label>
@@ -172,7 +171,7 @@ const AddPage: React.FC = () => {
               <div className="mb-4">
                 <label
                   htmlFor="resources"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                  className="text-black text-2xl block mb-2"
                 >
                   Resources
                 </label>
@@ -198,7 +197,7 @@ const AddPage: React.FC = () => {
               <div className="mb-4 col-span-1">
                 <label
                   htmlFor="members"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                  className="text-black text-2xl block mb-2"
                 >
                   Members
                 </label>
@@ -224,7 +223,7 @@ const AddPage: React.FC = () => {
               <div className="mb-4">
                 <label
                   htmlFor="projectStatus"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                  className="text-black text-2xl block mb-2"
                 >
                   Project Status
                 </label>
@@ -254,7 +253,7 @@ const AddPage: React.FC = () => {
               <div className="mb-4 col-span-2">
                 <label
                   htmlFor="description"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                  className="text-black text-2xl block mb-2"
                 >
                   Description
                 </label>
@@ -279,7 +278,7 @@ const AddPage: React.FC = () => {
               <div className="mb-4">
                 <label
                   htmlFor="progressPercent"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                  className="text-black text-2xl block mb-2"
                 >
                   Progress Percent
                 </label>
@@ -307,7 +306,7 @@ const AddPage: React.FC = () => {
               <div className="mb-4">
                 <label
                   htmlFor="demoURL"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                  className="text-black text-2xl block mb-2"
                 >
                   Demo URL
                 </label>
@@ -337,7 +336,7 @@ const AddPage: React.FC = () => {
               <div className="mb-4">
                 <label
                   htmlFor="completionDate"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+                  className="text-black text-2xl block mb-2"
                 >
                   Completion Date
                 </label>
@@ -362,14 +361,14 @@ const AddPage: React.FC = () => {
             <div className="flex justify-start mt-4 space-x-4">
               <button
                 type="submit"
-                className="font-quicksand text-lg bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:shadow-outline"
+                className="text-lg bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:shadow-outline"
               >
                 Submit
               </button>
               <button
                 type="button"
                 onClick={handleCancel}
-                className="font-quicksand text-lg bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg focus:outline-none focus:shadow-outline"
+                className="text-lg bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg focus:outline-none focus:shadow-outline"
               >
                 Cancel
               </button>
