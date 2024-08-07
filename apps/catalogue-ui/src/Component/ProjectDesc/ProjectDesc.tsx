@@ -90,7 +90,7 @@ const ProjectDetails: React.FC = () => {
   }
 
   return (
-    <div className="ml-64 mt-6 h-full overflow-y-scroll">
+    <div className="ml-64 mt-6 h-[calc(100%-125px)] overflow-y-scroll">
       <h1 className="home_header mb-5">{isEditing ? 'Edit Project' : project.projectName}</h1>
       <div style={{ padding: '0 1rem' }}>
         {isEditing ? (
