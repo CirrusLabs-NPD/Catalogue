@@ -7,14 +7,18 @@ import { AppService } from './app.service';
 import { UsersModule } from '../users/users.module';
 import { DashboardModule } from '../dashboard/dashboard.module';
 import { StatusesModule } from '../statuses/statuses.module';
+import { AdminModule } from '../admin/admin.module';
 
 @Module({
-  imports: [MongooseModule.forRoot(process.env.MONGODB_URI), 
-    ProjectsModule, 
-    AuthModule, 
+  imports: [
+    MongooseModule.forRoot(process.env.MONGODB_URI),
+    ProjectsModule,
+    AuthModule,
     UsersModule,
-    DashboardModule, 
-    StatusesModule],
+    DashboardModule,
+    StatusesModule,
+    AdminModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
