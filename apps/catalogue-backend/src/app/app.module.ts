@@ -8,6 +8,7 @@ import { UsersModule } from '../users/users.module';
 import { DashboardModule } from '../dashboard/dashboard.module';
 import { StatusesModule } from '../statuses/statuses.module';
 import { AdminModule } from '../admin/admin.module';
+import { MembersModule } from '../members/members.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AdminModule } from '../admin/admin.module';
     DashboardModule,
     StatusesModule,
     AdminModule,
+    MembersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

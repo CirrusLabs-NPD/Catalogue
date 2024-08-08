@@ -12,7 +12,7 @@ export class CreateMemberDto {
     @ApiProperty({ example: 'john.doe@cirruslabs.io', description: 'Email of team member', required: true })
     email: string;
 
-    @IsUrl()
+    @IsString()
     @IsNotEmpty()
     @ApiProperty({ example: 'Backend Engineer', description: 'Job title/role of team member', required: true })
     title: string;

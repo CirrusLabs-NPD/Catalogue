@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString, IsUrl, IsArray, IsNumber, Min, Max, IsOptional, IsDateString, IsEnum } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
-export class CreateMemberDto {
+export class UpdateMemberDto {
     @IsString()
     @IsNotEmpty()
     @IsOptional()
@@ -14,7 +14,7 @@ export class CreateMemberDto {
     @ApiProperty({ example: 'john.doe@cirruslabs.io', description: 'Email of team member', required: false })
     email?: string;
 
-    @IsUrl()
+    @IsString()
     @IsNotEmpty()
     @IsOptional()
     @ApiProperty({ example: 'Backend Engineer', description: 'Job title/role of team member', required: false })
