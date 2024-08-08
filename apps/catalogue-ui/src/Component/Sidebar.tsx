@@ -48,11 +48,11 @@ function Sidebar() {
          
           <div className="sidebar__link">
             <img
-              src={settings}
-              alt="Settings"
+              src="/src/app/assets/admindash.png"
+              alt="admindash"
               style={{ verticalAlign: "middle", marginRight: "8px" }}
             />
-            <span>Settings</span>
+            <span>Admin Dashboard</span>
           </div>
         </div>
       </div>
