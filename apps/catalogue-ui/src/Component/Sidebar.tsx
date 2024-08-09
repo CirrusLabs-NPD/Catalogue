@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom"; // Import Link
 import "./Sidebar.css";
 import plus from "../app/assets/Plus.png";
@@ -12,6 +12,7 @@ import purple from "../app/assets/Ellipse 10.png";
 import blue from "../app/assets/Ellipse 11.png";
 
 function Sidebar() {
+  const [hoveredStatus, setHoveredStatus] = useState<string | null>(null);
   return (
     <aside className="fixed top-18 left-0 h-full w-64">
       <div className="sidebar">
@@ -58,60 +59,81 @@ function Sidebar() {
       </div>
       <div className="sidebar">
         <p className="sidebar__button2">
-          {/* <div className="project_status">
-            <span style={{ verticalAlign: "middle" }}>MY PROJECT STATUS</span>
+          <div className="project_status flex items-center justify-between p-4">
+            <span className="text-sm whitespace-nowrap">MY PROJECT STATUS</span>
             <img
               src={addsquare}
               alt="Add"
-              style={{ verticalAlign: "middle", marginLeft: "20px" }}
+              className="h-6 w-6 object-contain ml-4"
             />
-          </div> */}
-           <div className="project_status flex items-center justify-between  p-4">
-           <span className="text-sm whitespace-nowrap">MY PROJECT STATUS</span>
-      <img
-        src={addsquare}
-        alt="Add"
-        className="h-6 w-6 object-contain ml-4"
-      />
-    </div>
+          </div>
         </p>
         <div className="sidebar__links1">
-          <p className="sidebar__link">
+          <p
+            className="sidebar__link"
+            onMouseEnter={() => setHoveredStatus("Ongoing")}
+            onMouseLeave={() => setHoveredStatus(null)}
+          >
             <img
               src={green}
               alt="Ongoing"
               style={{ verticalAlign: "middle", marginRight: "20px", width: "15px", height: "15px", marginTop: "6px" }}
             />
             Ongoing
+            {hoveredStatus === "Ongoing" && (
+              <div className="tooltip">Projects that are currently ongoing.</div>
+            )}
           </p>
-          <p className="sidebar__link">
+          <p
+            className="sidebar__link"
+            onMouseEnter={() => setHoveredStatus("Completed")}
+            onMouseLeave={() => setHoveredStatus(null)}
+          >
             <img
               src={orange}
               alt="Completed"
               style={{ verticalAlign: "middle", marginRight: "20px", width: "15px", height: "15px", marginTop: "6px" }}
             />
             Completed
+            {hoveredStatus === "Completed" && (
+              <div className="tooltip">Projects that are completed.</div>
+            )}
           </p>
-          <p className="sidebar__link">
+          <p
+            className="sidebar__link"
+            onMouseEnter={() => setHoveredStatus("Delayed")}
+            onMouseLeave={() => setHoveredStatus(null)}
+          >
             <img
               src={purple}
               alt="Delayed"
               style={{ verticalAlign: "middle", marginRight: "20px", width: "15px", height: "15px", marginTop: "6px" }}
             />
             Delayed
+            {hoveredStatus === "Delayed" && (
+              <div className="tooltip">Projects that are delayed.</div>
+            )}
           </p>
-          <p className="sidebar__link">
+          <p
+            className="sidebar__link"
+            onMouseEnter={() => setHoveredStatus("At Risk")}
+            onMouseLeave={() => setHoveredStatus(null)}
+          >
             <img
               src={blue}
               alt="At Risk"
               style={{ verticalAlign: "middle", marginRight: "20px", width: "15px", height: "15px", marginTop: "6px" }}
             />
             At Risk
+            {hoveredStatus === "At Risk" && (
+              <div className="tooltip">Projects that are at risk.</div>
+            )}
           </p>
         </div>
       </div>
     </aside>
   );
 }
+
 
 export default Sidebar;
