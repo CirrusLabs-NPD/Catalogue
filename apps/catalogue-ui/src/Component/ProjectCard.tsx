@@ -30,7 +30,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
           {project.projectName}
         </h2>
         <p className="pHome text-[#0D062D] text-sm ml-4">
-          Duration: {project.duration}
+          Start Date: {project.startDate}
         </p>
         <ul className="list-disc ml-8 text-[#787486] text-lg mt-2">
           {project.description.split('.').slice(0, 2).map((item, i) => (
