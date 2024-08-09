@@ -22,3 +22,11 @@ export const getMonthlyCompletion = async () => {
       method: 'GET'
     });
 };
+
+export const getProjectsByStatus = async (statuses: string[]) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/filter/status`,
+    method: 'GET',
+    params: { statuses: statuses.join(',') }
+  });
+};

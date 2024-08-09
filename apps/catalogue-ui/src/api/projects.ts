@@ -44,3 +44,10 @@ export const deleteProject = async (id: string) => {
     throw error;
   }
 };
+
+export const getStatuses = async () => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/statuses`,
+    method: 'GET',
+  });
+};

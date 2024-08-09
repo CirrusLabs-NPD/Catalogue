@@ -12,6 +12,7 @@ import Analytics from '../Component/Analytics/Analytics';
 import AddPage from '../Component/AddProject/AddPage';
 import ProjectDetails from '../Component/ProjectDesc/ProjectDesc';
 import Loginpage from '../Component/Loginpage/Loginpage';
+import FilteredProjects from '../Component/FilteredProjects';
 
 export function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -64,13 +65,12 @@ export function App() {
             path="/description/:id"
             element={<ProtectedRoute element={<ProjectDetails />} />}
           />
-          {/* Add more routes here */}
-          <Route path="*" element={<Navigate to="/" />} />{' '}
-          {/* Redirect to login if route not found */}
+          <Route
+            path="/projects/filter/:status"
+            element={<ProtectedRoute element={<FilteredProjects />} />}
+          />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-        {/* <div className="mt-6 h-full overflow-y-scroll">
-         
-        </div> */}
       </div>
     </Router>
   );

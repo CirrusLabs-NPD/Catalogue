@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import './AddPage.css';
-import { addProject } from '../../api/projects';
+import { addProject, getStatuses } from '../../api/projects';
 import { useNavigate } from 'react-router-dom';
 
 interface FormData {
@@ -18,7 +18,14 @@ interface FormData {
   completionDate?: string;
 }
 
+interface Status {
+  _id: string;
+  projectStatus: string;
+}
+
+
 const AddPage: React.FC = () => {
+  const [statuses, setStatuses] = useState<Status[]>([]);
   const {
     register,
     handleSubmit,
@@ -27,6 +34,19 @@ const AddPage: React.FC = () => {
   } = useForm<FormData>();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const fetchedStatuses = await getStatuses();
+        setStatuses(fetchedStatuses);
+      } catch (error) {
+        console.error('Error fetching members:', error);
+      }
+    };
+
+    fetchMembers();
+  }, []);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
@@ -238,10 +258,11 @@ const AddPage: React.FC = () => {
                   }`}
                 >
                   <option value="">Select status</option>
-                  <option value="Ongoing">Ongoing</option>
-                  <option value="Completed">Completed</option>
-                  <option value="At Risk">At Risk</option>
-                  <option value="Delayed">Delayed</option>
+                  {statuses.map((status) => (
+                    <option key={status._id} value={status.projectStatus}>
+                      {status.projectStatus}
+                    </option>
+                  ))}
                 </select>
                 {errors.projectStatus && (
                   <p className="text-red-500 text-sm mt-1">
