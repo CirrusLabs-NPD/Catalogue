@@ -7,10 +7,10 @@ export class CreateProjectDto {
     @ApiProperty({ example: 'Example Project', description: 'Name of project', required: true })
     projectName: string;
 
-    @IsString()
+    @IsDateString()
     @IsNotEmpty()
-    @ApiProperty({ example: '8 weeks', description: 'Time duration of project', required: true })
-    duration: string;
+    @ApiProperty({ example: '2020-01-31', description: 'Start date of project in YYYY-MM-DD format', required: false })
+    startDate: string;
 
     @IsUrl()
     @IsNotEmpty()
