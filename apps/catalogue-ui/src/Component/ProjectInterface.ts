@@ -1,7 +1,7 @@
 export interface Project {
     _id: string;
     projectName: string;
-    duration: string;
+    startDate?: string;
     gitHubLinks: string;
     technology: string[];
     resources: string[];

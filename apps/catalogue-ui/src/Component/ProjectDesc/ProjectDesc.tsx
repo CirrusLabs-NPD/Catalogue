@@ -173,15 +173,15 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="duration">
-                Duration
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="startDate">
+                Start Date
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="duration"
-                type="text"
-                name="duration"
-                value={editedProject!.duration}
+                id="startDate"
+                type="date"
+                name="startDate"
+                value={editedProject!.startDate || ''}
                 onChange={handleInputChange}
               />
             </div>
@@ -296,8 +296,8 @@ const ProjectDetails: React.FC = () => {
               </div>
             </div>
             <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Duration</h2>
-              <p className="project-info-detail">{project.duration}</p>
+              <h2 className="project-info-heading">Start Date</h2>
+              <p className="project-info-detail">{project.startDate || 'N/A'}</p>
             </div>
             <div className="project-info-item mt-4">
               <h2 className="project-info-heading">Members</h2>

@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import './AddPage.css';
-import { addProject } from '../../api/projects';
+import { addProject, getStatuses } from '../../api/projects';
 import { useNavigate } from 'react-router-dom';
 
 interface FormData {
   projectName: string;
-  duration: string;
+  startDate?: string;
   gitHubLinks: string;
   technology: string;
   resources: string;
@@ -18,7 +18,14 @@ interface FormData {
   completionDate?: string;
 }
 
+interface Status {
+  _id: string;
+  projectStatus: string;
+}
+
+
 const AddPage: React.FC = () => {
+  const [statuses, setStatuses] = useState<Status[]>([]);
   const {
     register,
     handleSubmit,
@@ -28,11 +35,24 @@ const AddPage: React.FC = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const fetchedStatuses = await getStatuses();
+        setStatuses(fetchedStatuses);
+      } catch (error) {
+        console.error('Error fetching members:', error);
+      }
+    };
+
+    fetchMembers();
+  }, []);
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       const newProject = {
         projectName: data.projectName,
-        duration: data.duration,
+        startDate: data.startDate,
         gitHubLinks: data.gitHubLinks,
         technology: data.technology.split(',').map((tech) => tech.trim()),
         resources: data.resources.split(',').map((resource) => resource.trim()),
@@ -90,28 +110,28 @@ const AddPage: React.FC = () => {
                 )}
               </div>
 
-              {/* Duration Field */}
+              {/* Start Date Field */}
               <div className="mb-4">
                 <label
-                  htmlFor="duration"
+                  htmlFor="startDate"
                   className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
                 >
-                  Duration
+                  Start Date
                 </label>
                 <input
-                  type="text"
-                  id="duration"
-                  placeholder="Enter duration"
-                  {...register('duration', {
-                    required: 'Duration is required',
+                  type="date"
+                  id="startDate"
+                  placeholder="Enter start date"
+                  {...register('startDate', {
+                    required: 'Start Date is required',
                   })}
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.duration ? 'border-red-500' : 'border-gray-300'
+                    errors.startDate ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
-                {errors.duration && (
+                {errors.startDate && (
                   <p className="text-red-500 text-sm mt-1">
-                    {errors.duration.message}
+                    {errors.startDate.message}
                   </p>
                 )}
               </div>
@@ -238,10 +258,11 @@ const AddPage: React.FC = () => {
                   }`}
                 >
                   <option value="">Select status</option>
-                  <option value="Ongoing">Ongoing</option>
-                  <option value="Completed">Completed</option>
-                  <option value="At Risk">At Risk</option>
-                  <option value="Delayed">Delayed</option>
+                  {statuses.map((status) => (
+                    <option key={status._id} value={status.projectStatus}>
+                      {status.projectStatus}
+                    </option>
+                  ))}
                 </select>
                 {errors.projectStatus && (
                   <p className="text-red-500 text-sm mt-1">
