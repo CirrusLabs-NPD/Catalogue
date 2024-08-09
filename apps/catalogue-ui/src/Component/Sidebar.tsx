@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 import plus from "../app/assets/Plus.png";
 import analytics from "../app/assets/category.png";
 import square from "../app/assets/task-square.png";
 import settings from "../app/assets/setting-2.png";
 import addsquare from "../app/assets/add-square.png";
-import { getStatuses } from '../api/projects'; // Make sure this path is correct
+import { getStatuses } from '../api/projects';
 
 interface Status {
   _id: string;
@@ -22,6 +22,7 @@ const statusColors: { [key: string]: string } = {
 
 function Sidebar() {
   const [statuses, setStatuses] = useState<Status[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchStatuses = async () => {
@@ -36,29 +37,34 @@ function Sidebar() {
     fetchStatuses();
   }, []);
 
+  const handleStatusClick = (status: string) => {
+    navigate(`/projects/filter/${encodeURIComponent(status)}`);
+  };
+
   return (
     <aside className="fixed top-18 left-0 h-full w-64">
       <div className="sidebar">
-        <Link to="/addpage" className="sidebar_link">
-          <button className="sidebar__button">
-            <img
-              src={plus}
-              alt="Logo"
-              style={{ verticalAlign: "middle", marginRight: "8px" }}
-            />
-            <span style={{ verticalAlign: "middle" }}>Add Project</span>
-          </button>
-        </Link>
-
-        <Link to="/home" className="sidebar__link">
+      <Link to="/addpage" className="sidebar_link">
+        <button className="sidebar__button">
           <img
-            src={square}
-            alt="Projects"
+            src={plus}
+            alt="Logo"
             style={{ verticalAlign: "middle", marginRight: "8px" }}
           />
-          <span>Projects</span>
-        </Link>
+          <span style={{ verticalAlign: "middle" }}>Add Project</span>
+        </button>
+      </Link>
 
+      {/* <div className="sidebar__link"> */}
+      <Link to="/home" className="sidebar__link">
+            <img
+              src={square}
+              alt="Projects"
+              style={{ verticalAlign: "middle", marginRight: "8px" }}
+            />
+            <span>Projects</span>
+            </Link>
+          {/* </div> */}
         <div className="sidebar__links">
           <Link to="/analytics" className="sidebar__link">
             <img
@@ -92,7 +98,11 @@ function Sidebar() {
         </p>
         <div className="sidebar__links1">
           {statuses.map((status) => (
-            <p key={status._id} className="sidebar__link">
+            <p 
+              key={status._id} 
+              className="sidebar__link cursor-pointer"
+              onClick={() => handleStatusClick(status.projectStatus)}
+            >
               <span
                 style={{
                   display: "inline-block",
