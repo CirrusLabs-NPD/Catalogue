@@ -20,6 +20,9 @@ export class ProjectClass extends Document {
     
     @Prop({ required: true})
     projectStatus: string;
+
+    @Prop({ required: true })
+    projectManager: string;
     
     @Prop({ required: true })
     members: string[];

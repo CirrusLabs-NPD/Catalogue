@@ -40,6 +40,11 @@ export class UpdateProjectDto {
     @ApiProperty({ example: 'Ongoing', description: 'Status of project', required: false })
     projectStatus?: string;
 
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({ example: 'Aakash', description: 'Name of Project Manager', required: false })
+    projectManager?: string;
+
     @IsArray()
     @IsString({ each: true })
     @IsNotEmpty({ each: true })
