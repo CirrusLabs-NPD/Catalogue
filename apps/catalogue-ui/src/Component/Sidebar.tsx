@@ -1,11 +1,9 @@
-
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 import plus from "../app/assets/Plus.png";
 import analytics from "../app/assets/category.png";
 import square from "../app/assets/task-square.png";
-import settings from "../app/assets/setting-2.png";
 import addsquare from "../app/assets/add-square.png";
 import { getStatuses } from '../api/projects';
 
@@ -102,7 +100,7 @@ function Sidebar() {
           {statuses.map((status) => (
             <p 
               key={status._id} 
-              className="sidebar__link cursor-pointer"
+              className="sidebar__link cursor-pointer relative"
               onMouseEnter={() => setHoveredStatus(status.projectStatus)}
               onMouseLeave={() => setHoveredStatus(null)}
               onClick={() => handleStatusClick(status.projectStatus)}
@@ -120,6 +118,9 @@ function Sidebar() {
                 }}
               />
               {status.projectStatus}
+              {hoveredStatus === status.projectStatus && (
+                <div className="tooltip">{`View projects with status ${status.projectStatus}`}</div>
+              )}
             </p>
           ))}
         </div>
@@ -127,6 +128,5 @@ function Sidebar() {
     </aside>
   );
 }
-
 
 export default Sidebar;
