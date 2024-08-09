@@ -34,6 +34,11 @@ export class CreateProjectDto {
     @ApiProperty({ example: 'Ongoing', description: 'Status of project', required: true })
     projectStatus: string;
 
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({ example: 'Aakash', description: 'Name of Project Manager', required: true })
+    projectManager: string;
+
     @IsArray()
     @IsString({ each: true })
     @IsNotEmpty({ each: true })
