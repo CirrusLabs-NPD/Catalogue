@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface FormData {
   projectName: string;
-  duration: string;
+  startDate?: string;
   gitHubLinks: string;
   technology: string;
   resources: string;
@@ -52,7 +52,7 @@ const AddPage: React.FC = () => {
     try {
       const newProject = {
         projectName: data.projectName,
-        duration: data.duration,
+        startDate: data.startDate,
         gitHubLinks: data.gitHubLinks,
         technology: data.technology.split(',').map((tech) => tech.trim()),
         resources: data.resources.split(',').map((resource) => resource.trim()),
@@ -110,28 +110,28 @@ const AddPage: React.FC = () => {
                 )}
               </div>
 
-              {/* Duration Field */}
+              {/* Start Date Field */}
               <div className="mb-4">
                 <label
-                  htmlFor="duration"
+                  htmlFor="startDate"
                   className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
                 >
-                  Duration
+                  Start Date
                 </label>
                 <input
-                  type="text"
-                  id="duration"
-                  placeholder="Enter duration"
-                  {...register('duration', {
-                    required: 'Duration is required',
+                  type="date"
+                  id="startDate"
+                  placeholder="Enter start date"
+                  {...register('startDate', {
+                    required: 'Start Date is required',
                   })}
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.duration ? 'border-red-500' : 'border-gray-300'
+                    errors.startDate ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
-                {errors.duration && (
+                {errors.startDate && (
                   <p className="text-red-500 text-sm mt-1">
-                    {errors.duration.message}
+                    {errors.startDate.message}
                   </p>
                 )}
               </div>

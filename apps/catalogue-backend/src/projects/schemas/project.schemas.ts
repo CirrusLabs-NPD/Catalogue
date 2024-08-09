@@ -7,7 +7,7 @@ export class ProjectClass extends Document {
     projectName: string;
     
     @Prop({ required: true })
-    duration: string;
+    startDate: string;
     
     @Prop({ required: true })
     gitHubLinks: string;

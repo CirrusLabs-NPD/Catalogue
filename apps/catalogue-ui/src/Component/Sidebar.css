@@ -2,6 +2,7 @@
     width: 250px;
     padding: 20px;
     border-right: 1px solid #c2c2c2;
+    position: relative;
   }
   .sidebar__button {
     display: flex; /* Use flexbox */
@@ -28,6 +29,7 @@
     margin-left: 30px;
     display: flex;
     flex-direction: row;
+    position: relative;
   }
   
   .sidebar__link:hover {
@@ -39,4 +41,20 @@
   .sidebar__button2{
     margin-left: 20px;
     margin-bottom: 30px;
+  }
+  .sidebar__links1 p {
+    position: relative; 
+  }
+  .tooltip {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    margin-left: 10px;
+    padding: 5px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 3px;
+    white-space: nowrap;
+    z-index: 10;
+    display: inline-block; 
   }

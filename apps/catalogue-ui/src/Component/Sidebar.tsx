@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Sidebar.css";
@@ -21,6 +22,7 @@ const statusColors: { [key: string]: string } = {
 };
 
 function Sidebar() {
+  const [hoveredStatus, setHoveredStatus] = useState<string | null>(null);
   const [statuses, setStatuses] = useState<Status[]>([]);
   const navigate = useNavigate();
 
@@ -40,7 +42,7 @@ function Sidebar() {
   const handleStatusClick = (status: string) => {
     navigate(`/projects/filter/${encodeURIComponent(status)}`);
   };
-
+    
   return (
     <aside className="fixed top-18 left-0 h-full w-64">
       <div className="sidebar">
@@ -101,6 +103,8 @@ function Sidebar() {
             <p 
               key={status._id} 
               className="sidebar__link cursor-pointer"
+              onMouseEnter={() => setHoveredStatus(status.projectStatus)}
+              onMouseLeave={() => setHoveredStatus(null)}
               onClick={() => handleStatusClick(status.projectStatus)}
             >
               <span
@@ -123,5 +127,6 @@ function Sidebar() {
     </aside>
   );
 }
+
 
 export default Sidebar;
