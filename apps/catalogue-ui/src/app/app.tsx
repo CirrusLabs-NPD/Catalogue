@@ -66,7 +66,7 @@ export function App() {
             element={<ProtectedRoute element={<ProjectDetails />} />}
           />
           <Route
-            path="/projects/filter/:status"
+            path="/projects/filter/:filterType"
             element={<ProtectedRoute element={<FilteredProjects />} />}
           />
           <Route path="*" element={<Navigate to="/" />} />

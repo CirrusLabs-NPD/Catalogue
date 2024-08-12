@@ -23,7 +23,6 @@ interface Status {
   projectStatus: string;
 }
 
-
 const AddPage: React.FC = () => {
   const [statuses, setStatuses] = useState<Status[]>([]);
   const {

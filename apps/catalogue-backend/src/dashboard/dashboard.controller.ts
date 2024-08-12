@@ -100,6 +100,15 @@ export class DashboardController {
         return this.dashboardService.getProjectsByFilters({statuses, members, technology, resources});
     }
 
+    @Get('filter/:category')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
+    @ApiParam({ name: 'category', enum: ['technology', 'resources', 'statuses', 'members'], required: true })
+    @ApiResponse({ status: 200, description: 'Returns distinct values for the specified filter category.' })
+    async getFilterOptions(@Param('category') category: string) {
+        return this.dashboardService.getFilterOptions(category);
+    }
+
     @Get('sort/name')
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')

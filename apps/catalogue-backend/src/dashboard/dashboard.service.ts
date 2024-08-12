@@ -82,6 +82,9 @@ export class DashboardService {
     }
 
     async getProjectsByResources(resources: string[]) {
+        if (!Array.isArray(resources)) {
+            resources = [resources];
+        }
         return await this.projectModel.find({ resources: { $in: resources } }).exec();
     }
 
@@ -114,6 +117,21 @@ export class DashboardService {
         }
 
         return await this.projectModel.find(query).exec();
+    }
+
+    async getFilterOptions(category: string) {
+        switch (category) {
+            case 'technology':
+                return await this.projectModel.distinct('technology').exec();
+            case 'resources':
+                return await this.projectModel.distinct('resources').exec();
+            case 'statuses':
+                return await this.projectModel.distinct('projectStatus').exec();
+            case 'members':
+                return await this.projectModel.distinct('members').exec();
+            default:
+                return [];
+        }
     }
 
     async sortProjects(field: string, order: SortOrder) {

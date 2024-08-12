@@ -38,7 +38,7 @@ function Sidebar() {
   }, []);
 
   const handleStatusClick = (status: string) => {
-    navigate(`/projects/filter/${encodeURIComponent(status)}`);
+    navigate(`/projects/filter/statuses?${encodeURIComponent(status)}`);
   };
     
   return (
