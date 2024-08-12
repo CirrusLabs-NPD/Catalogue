@@ -63,7 +63,7 @@ function FilteredProjects() {
   return (
     <div className="ml-64 mt-6 h-full overflow-y-scroll">
       <div className="overflow-y-auto h-full">
-        <h1 className="home_header">Projects Filtered By: {renderFilterSummary()}</h1>
+        <h1 className="text-[#2C4B84] text-4xl pl-8 pt-1">Projects Filtered By: {renderFilterSummary()}</h1>
         <FilterDropdown />
         <div className="flex flex-wrap justify-center">
           {projects.map((project, index) => (
