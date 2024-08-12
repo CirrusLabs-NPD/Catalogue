@@ -82,6 +82,9 @@ export class DashboardService {
     }
 
     async getProjectsByResources(resources: string[]) {
+        if (!Array.isArray(resources)) {
+            resources = [resources];
+        }
         return await this.projectModel.find({ resources: { $in: resources } }).exec();
     }
 
@@ -94,26 +97,46 @@ export class DashboardService {
         }).exec();
     }
 
-    async getProjectsByFilters(filters: any) {
-        const query: any = {};
+    async getProjectsByFilters(filters: {
+    statuses?: string[],
+    members?: string[],
+    technology?: string[],
+    resources?: string[]
+}) {
+    const query: any = {};
 
-        if (filters.statuses && filters.statuses.length > 0) {
-            query.projectStatus = { $in: filters.statuses };
+    if (filters.statuses && filters.statuses.length > 0) {
+        query.projectStatus = { $in: filters.statuses };
+    }
+
+    if (filters.members && filters.members.length > 0) {
+        query.members = { $in: filters.members };
+    }
+
+    if (filters.technology && filters.technology.length > 0) {
+        query.technology = { $in: filters.technology };
+    }
+
+    if (filters.resources && filters.resources.length > 0) {
+        query.resources = { $in: filters.resources };
+    }
+
+    return await this.projectModel.find(query).exec();
+}
+
+    async getFilterOptions(category: string) {
+        switch (category) {
+            case 'technology':
+                return await this.projectModel.distinct('technology').exec();
+            case 'resources':
+                return await this.projectModel.distinct('resources').exec();
+            case 'statuses':
+                return await this.projectModel.distinct('projectStatus').exec();
+            case 'members':
+                return await this.projectModel.distinct('members').exec();
+            default:
+                return [];
         }
-
-        if (filters.members && filters.members.length > 0) {
-            query.members = { $in: filters.members };
-        }
-
-        if (filters.technologies && filters.technologies.length > 0) {
-            query.technology = { $in: filters.technologies };
-        }
-
-        if (filters.resources && filters.resources.length > 0) {
-            query.resources = { $in: filters.resources };
-        }
-
-        return await this.projectModel.find(query).exec();
     }
 
     async sortProjects(field: string, order: SortOrder) {

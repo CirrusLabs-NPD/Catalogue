@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './Header.css'; // Assuming you use a separate CSS file for styles
 import logo from '../app/assets/CirrusLabsLogo.png';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,7 +20,6 @@ function Header() {
   useEffect(() => {
     const storedUser = sessionStorage.getItem('user');
     if (storedUser) {
-      console.log(storedUser);
       setUser(JSON.parse(storedUser));
     }
   }, []);
@@ -56,24 +54,36 @@ function Header() {
   };
 
   return (
-    <header className="header fixed top-0 left-0 w-full">
-      <div className="header__logo">
+    <header className="flex items-center justify-between p-2.5 bg-[#f8f9fa] border border-gray-300 relative fixed top-0 left-0 w-full">
+      <div className="ml-7">
         <Link to="/home">
-          <img src={logo} alt="Logo" />
+          <img src={logo} alt="Logo" className="h-[55px]" />
         </Link>
       </div>
-      <div className="header__search">
-        <input type="text" placeholder="Search..." />
+      <div className="flex-1 ml-[10%] mr-5">
+        <input
+          type="text"
+          placeholder="Search..."
+          className="w-full p-2.5 border border-gray-300 rounded-lg"
+        />
       </div>
-      <div className="header__user-info">
-        <div className="header__name">{user ? user.name : 'Guest'}</div>
-        <div className="header__location">{user ? user.username : ''}</div>
-        <div className="header__role">{user ? capitalizeFirstLetter(user.role) : ''}</div>
+      <div className="flex flex-col items-end mr-5">
+        <div className="text-xl font-bold">{user ? user.name : 'Guest'}</div>
+        <div className="text-sm text-gray-500">{user ? user.username : ''}</div>
+        <div className="text-sm text-gray-700 mt-1">
+          {user ? capitalizeFirstLetter(user.role) : ''}
+        </div>
       </div>
-      <div className="header__icon" onClick={handleIconClick}>
+      <div
+        className="relative ml-2.5 cursor-pointer"
+        onClick={handleIconClick}
+      >
         <FontAwesomeIcon icon={faAngleDown} size="xl" />
         {isModalOpen && (
-          <div ref={modalRef} className="header__dropdown">
+          <div
+            ref={modalRef}
+            className="absolute top-[calc(100%+25px)] right-0 w-48 bg-white border border-gray-200 shadow-lg rounded-lg p-4 z-50"
+          >
             <div className="flex flex-col items-center space-y-4">
               <div className="text-sm text-gray-700">Profile Settings</div>
               <button

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './ProjectDesc.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Project } from '../ProjectInterface';
 import { getProjectById, deleteProject, updateProject } from '../../api/projects';
@@ -78,25 +77,25 @@ const ProjectDetails: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="ml-64 mt-6 h-full overflow-y-scroll"><h1 className="home_header mb-5">Loading ...</h1></div>;
+    return <div className="ml-64 mt-6 h-full overflow-y-scroll"><h1 className="text-[#2C4B84] text-4xl py-2 pl-4 mb-5">Loading ...</h1></div>;
   }
 
   if (error) {
-    return <div className="ml-64 mt-6 h-full overflow-y-scroll"><h1 className="home_header mb-5">{error}</h1></div>;
+    return <div className="ml-64 mt-6 h-full overflow-y-scroll"><h1 className="text-[#2C4B84] text-4xl py-2 pl-4 mb-5">{error}</h1></div>;
   }
 
   if (!project) {
-    return <div className="ml-64 mt-6 h-full overflow-y-scroll"><h1 className="home_header mb-5">Project not found</h1></div>;
+    return <div className="ml-64 mt-6 h-full overflow-y-scroll"><h1 className="text-[#2C4B84] text-4xl py-2 pl-4 mb-5">Project not found</h1></div>;
   }
 
   return (
     <div className="ml-64 mt-6 h-full overflow-y-scroll">
-      <h1 className="home_header mb-5">{isEditing ? 'Edit Project' : project.projectName}</h1>
-      <div style={{ padding: '0 1rem' }}>
+      <h1 className="text-[#2C4B84] text-4xl py-2 pl-4 mb-5">{isEditing ? 'Edit Project' : project.projectName}</h1>
+      <div className="px-4">
         {isEditing ? (
           <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="projectName">
+              <label className="block text-gray-700 text-lg font-medium mb-2" htmlFor="projectName">
                 Project Name
               </label>
               <input
@@ -109,7 +108,7 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
+              <label className="block text-gray-700 text-lg font-medium mb-2" htmlFor="description">
                 Description
               </label>
               <textarea
@@ -121,7 +120,7 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="gitHubLinks">
+              <label className="block text-gray-700 text-lg font-medium mb-2" htmlFor="gitHubLinks">
                 GitHub Link
               </label>
               <input
@@ -134,7 +133,7 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="demoURL">
+              <label className="block text-gray-700 text-lg font-medium mb-2" htmlFor="demoURL">
                 Demo URL
               </label>
               <input
@@ -147,7 +146,7 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="technology">
+              <label className="block text-gray-700 text-lg font-medium mb-2" htmlFor="technology">
                 Technology (comma-separated)
               </label>
               <input
@@ -160,7 +159,7 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="resources">
+              <label className="block text-gray-700 text-lg font-medium mb-2" htmlFor="resources">
                 Resources (comma-separated)
               </label>
               <input
@@ -173,7 +172,7 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="startDate">
+              <label className="block text-gray-700 text-lg font-medium mb-2" htmlFor="startDate">
                 Start Date
               </label>
               <input
@@ -186,7 +185,7 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="members">
+              <label className="block text-gray-700 text-lg font-medium mb-2" htmlFor="members">
                 Members (comma-separated)
               </label>
               <input
@@ -199,7 +198,7 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="projectStatus">
+              <label className="block text-gray-700 text-lg font-medium mb-2" htmlFor="projectStatus">
                 Project Status
                 <select
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -216,7 +215,7 @@ const ProjectDetails: React.FC = () => {
               </label>
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="progressPercent">
+              <label className="block text-gray-700 text-lg font-medium mb-2" htmlFor="progressPercent">
                 Progress Percentage
               </label>
               <input
@@ -229,7 +228,7 @@ const ProjectDetails: React.FC = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="completionDate">
+              <label className="block text-gray-700 text-lg font-medium mb-2" htmlFor="completionDate">
                 Completion Date
               </label>
               <input
@@ -259,67 +258,67 @@ const ProjectDetails: React.FC = () => {
           </form>
         ) : (
           <>
-            <div className="project-info-item bg-white rounded-lg w-full max-w-7xl">
-              <h2 className="project-info-heading">Description</h2>
-              <p className="project-info-detail">{project.description}</p>
+            <div className="mb-5 p-5 bg-white rounded-lg w-full max-w-7xl">
+              <h2 className="text-2xl font-medium text-black">Description</h2>
+              <p className="text-lg text-[#787486] mt-1">{project.description}</p>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">GitHub Link</h2>
+            <div className="mb-5 mt-4">
+              <h2 className="text-2xl font-medium text-black">GitHub Link</h2>
               <a href={project.gitHubLinks} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">
                 {project.gitHubLinks}
               </a>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Website</h2>
+            <div className="mb-5 mt-4">
+              <h2 className="text-2xl font-medium text-black">Website</h2>
               <a href={project.demoURL} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">
                 {project.demoURL}
               </a>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Technology</h2>
+            <div className="mb-5 mt-4">
+              <h2 className="text-2xl font-medium text-black">Technology</h2>
               <div className="flex flex-wrap gap-2">
                 {project.technology.map((tech, index) => (
                   <div key={index} className="bg-gray-200 px-3 py-1 rounded-lg">
-                    <p className="project-info-detail">{tech}</p>
+                    <p className="text-lg text-[#787486]">{tech}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Resources</h2>
+            <div className="mb-5 mt-4">
+              <h2 className="text-2xl font-medium text-black">Resources</h2>
               <div className="flex flex-wrap gap-2">
                 {project.resources.map((res, index) => (
                   <div key={index} className="bg-gray-200 px-3 py-1 rounded-lg">
-                    <p className="project-info-detail">{res}</p>
+                    <p className="text-lg text-[#787486]">{res}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Start Date</h2>
-              <p className="project-info-detail">{project.startDate || 'N/A'}</p>
+            <div className="mb-5 mt-4">
+              <h2 className="text-2xl font-medium text-black">Start Date</h2>
+              <p className="text-lg text-[#787486]">{project.startDate || 'N/A'}</p>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Members</h2>
+            <div className="mb-5 mt-4">
+              <h2 className="text-2xl font-medium text-black">Members</h2>
               <div className="flex flex-wrap gap-2">
                 {project.members.map((member, index) => (
                   <div key={index} className="bg-gray-200 px-3 py-1 rounded-lg">
-                    <p className="project-info-detail">{member}</p>
+                    <p className="text-lg text-[#787486]">{member}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Status</h2>
-              <p className="project-info-detail">{project.projectStatus}</p>
+            <div className="mb-5 mt-4">
+              <h2 className="text-2xl font-medium text-black">Status</h2>
+              <p className="text-lg text-[#787486]">{project.projectStatus}</p>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Progress Percentage</h2>
-              <p className="project-info-detail">{project.progressPercent}%</p>
+            <div className="mb-5 mt-4">
+              <h2 className="text-2xl font-medium text-black">Progress Percentage</h2>
+              <p className="text-lg text-[#787486]">{project.progressPercent}%</p>
             </div>
-            <div className="project-info-item mt-4">
-              <h2 className="project-info-heading">Completion Date</h2>
-              <p className="project-info-detail">{project.completionDate || 'N/A'}</p>
+            <div className="mb-5 mt-4">
+              <h2 className="text-2xl font-medium text-black">Completion Date</h2>
+              <p className="text-lg text-[#787486]">{project.completionDate || 'N/A'}</p>
             </div>
             <div className="mt-6 flex space-x-4">
               <button

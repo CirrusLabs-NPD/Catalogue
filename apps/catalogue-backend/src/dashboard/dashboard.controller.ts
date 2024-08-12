@@ -60,7 +60,7 @@ export class DashboardController {
         return this.dashboardService.getProjectsByMembers(members);
     }
 
-    @Get('filter/technology')
+    @Get('filter/tech')
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
     @ApiResponse({ status: 200, description: 'Returns projects filtered by technology.' })
@@ -98,6 +98,15 @@ export class DashboardController {
     @ApiQuery({ name: 'resources', isArray: true, type: String, required: false })
     getProjectsByFilters(@Query('statuses') statuses: string[], @Query('members') members: string[], @Query('technology') technology: string[], @Query('resources') resources: string[]) {
         return this.dashboardService.getProjectsByFilters({statuses, members, technology, resources});
+    }
+
+    @Get('filter/:category')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
+    @ApiParam({ name: 'category', enum: ['technology', 'resources', 'statuses', 'members'], required: true })
+    @ApiResponse({ status: 200, description: 'Returns distinct values for the specified filter category.' })
+    async getFilterOptions(@Param('category') category: string) {
+        return this.dashboardService.getFilterOptions(category);
     }
 
     @Get('sort/name')
