@@ -97,27 +97,34 @@ export class DashboardService {
         }).exec();
     }
 
-    async getProjectsByFilters(filters: any) {
-        const query: any = {};
+    async getProjectsByFilters(filters: {
+    statuses?: string[],
+    members?: string[],
+    technology?: string[],
+    resources?: string[]
+}) {
+    const query: any = {};
 
-        if (filters.statuses && filters.statuses.length > 0) {
-            query.projectStatus = { $in: filters.statuses };
-        }
-
-        if (filters.members && filters.members.length > 0) {
-            query.members = { $in: filters.members };
-        }
-
-        if (filters.technologies && filters.technologies.length > 0) {
-            query.technology = { $in: filters.technologies };
-        }
-
-        if (filters.resources && filters.resources.length > 0) {
-            query.resources = { $in: filters.resources };
-        }
-
-        return await this.projectModel.find(query).exec();
+    if (filters.statuses && filters.statuses.length > 0) {
+        query.projectStatus = { $in: filters.statuses };
     }
+
+    if (filters.members && filters.members.length > 0) {
+        query.members = { $in: filters.members };
+    }
+
+    if (filters.technology && filters.technology.length > 0) {
+        query.technology = { $in: filters.technology };
+    }
+
+    if (filters.resources && filters.resources.length > 0) {
+        query.resources = { $in: filters.resources };
+    }
+
+    console.log(query);
+
+    return await this.projectModel.find(query).exec();
+}
 
     async getFilterOptions(category: string) {
         switch (category) {
