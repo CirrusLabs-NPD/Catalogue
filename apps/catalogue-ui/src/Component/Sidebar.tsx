@@ -38,7 +38,10 @@ function Sidebar() {
   }, []);
 
   const handleStatusClick = (status: string) => {
-    navigate(`/projects/filter/statuses?${encodeURIComponent(status)}`);
+    const searchParams = new URLSearchParams();
+    searchParams.append('value', status);
+    
+    navigate(`/projects/filter/statuses?${searchParams.toString()}`);
   };
     
   return (
