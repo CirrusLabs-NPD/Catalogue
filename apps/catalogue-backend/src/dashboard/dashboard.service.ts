@@ -121,8 +121,6 @@ export class DashboardService {
         query.resources = { $in: filters.resources };
     }
 
-    console.log(query);
-
     return await this.projectModel.find(query).exec();
 }
 
