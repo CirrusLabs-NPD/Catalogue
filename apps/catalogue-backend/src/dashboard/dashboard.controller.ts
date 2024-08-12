@@ -60,7 +60,7 @@ export class DashboardController {
         return this.dashboardService.getProjectsByMembers(members);
     }
 
-    @Get('filter/technology')
+    @Get('filter/tech')
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
     @ApiResponse({ status: 200, description: 'Returns projects filtered by technology.' })
