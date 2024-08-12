@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Sidebar.css";
 import plus from "../app/assets/Plus.png";
 import analytics from "../app/assets/category.png";
 import square from "../app/assets/task-square.png";
@@ -43,83 +42,72 @@ function Sidebar() {
     
   return (
     <aside className="fixed top-18 left-0 h-full w-64">
-      <div className="sidebar">
-      <Link to="/addpage" className="sidebar_link">
-        <button className="sidebar__button">
-          <img
-            src={plus}
-            alt="Logo"
-            style={{ verticalAlign: "middle", marginRight: "8px" }}
-          />
-          <span style={{ verticalAlign: "middle" }}>Add Project</span>
-        </button>
-      </Link>
+      <div className="w-64 p-5 border-r border-gray-300 relative">
+        <Link to="/addpage" className="block mb-4">
+          <button className="w-full flex items-center justify-center rounded-lg p-2.5 mb-2 bg-[#D5292B] text-white h-16 hover:bg-[#a31517]">
+            <img
+              src={plus}
+              alt="Logo"
+              className="mr-2"
+            />
+            <span>Add Project</span>
+          </button>
+        </Link>
 
-      {/* <div className="sidebar__link"> */}
-      <Link to="/home" className="sidebar__link">
+        <div className="border-b border-gray-300">
+          <Link to="/home" className="flex items-center ml-8 mb-4 cursor-pointer hover:text-[#D5292B]">
             <img
               src={square}
               alt="Projects"
-              style={{ verticalAlign: "middle", marginRight: "8px" }}
+              className="mr-2"
             />
             <span>Projects</span>
-            </Link>
-          {/* </div> */}
-        <div className="sidebar__links">
-          <Link to="/analytics" className="sidebar__link">
+          </Link>
+          <Link to="/analytics" className="flex items-center ml-8 mb-4 cursor-pointer hover:text-[#D5292B]">
             <img
               src={analytics}
               alt="Analytics"
-              style={{ verticalAlign: "middle", marginRight: "8px" }}
+              className="mr-2"
             />
             <span>Analytics</span>
           </Link>
-         
-          <div className="sidebar__link">
+          <div className="flex items-center ml-8 mb-4 cursor-pointer hover:text-[#D5292B]">
             <img
               src="/src/app/assets/admindash.png"
-              alt="admindash"
-              style={{ verticalAlign: "middle", marginRight: "8px" }}
+              alt="Admin Dashboard"
+              className="mr-2"
             />
             <span>Admin Dashboard</span>
           </div>
         </div>
       </div>
-      <div className="sidebar">
-        <p className="sidebar__button2">
-           <div className="project_status flex items-center justify-between p-4">
-             <span className="text-sm whitespace-nowrap">MY PROJECT STATUS</span>
-             <img
-               src={addsquare}
-               alt="Add"
-               className="h-6 w-6 object-contain ml-4"
-             />
-           </div>
-        </p>
-        <div className="sidebar__links1">
+      <div className="w-64 p-5">
+        <div className="flex items-center justify-between p-4">
+          <span className="text-sm whitespace-nowrap">MY PROJECT STATUS</span>
+          <img
+            src={addsquare}
+            alt="Add"
+            className="h-6 w-6 object-contain ml-4"
+          />
+        </div>
+        <div>
           {statuses.map((status) => (
             <p 
               key={status._id} 
-              className="sidebar__link cursor-pointer relative"
+              className="flex items-center ml-8 mb-4 cursor-pointer relative hover:text-[#D5292B]"
               onMouseEnter={() => setHoveredStatus(status.projectStatus)}
               onMouseLeave={() => setHoveredStatus(null)}
               onClick={() => handleStatusClick(status.projectStatus)}
             >
               <span
-                style={{
-                  display: "inline-block",
-                  width: "15px",
-                  height: "15px",
-                  borderRadius: "50%",
-                  backgroundColor: statusColors[status.projectStatus] || "#CCCCCC",
-                  marginRight: "20px",
-                  marginTop: "6px",
-                  verticalAlign: "middle"
-                }}
+                className="inline-block w-4 h-4 rounded-full mr-5 mt-1.5"
+                style={{ backgroundColor: statusColors[status.projectStatus] || "#CCCCCC" }}
               />
               {status.projectStatus}
               {hoveredStatus === status.projectStatus && (
-                <div className="tooltip">{`View projects with status ${status.projectStatus}`}</div>
+                <div className="absolute left-full top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-1.5 rounded text-xs whitespace-nowrap z-10">
+                  {`View projects with status ${status.projectStatus}`}
+                </div>
               )}
             </p>
           ))}
