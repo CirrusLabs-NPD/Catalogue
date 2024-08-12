@@ -10,6 +10,7 @@ interface FormData {
   technology: string;
   resources: string;
   projectStatus: string;
+  projectManager: string;
   members: string;
   description: string;
   progressPercent: number;
@@ -55,6 +56,7 @@ const AddPage: React.FC = () => {
         technology: data.technology.split(',').map((tech) => tech.trim()),
         resources: data.resources.split(',').map((resource) => resource.trim()),
         projectStatus: data.projectStatus,
+        projectManager: data.projectManager,
         members: data.members.split(',').map((member) => member.trim()),
         description: data.description,
         progressPercent: Number(data.progressPercent),
@@ -105,6 +107,31 @@ const AddPage: React.FC = () => {
                 {errors.projectName && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.projectName.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="projectManager"
+                  className="text-lg block text-gray-700 font-bold mb-2"
+                >
+                  Project Manager
+                </label>
+                <input
+                  type="text"
+                  id="projectManager"
+                  placeholder="Enter project name"
+                  {...register('projectManager', {
+                    required: 'Project Manager is required',
+                  })}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                    errors.projectManager ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                />
+                {errors.projectManager && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.projectManager.message}
                   </p>
                 )}
               </div>
