@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsUrl, IsArray, IsNumber, Min, Max, IsOptional, IsDateString, IsEnum } from "class-validator";
+import { IsNotEmpty, IsString, IsUrl, IsArray, IsNumber, Min, Max, IsOptional, IsDateString, IsEnum, IsMongoId } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class UpdateProjectDto {
@@ -46,10 +46,10 @@ export class UpdateProjectDto {
     projectManager?: string;
 
     @IsArray()
-    @IsString({ each: true })
+    @IsMongoId({ each: true })
     @IsNotEmpty({ each: true })
     @IsOptional()
-    @ApiProperty({ example: ["Member 1", "Member 2"], description: 'Members involved in project', required: false })
+    @ApiProperty({ example: ["5f9d7b3b9d3e2a1b3c5d7e8f", "5f9d7b3b9d3e2a1b3c5d7e90"], description: 'Member IDs involved in project', required: true })
     members?: string[];
 
     @IsString()

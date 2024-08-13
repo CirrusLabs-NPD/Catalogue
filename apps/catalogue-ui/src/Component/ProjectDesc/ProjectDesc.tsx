@@ -186,16 +186,46 @@ const ProjectDetails: React.FC = () => {
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 text-lg font-medium mb-2" htmlFor="members">
-                Members (comma-separated)
+                Members
               </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="members"
-                type="text"
-                name="members"
-                value={editedProject!.members.join(', ')}
-                onChange={(e) => handleArrayInputChange(e, 'members')}
-              />
+              {editedProject!.members.map((member, index) => (
+                <div key={index} className="mb-2">
+                  <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-1"
+                    type="text"
+                    value={member.name}
+                    onChange={(e) => {
+                      const updatedMembers = [...editedProject!.members];
+                      updatedMembers[index] = { ...member, name: e.target.value };
+                      setEditedProject(prev => ({ ...prev!, members: updatedMembers }));
+                    }}
+                    placeholder="Name"
+                  />
+                  <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    type="email"
+                    value={member.email}
+                    onChange={(e) => {
+                      const updatedMembers = [...editedProject!.members];
+                      updatedMembers[index] = { ...member, email: e.target.value };
+                      setEditedProject(prev => ({ ...prev!, members: updatedMembers }));
+                    }}
+                    placeholder="Email"
+                  />
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={() => {
+                  setEditedProject(prev => ({
+                    ...prev!,
+                    members: [...prev!.members, { _id: '', name: '', email: '', title: '', techStack: [], projects: [] }]
+                  }));
+                }}
+                className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Add Member
+              </button>
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 text-lg font-medium mb-2" htmlFor="projectStatus">
@@ -300,10 +330,11 @@ const ProjectDetails: React.FC = () => {
             </div>
             <div className="mb-5 mt-4">
               <h2 className="text-2xl font-medium text-black">Members</h2>
-              <div className="flex flex-wrap gap-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {project.members.map((member, index) => (
-                  <div key={index} className="bg-gray-200 px-3 py-1 rounded-lg">
-                    <p className="text-lg text-[#787486]">{member}</p>
+                  <div key={index} className="bg-gray-100 p-4 rounded-lg shadow">
+                    <p className="text-lg font-medium text-[#2C4B84]">{member.name}</p>
+                    <p className="text-md text-[#787486]">{member.email}</p>
                   </div>
                 ))}
               </div>

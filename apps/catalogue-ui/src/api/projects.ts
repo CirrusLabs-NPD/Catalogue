@@ -51,3 +51,11 @@ export const getStatuses = async () => {
     method: 'GET',
   });
 };
+
+export const getMembers = async () => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/members`,
+    method: 'GET',
+  });
+};
+

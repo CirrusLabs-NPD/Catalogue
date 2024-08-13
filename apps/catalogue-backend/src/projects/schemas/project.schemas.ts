@@ -1,43 +1,44 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
+import { MemberClass } from '../../members/schemas/member.schema';
 
 @Schema()
 export class ProjectClass extends Document {
-    @Prop({ unique: true, required: true })
-    projectName: string;
-    
     @Prop({ required: true })
-    startDate: string;
-    
+    projectName: string;
+
+    @Prop({ required: true })
+    startDate: Date;
+
     @Prop({ required: true })
     gitHubLinks: string;
-    
-    @Prop({ required: true })
+
+    @Prop({ type: [String], required: true })
     technology: string[];
-    
-    @Prop({ required: true })
+
+    @Prop({ type: [String] })
     resources: string[];
-    
-    @Prop({ required: true})
+
+    @Prop({ required: true })
     projectStatus: string;
 
     @Prop({ required: true })
     projectManager: string;
-    
-    @Prop({ required: true })
-    members: string[];
-    
+
+    @Prop({ type: [{ type: Types.ObjectId, ref: 'MemberClass' }] })
+    members: MemberClass[];
+
     @Prop({ required: true })
     description: string;
 
-    @Prop({ required: true, min: 0, max: 100 })
+    @Prop({ required: true })
     progressPercent: number;
 
     @Prop({ required: true })
     demoURL: string;
 
-    @Prop({ required: false })
-    completionDate: string;
+    @Prop()
+    completionDate?: Date;
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(ProjectClass);

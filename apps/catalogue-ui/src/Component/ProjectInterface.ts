@@ -1,3 +1,14 @@
+
+
+export interface Member {
+  _id: string;
+  name: string;
+  email: string;
+  title: string;
+  techStack: string[];
+  projects: string[];
+}
+
 export interface Project {
     _id: string;
     projectName: string;
@@ -6,7 +17,7 @@ export interface Project {
     technology: string[];
     resources: string[];
     projectStatus: string;
-    members: string[];
+    members: Member[];
     description: string;
     progressPercent: number;
     demoURL: string;
