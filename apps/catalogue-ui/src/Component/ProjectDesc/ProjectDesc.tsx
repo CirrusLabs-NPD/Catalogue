@@ -345,9 +345,9 @@ const ProjectDetails: React.FC = () => {
             </div>
             <div className="mb-5 mt-4">
               <h2 className="text-2xl font-medium text-black">Members</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="flex flex-wrap gap-2">
                 {project.members.map((member) => (
-                  <div key={member._id} className="bg-gray-100 p-4 rounded-lg shadow">
+                  <div key={member._id} className="bg-gray-200 px-3 py-1 rounded-lg">
                     <p className="text-lg font-medium text-[#2C4B84]">{member.name}</p>
                     <p className="text-md text-[#787486]">{member.email}</p>
                   </div>
