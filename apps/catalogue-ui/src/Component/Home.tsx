@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './Home.css';
 import { getProjects } from '../api/projects';
 import { Project } from './ProjectInterface';
 import FilterDropdown from './FilterDropdown/filter';
@@ -28,7 +27,7 @@ const Home: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   if (error) {
@@ -38,8 +37,8 @@ const Home: React.FC = () => {
   return (
     <div className="ml-64 mt-6 h-full overflow-y-scroll">
       <div className="overflow-y-auto h-full">
-        <h1 className="home_header">Project Catalogue</h1>
-        <div className="flex space-x-4 mt-4 mb-4">
+        <h1 className="text-[#2C4B84] text-4xl pl-8 pt-1">Project Catalogue</h1>
+        <div className="flex space-x-4 mt-5 mb-4">
           <FilterDropdown />
           <CalendarDropdown />
         </div>

@@ -30,3 +30,23 @@ export const getProjectsByStatus = async (statuses: string[]) => {
     params: { statuses: statuses.join(',') }
   });
 };
+
+export const getFilters = async (category: string) => {
+  return await AxiosUtility({
+    url: `${API_BASE_URL}/filter/${category}`,
+    method: 'GET',
+  });
+}
+
+export const getProjectsByFilters = async (filters: {
+  statuses?: string[];
+  members?: string[];
+  technology?: string[];
+  resources?: string[];
+}) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/filter/multiple`,
+    method: 'GET',
+    params: filters,
+  });
+};

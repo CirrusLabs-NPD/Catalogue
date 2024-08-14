@@ -77,9 +77,13 @@ export function App() {
             element={<ProtectedRoute element={<ManageProject />} />}
           />
           <Route
-            path="/description/:name"
+            path="/description/:id"
             element={<ProtectedRoute element={<ProjectDetails />} />}
           />
+           <Route
+            path="/projects/filter"
+            element={<ProtectedRoute element={<FilteredProjects />} />}
+           />
           {/* Add more routes here */}
           <Route path="*" element={<Navigate to="/" />} />{' '}
           {/* Redirect to login if route not found */}
