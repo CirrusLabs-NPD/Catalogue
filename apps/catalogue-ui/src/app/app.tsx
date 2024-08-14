@@ -16,6 +16,7 @@ import FilteredProjects from '../Component/FilteredProjects';
 import AdminDashboard from '../Component/AdminDashboard/AdminDashboard';
 import ProjectStatus from '../Component/ProjectStatus';
 import ManageProject from '../Component/ManageProject';
+import SearchResults from '../Component/SearchResults';
 
 export function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -71,6 +72,10 @@ export function App() {
            <Route
             path="/projects/filter"
             element={<ProtectedRoute element={<FilteredProjects />} />}
+          />
+          <Route 
+            path="/search-results" 
+            element={<ProtectedRoute element={<SearchResults />} />} 
           />
           <Route
             path="/AdminDashboard"

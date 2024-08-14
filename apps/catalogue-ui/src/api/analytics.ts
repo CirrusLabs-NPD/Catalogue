@@ -82,3 +82,11 @@ export const sortProjectsByEnd = async (order: string) => {
     params: { order }
   });
 };
+
+export const searchProjects = async (search: string) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/search`,
+    method: 'GET',
+    params: { search }
+  });
+};
