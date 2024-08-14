@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Project } from '../ProjectInterface';
-import { getProjectById, deleteProject, updateProject } from '../../api/projects';
+import { Project, Member } from '../ProjectInterface';
+import { getProjectById, deleteProject, updateProject, getMembers } from '../../api/projects';
 
 const ProjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -10,24 +10,28 @@ const ProjectDetails: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedProject, setEditedProject] = useState<Project | null>(null);
+  const [allMembers, setAllMembers] = useState<Member[]>([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProject = async () => {
+    const fetchData = async () => {
       try {
         const projectData = await getProjectById(id);
         setProject(projectData);
         setEditedProject(projectData);
+        const membersData = await getMembers();
+        setAllMembers(membersData);
+        
         setLoading(false);
       } catch (err) {
-        console.error('Failed to fetch project:', err);
-        setError('Failed to load project');
+        console.error('Failed to fetch data:', err);
+        setError('Failed to load data');
         setLoading(false);
       }
     };
-
-    fetchProject();
+  
+    fetchData()
   }, [id]);
 
   const handleEdit = () => {
@@ -41,7 +45,11 @@ const ProjectDetails: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      const updatedProject = await updateProject(id!, editedProject!);
+      const projectToUpdate = {
+        ...editedProject!,
+        membersId: editedProject!.members.map(m => m._id)
+      };
+      const updatedProject = await updateProject(id!, projectToUpdate);
       setProject(updatedProject);
       setIsEditing(false);
     } catch (err) {
@@ -74,6 +82,24 @@ const ProjectDetails: React.FC = () => {
   const handleArrayInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof Project) => {
     const { value } = e.target;
     setEditedProject(prev => ({ ...prev!, [field]: value.split(',').map(item => item.trim()) }));
+  };
+
+  const handleRemoveMember = (index: number) => {
+    setEditedProject(prev => ({
+      ...prev!,
+      members: prev!.members.filter((_, i) => i !== index)
+    }));
+  };
+  
+  const handleAddMember = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const memberId = e.target.value;
+    const memberToAdd = allMembers.find(m => m._id === memberId);
+    if (memberToAdd) {
+      setEditedProject(prev => ({
+        ...prev!,
+        members: [...prev!.members, memberToAdd]
+      }));
+    }
   };
 
   if (loading) {
@@ -186,16 +212,35 @@ const ProjectDetails: React.FC = () => {
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 text-lg font-medium mb-2" htmlFor="members">
-                Members (comma-separated)
+                Members
               </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="members"
-                type="text"
-                name="members"
-                value={editedProject!.members.join(', ')}
-                onChange={(e) => handleArrayInputChange(e, 'members')}
-              />
+              <div className="space-y-2">
+                {editedProject!.members.map((member, index) => (
+                  <div key={member._id} className="flex items-center space-x-2">
+                    <span>{member.name} ({member.email})</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveMember(index)}
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <select
+                className="mt-2 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                onChange={handleAddMember}
+              >
+                <option value="">Add a member</option>
+                {allMembers
+                  .filter(member => !editedProject!.members.some(m => m._id === member._id))
+                  .map(member => (
+                    <option key={member._id} value={member._id}>
+                      {member.name} ({member.email})
+                    </option>
+                  ))}
+              </select>
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 text-lg font-medium mb-2" htmlFor="projectStatus">
@@ -301,9 +346,10 @@ const ProjectDetails: React.FC = () => {
             <div className="mb-5 mt-4">
               <h2 className="text-2xl font-medium text-black">Members</h2>
               <div className="flex flex-wrap gap-2">
-                {project.members.map((member, index) => (
-                  <div key={index} className="bg-gray-200 px-3 py-1 rounded-lg">
-                    <p className="text-lg text-[#787486]">{member}</p>
+                {project.members.map((member) => (
+                  <div key={member._id} className="bg-gray-200 px-3 py-1 rounded-lg">
+                    <p className="text-lg font-medium text-[#2C4B84]">{member.name}</p>
+                    <p className="text-md text-[#787486]">{member.email}</p>
                   </div>
                 ))}
               </div>

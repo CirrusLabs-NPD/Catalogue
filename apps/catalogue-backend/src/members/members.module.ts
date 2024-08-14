@@ -8,6 +8,6 @@ import { MembersController } from './members.controller';
   imports: [MongooseModule.forFeature([{ name: MemberClass.name, schema: MemberSchema}])],
   controllers: [MembersController],
   providers: [MembersService],
-  exports: [MembersService],
+  exports: [MembersService, MongooseModule],
 })
 export class MembersModule{}

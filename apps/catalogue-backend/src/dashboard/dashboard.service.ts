@@ -28,8 +28,24 @@ export class DashboardService {
     }
 
     async getPercentDash() {
-        return await this.projectModel.find({}, 'projectName members duration projectStatus progressPercent').exec();
-    }
+        return await this.projectModel.aggregate([
+            {
+                $project: {
+                    projectName: 1,
+                    members: {
+                        $map: {
+                            input: "$members",
+                            as: "member",
+                            in: "$$member.email"
+                        }
+                    },
+                    duration: 1,
+                    projectStatus: 1,
+                    progressPercent: 1
+                }
+            }
+        ]).exec();
+    }    
 
     async getStatusCount() {
         const aggregation = await this.projectModel.aggregate([
@@ -71,8 +87,10 @@ export class DashboardService {
         if (!Array.isArray(members)) {
             members = [members];
         }
-        return await this.projectModel.find({ members: { $in: members } }).exec();
+    
+        return await this.projectModel.find({ 'members.name': { $in: members } }).exec();
     }
+    
 
     async getProjectsByTechnology(tech: string[]) {
         if (!Array.isArray(tech)) {
@@ -110,7 +128,7 @@ export class DashboardService {
     }
 
     if (filters.members && filters.members.length > 0) {
-        query.members = { $in: filters.members };
+        query['members.name'] = { $in: filters.members };
     }
 
     if (filters.technology && filters.technology.length > 0) {
@@ -133,7 +151,8 @@ export class DashboardService {
             case 'statuses':
                 return await this.projectModel.distinct('projectStatus').exec();
             case 'members':
-                return await this.projectModel.distinct('members').exec();
+                const members = await this.projectModel.distinct('members.name').exec();
+                return members;
             default:
                 return [];
         }

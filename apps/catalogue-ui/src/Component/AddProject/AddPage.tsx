@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { addProject, getStatuses } from '../../api/projects';
+import { addProject, getStatuses, getMembers } from '../../api/projects';
 import { useNavigate } from 'react-router-dom';
+import { Member } from '../ProjectInterface';
 
 interface FormData {
   projectName: string;
@@ -11,7 +12,6 @@ interface FormData {
   resources: string;
   projectStatus: string;
   projectManager: string;
-  members: string;
   description: string;
   progressPercent: number;
   demoURL: string;
@@ -25,6 +25,9 @@ interface Status {
 
 const AddPage: React.FC = () => {
   const [statuses, setStatuses] = useState<Status[]>([]);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
   const {
     register,
     handleSubmit,
@@ -44,8 +47,26 @@ const AddPage: React.FC = () => {
       }
     };
 
+    const fetchMembers = async () => {
+      try {
+        const fetchedMembers = await getMembers();
+        setMembers(fetchedMembers);
+      } catch (error) {
+        console.error('Error fetching members:', error);
+      }
+    };
+
     fetchStatuses();
+    fetchMembers();
   }, []);
+
+  const handleMemberSelection = (memberId: string) => {
+    setSelectedMembers(prevSelected => 
+      prevSelected.includes(memberId)
+        ? prevSelected.filter(id => id !== memberId)
+        : [...prevSelected, memberId]
+    );
+  };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
@@ -57,7 +78,7 @@ const AddPage: React.FC = () => {
         resources: data.resources.split(',').map((resource) => resource.trim()),
         projectStatus: data.projectStatus,
         projectManager: data.projectManager,
-        members: data.members.split(',').map((member) => member.trim()),
+        members: selectedMembers,
         description: data.description,
         progressPercent: Number(data.progressPercent),
         demoURL: data.demoURL,
@@ -65,6 +86,7 @@ const AddPage: React.FC = () => {
       };
       await addProject(newProject);
       reset();
+      setSelectedMembers([]);
       navigate('/home');
     } catch (error) {
       console.error('Error adding project:', error);
@@ -248,22 +270,37 @@ const AddPage: React.FC = () => {
                 >
                   Members
                 </label>
-                <input
-                  type="text"
-                  id="members"
-                  placeholder="Enter members (comma separated)"
-                  {...register('members', {
-                    required: 'Members are required',
-                  })}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.members ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.members && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.members.message}
-                  </p>
-                )}
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="members"
+                    placeholder={selectedMembers.length > 0 
+                      ? `${selectedMembers.length} member(s) selected`
+                      : 'Select members'}
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline text-left bg-white"
+                    readOnly
+                    onClick={() => setIsOpen(!isOpen)}
+                  />
+                  {isOpen && (
+                    <div className="absolute z-10 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-60 overflow-auto">
+                      {members.map(member => (
+                        <div
+                          key={member._id}
+                          className="px-3 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                          onClick={() => handleMemberSelection(member._id)}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedMembers.includes(member._id)}
+                            onChange={() => {}}
+                            className="mr-2"
+                          />
+                          {member.name}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Project Status Field */}
