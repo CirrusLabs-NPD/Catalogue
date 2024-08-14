@@ -8,6 +8,9 @@ export class UserClass extends Document {
 
     @Prop({ default: 'member' })
     role: string;
+
+    @Prop({ required: true })
+    name: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserClass);

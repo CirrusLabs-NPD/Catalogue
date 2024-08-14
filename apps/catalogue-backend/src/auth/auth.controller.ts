@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Post, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/sign-in.dto';
 import { RolesGuard } from './guards/roles.guards';
 import { UsersService } from '../users/users.service';
-import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiResponse } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -32,6 +32,7 @@ export class AuthController {
 
     @Post('assign-admin')
     @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @ApiBearerAuth('access-token')
     async assignAdmin(@Body('email') email: string) {
       const user = await this.usersService.setUserRole(email, 'admin');
       return user;
@@ -43,6 +44,16 @@ export class AuthController {
     @ApiResponse({ status: 200, description: 'Returns all users.' })
     async getUsers() {
       const users = await this.usersService.getUsers();
+      return users;
+    }
+
+    @Delete(':id')
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @ApiBearerAuth('access-token')
+    @ApiParam({ name: 'id', type: String })
+    @ApiResponse({ status: 200, description: 'Deletes a user specified by ID.' })
+    async deleteUser(@Param('id') id: string) {
+      const users = await this.usersService.deleteUser(id);
       return users;
     }
 }

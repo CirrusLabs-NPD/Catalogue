@@ -13,7 +13,7 @@ function SearchResults() {
   useEffect(() => {
     const fetchSearchResults = async () => {
       const searchParams = new URLSearchParams(location.search);
-      const searchTerm = searchParams.get('search') || ''; // Get the search term from the URL
+      const searchTerm = searchParams.get('search') || '';
 
       if (searchTerm) {
         try {

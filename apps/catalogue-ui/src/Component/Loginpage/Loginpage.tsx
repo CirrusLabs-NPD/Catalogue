@@ -58,7 +58,7 @@ class Loginpage extends Component<LoginpageProps, LoginpageState> {
         prompt: 'select_account',
       });
   
-      const jwtResponse = await getToken({ email: response.account.username });
+      const jwtResponse = await getToken({ email: response.account.username, name: response.account.name });
       console.log(jwtResponse.accessToken);
       localStorage.setItem('jwt_token', jwtResponse.accessToken);
   
