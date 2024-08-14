@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
@@ -12,7 +13,9 @@ import Analytics from '../Component/Analytics/Analytics';
 import AddPage from '../Component/AddProject/AddPage';
 import ProjectDetails from '../Component/ProjectDesc/ProjectDesc';
 import Loginpage from '../Component/Loginpage/Loginpage';
-import FilteredProjects from '../Component/FilteredProjects';
+import ProjectStatus from '../Component/ProjectStatus';
+import ManageProject from '../Component/ManageProject';
+import AdminDashboard from '../Component/AdminDashboard/AdminDashboard';
 
 export function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -62,15 +65,28 @@ export function App() {
             element={<ProtectedRoute element={<AddPage />} />}
           />
           <Route
-            path="/description/:id"
-            element={<ProtectedRoute element={<ProjectDetails />} />}
+            path="/AdminDashboard"
+            element={<ProtectedRoute element={<AdminDashboard />} />}
           />
           <Route
-            path="/projects/filter/:status"
-            element={<ProtectedRoute element={<FilteredProjects />} />}
+            path="/ProjectStatus"
+            element={<ProtectedRoute element={<ProjectStatus />} />}
           />
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route
+            path="/ManageProject"
+            element={<ProtectedRoute element={<ManageProject />} />}
+          />
+          <Route
+            path="/description/:name"
+            element={<ProtectedRoute element={<ProjectDetails />} />}
+          />
+          {/* Add more routes here */}
+          <Route path="*" element={<Navigate to="/" />} />{' '}
+          {/* Redirect to login if route not found */}
         </Routes>
+        {/* <div className="mt-6 h-full overflow-y-scroll">
+         
+        </div> */}
       </div>
     </Router>
   );

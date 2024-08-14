@@ -75,14 +75,14 @@ function Sidebar() {
             <span>Analytics</span>
           </Link>
          
-          <div className="sidebar__link">
+          <Link to="/AdminDashboard" className="sidebar__link">
             <img
               src="/src/app/assets/admindash.png"
               alt="admindash"
               style={{ verticalAlign: "middle", marginRight: "8px" }}
             />
             <span>Admin Dashboard</span>
-          </div>
+          </Link>
         </div>
       </div>
       <div className="sidebar">

@@ -1,7 +1,7 @@
 //AdminDashboard.js
 import React, { useState, useEffect } from 'react'
-import SidebarContainer from '../components/sidebarItem'
-import HeaderAdmin from '../components/header'
+import Adminsidebar from '../Component/AdminDashboard/Adminsidebar'
+import AdminHeader from '../Component/AdminHeader'
 import { TextField, Select, MenuItem, Switch } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -64,7 +64,7 @@ const AdminDashboard = ({ handleNetworkError }) => {
     const fetchUserCounts = async () => {
         try {
             const response = await AxiosUtility({
-                url: 'https://resumeminingnodebe.azurewebsites.net/api/v1/users/count',
+                url: 'http://localhost:3000/api/members',
                 method: 'GET',
                 onNetworkError: handleNetworkError,
             })
@@ -346,4 +346,4 @@ const StatCard = ({ icon, title, total, active, inactive }) => (
     </div>
 )
 
-export default AdminDashboard
+export default AdminDashboard;
