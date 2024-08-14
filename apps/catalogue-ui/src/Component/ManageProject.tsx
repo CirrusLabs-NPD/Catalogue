@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { deleteProject, getProjects } from '../api/projects'; // Assumed a getAllProjects function
+import { deleteProject, getProjects } from '../api/projects';
 import { Project } from './ProjectInterface';
 
 const ProjectSearch: React.FC = () => {
@@ -12,7 +12,7 @@ const ProjectSearch: React.FC = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const projectData = await getProjects(); // Fetching all projects
+        const projectData = await getProjects();
         setProjects(projectData);
         setFilteredProjects(projectData);
       } catch (err) {
@@ -71,7 +71,7 @@ const ProjectSearch: React.FC = () => {
 
               <div className="mt-4 flex space-x-4">
                 <Link
-                  to={`/projects/${project._id}`}
+                  to={`/description/${project._id}`}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 >
                   View
