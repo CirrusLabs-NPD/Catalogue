@@ -20,21 +20,21 @@ const AxiosUtility = async ({
   };
 
   try {
-    let finalData = fileUpload ? data : null;
-    if (!fileUpload && data) {
-      finalData = data; // Send JSON data directly
-    }
-    const response = await axios({
+    let config: any = {
       url,
       method,
       headers,
-      data: finalData,
       params,
-    });
+    };
+
+    if (method !== 'GET' && method !== 'DELETE') {
+      config.data = fileUpload ? data : JSON.stringify(data);
+    }
+
+    const response = await axios(config);
 
     return response.data;
   } catch (error) {
-    console.error(error);
     throw error;
   }
 };

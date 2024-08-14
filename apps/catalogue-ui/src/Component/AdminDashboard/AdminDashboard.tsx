@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import StatCard from './StatCard';
 import { useNavigate } from 'react-router-dom';
 import { faTrash, faUsers } from '@fortawesome/free-solid-svg-icons';
-import { TextField, Select, MenuItem, Switch } from '@mui/material';
+import { TextField, Select, MenuItem, Switch, Dialog, DialogTitle, DialogContent, DialogContentText, Button, DialogActions } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getUsers, deleteUser, assignRole, assignStatus } from '../../api/auth';
 
@@ -26,6 +26,8 @@ export default function AdminDashboard() {
     active: 0,
     inactive: 0,
   });
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
 
   const usersPerPage = 5;
 
@@ -62,17 +64,36 @@ export default function AdminDashboard() {
 
   const nPages = Math.ceil(filteredUsers.length / usersPerPage);
 
-  async function handleDeleteUser(index: number) {
-    const user = currentUsers[index];
-    try {
-      await deleteUser(user._id);
-      setUsers(users.filter(u => u._id !== user._id));
-    } catch (error) {
-      console.error('Error deleting user:', error);
-      setError('Failed to delete user');
-    }
-  }
+  const handleDeleteClick = (user: User) => {
+    setUserToDelete(user);
+    setDeleteDialogOpen(true);
+  };
 
+  const handleDeleteConfirm = async () => {
+    if (userToDelete) {
+      try {
+        const response = await deleteUser(userToDelete._id);
+        setUsers(users.filter(u => u._id !== userToDelete._id));
+        setDeleteDialogOpen(false);
+        setUserToDelete(null);
+        // Update user counts
+        setUserCounts(prev => ({
+          ...prev,
+          total: prev.total - 1,
+          active: userToDelete.status === 'active' ? prev.active - 1 : prev.active,
+          inactive: userToDelete.status === 'inactive' ? prev.inactive - 1 : prev.inactive,
+        }));
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        setError('Failed to delete user. Please try again.');
+      }
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialogOpen(false);
+    setUserToDelete(null);
+  };
   async function handleStatusChange(index: number) {
     const user = currentUsers[index];
     const newStatus = user.status === 'active' ? 'inactive' : 'active';
@@ -188,16 +209,35 @@ export default function AdminDashboard() {
                     />
                   </td>
                   <td className="py-2 px-4">
-                    <button onClick={() => handleDeleteUser(index)}>
+                    <button onClick={() => handleDeleteClick(user)}>
                       <FontAwesomeIcon icon={faTrash} color="red" />
                     </button>
-                  </td>
+                </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          </div>
+            <Dialog
+              open={deleteDialogOpen}
+              onClose={handleDeleteCancel}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{"Confirm Delete"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Are you sure you want to delete this user? This action cannot be undone.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleDeleteCancel}>Cancel</Button>
+                <Button onClick={handleDeleteConfirm} autoFocus>
+                  Delete
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
         </div>
-      </div>
-    </div>
   );
 }

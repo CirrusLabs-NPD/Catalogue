@@ -37,6 +37,6 @@ export const assignStatus = async (email: string, status: string) => {
 export const deleteUser = async (id: string) => {
   return await AxiosUtility({
     url: `${API_BASE_URL}/${id}`,
-    method: 'DELETE',
+    method: 'DELETE'
   });
 }

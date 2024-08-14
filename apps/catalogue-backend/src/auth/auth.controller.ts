@@ -61,7 +61,6 @@ export class AuthController {
     @ApiParam({ name: 'id', type: String })
     @ApiResponse({ status: 200, description: 'Deletes a user specified by ID.' })
     async deleteUser(@Param('id') id: string) {
-      const users = await this.usersService.deleteUser(id);
-      return users;
+      return await this.usersService.deleteUser(id);
     }
 }
