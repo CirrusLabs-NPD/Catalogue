@@ -66,3 +66,19 @@ export const sortProjectsByProgress = async (order: string) => {
     params: { order }
   });
 };
+
+export const sortProjectsByStart = async (order: string) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/sort/start`,
+    method: 'GET',
+    params: { order }
+  });
+};
+
+export const sortProjectsByEnd = async (order: string) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/sort/completion`,
+    method: 'GET',
+    params: { order }
+  });
+};

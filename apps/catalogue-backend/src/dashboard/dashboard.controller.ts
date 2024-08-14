@@ -135,4 +135,22 @@ export class DashboardController {
     sortProjectsByProgress(@Query('order') order: SortOrder) {
         return this.dashboardService.sortProjects('progressPercent', order);
     }
+
+    @Get('sort/start')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
+    @ApiResponse({ status: 200, description: 'Returns projects sorted by start date.' })
+    @ApiQuery({ name: 'order', required: true, description: 'Specify `ascending` or `descending` for sort order' })
+    sortProjectsByStart(@Query('order') order: SortOrder) {
+        return this.dashboardService.sortProjects('startDate', order);
+    }
+
+    @Get('sort/completion')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
+    @ApiResponse({ status: 200, description: 'Returns projects sorted by completion date.' })
+    @ApiQuery({ name: 'order', required: true, description: 'Specify `ascending` or `descending` for sort order' })
+    sortProjectsByDate(@Query('order') order: SortOrder) {
+        return this.dashboardService.sortProjects('completionDate', order);
+    }
 }
