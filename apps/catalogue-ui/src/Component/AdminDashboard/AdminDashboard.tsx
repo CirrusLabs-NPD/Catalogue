@@ -31,32 +31,30 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     const fetchUsers = async () => {
-        setLoading(true);
-        try {
-            const response = await getUsers();
-            const usersData: User[] = response || [];
-            setUsers(usersData);
-            setUserCounts({
-                total: usersData.length,
-                active: usersData.filter(user => user.role !== 'inactive').length,
-                inactive: usersData.filter(user => user.role === 'inactive').length,
-            });
-            setLoading(false);
-        } catch (error) {
-            console.error('Error fetching users:', error);
-            setError('Failed to load users');
-            setLoading(false);
-        }
+      setLoading(true);
+      try {
+        const response = await getUsers();
+        const usersData: User[] = response || [];
+        setUsers(usersData);
+        setUserCounts({
+          total: usersData.length,
+          active: usersData.filter(user => user.status).length,
+          inactive: usersData.filter(user => !user.status).length,
+        });
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        setError('Failed to load users');
+        setLoading(false);
+      }
     };
 
     fetchUsers();
-}, []);
+  }, []);
 
-  /* const filteredUsers = users.filter((user) =>
+  const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
-  ); */
-
-  const filteredUsers = users;
+  );
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
@@ -87,12 +85,12 @@ export default function AdminDashboard() {
     }
   }
 
-  async function handleRoleChange(index: number, value: string) {
+  async function handleRoleChange(index: number, newRole: string) {
     const user = currentUsers[index];
     try {
-      await assignRole(user.email);
+      await assignRole(user.email, newRole);
       const updatedUsers = [...users];
-      updatedUsers[indexOfFirstUser + index].role = value;
+      updatedUsers[indexOfFirstUser + index].role = newRole;
       setUsers(updatedUsers);
     } catch (error) {
       console.error('Error assigning role:', error);
@@ -100,7 +98,7 @@ export default function AdminDashboard() {
     }
   }
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div></div>;
   if (error) return <div>{error}</div>;
 
   return (
@@ -171,8 +169,8 @@ export default function AdminDashboard() {
                       onChange={(e) => handleRoleChange(index, e.target.value as string)}
                       className="w-full"
                     >
-                      <MenuItem value="ADMIN">Admin</MenuItem>
-                      <MenuItem value="USER">User</MenuItem>
+                      <MenuItem value="admin">Admin</MenuItem>
+                      <MenuItem value="member">Member</MenuItem>
                     </Select>
                   </td>
                   <td className="py-2 px-4">

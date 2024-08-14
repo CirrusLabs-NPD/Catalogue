@@ -17,11 +17,11 @@ export const getUsers = async () => {
   })
 }
 
-export const assignRole = async (email: string) => {
+export const assignRole = async (email: string, role: string) => {
   return await AxiosUtility({
-    url: `${API_BASE_URL}/assign-admin`,
+    url: `${API_BASE_URL}/assign-role`,
     method: 'POST',
-    data: email
+    data: { email, role }
   })
 }
 

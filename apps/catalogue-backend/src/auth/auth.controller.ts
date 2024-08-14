@@ -30,11 +30,11 @@ export class AuthController {
         return { accessToken, role };
     }
 
-    @Post('assign-admin')
+    @Post('assign-role')
     @UseGuards(AuthGuard('jwt'), RolesGuard)
     @ApiBearerAuth('access-token')
-    async assignAdmin(@Body('email') email: string) {
-      const user = await this.usersService.setUserRole(email, 'admin');
+    async assignRole(@Body('email') email: string, @Body('role') role: string) {
+      const user = await this.usersService.setUserRole(email, role);
       return user;
     }
 
