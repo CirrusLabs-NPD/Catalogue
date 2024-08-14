@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { getPercentDash } from '../../api/analytics';
 
 interface Column {
-  id: 'projectName' | 'members' | 'duration' | 'projectStatus' | 'progressPercent';
+  id: 'projectName' | 'members' | 'startDate' | 'completionDate'| 'projectStatus' | 'progressPercent';
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -21,19 +21,18 @@ interface Column {
 
 const columns: readonly Column[] = [
   { id: 'projectName', label: 'Project Name', minWidth: 170 },
-  { id: 'members', label: 'Members', minWidth: 100 },
-  { id: 'duration', label: 'Duration', minWidth: 100 },
+  { id: 'members', label: 'Members', minWidth: 200 },
+  { id: 'startDate', label: 'Start Date', minWidth: 100 },
+  { id: 'completionDate', label: 'Compeletion Date', minWidth: 100 },
   {
     id: 'projectStatus',
     label: 'Project Status',
-    minWidth: 170,
-    align: 'right',
+    minWidth: 170
   },
   {
     id: 'progressPercent',
     label: 'Progress Percent',
     minWidth: 170,
-    align: 'right',
     format: (value: number) => `${value}%`,
   },
 ];
@@ -41,7 +40,8 @@ const columns: readonly Column[] = [
 interface RowData {
   projectName: string;
   members: string[];
-  duration: string;
+  startDate: string;
+  completionDate: string;
   projectStatus: string;
   progressPercent: number;
 }

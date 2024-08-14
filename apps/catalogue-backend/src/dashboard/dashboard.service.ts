@@ -39,7 +39,8 @@ export class DashboardService {
                             in: "$$member.email"
                         }
                     },
-                    duration: 1,
+                    startDate: 1,
+                    completionDate: 1,
                     projectStatus: 1,
                     progressPercent: 1
                 }
