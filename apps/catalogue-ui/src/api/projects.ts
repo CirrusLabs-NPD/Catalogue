@@ -67,3 +67,10 @@ export const addStatus = async (status: any) => {
   });
 };
 
+export const deleteStatus = async (id: string) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/statuses/${id}`,
+    method: 'DELETE'
+  });
+};
+
