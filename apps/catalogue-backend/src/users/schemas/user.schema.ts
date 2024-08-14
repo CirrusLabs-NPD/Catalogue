@@ -11,6 +11,9 @@ export class UserClass extends Document {
 
     @Prop({ required: true })
     name: string;
+
+    @Prop({ default: 'active'})
+    status: string
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserClass);

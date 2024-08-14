@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { faTrash, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { TextField, Select, MenuItem, Switch } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { getUsers, deleteUser, assignRole } from '../../api/auth';
+import { getUsers, deleteUser, assignRole, assignStatus } from '../../api/auth';
 
 interface User {
   _id: string;
   name: string;
   email: string;
   role: string;
-  status: boolean;
+  status: string;
 }
 
 export default function AdminDashboard() {
@@ -38,8 +38,8 @@ export default function AdminDashboard() {
         setUsers(usersData);
         setUserCounts({
           total: usersData.length,
-          active: usersData.filter(user => user.status).length,
-          inactive: usersData.filter(user => !user.status).length,
+          active: usersData.filter(user => user.status === 'active').length,
+          inactive: usersData.filter(user => user.status === 'inactive').length,
         });
         setLoading(false);
       } catch (error) {
@@ -75,10 +75,17 @@ export default function AdminDashboard() {
 
   async function handleStatusChange(index: number) {
     const user = currentUsers[index];
+    const newStatus = user.status === 'active' ? 'inactive' : 'active';
     try {
+      await assignStatus(user.email, newStatus);
       const updatedUsers = [...users];
-      updatedUsers[indexOfFirstUser + index].status = !user.status;
+      updatedUsers[indexOfFirstUser + index].status = newStatus;
       setUsers(updatedUsers);
+      setUserCounts(prev => ({
+        ...prev,
+        active: newStatus === 'active' ? prev.active + 1 : prev.active - 1,
+        inactive: newStatus === 'inactive' ? prev.inactive + 1 : prev.inactive - 1,
+      }));
     } catch (error) {
       console.error('Error updating user status:', error);
       setError('Failed to update user status');
@@ -175,7 +182,7 @@ export default function AdminDashboard() {
                   </td>
                   <td className="py-2 px-4">
                     <Switch
-                      checked={user.status}
+                      checked={user.status === 'active'}
                       onChange={() => handleStatusChange(index)}
                       color="primary"
                     />

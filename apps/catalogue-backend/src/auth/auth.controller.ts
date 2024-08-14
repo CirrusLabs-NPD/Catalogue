@@ -38,6 +38,14 @@ export class AuthController {
       return user;
     }
 
+    @Post('assign-status')
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @ApiBearerAuth('access-token')
+    async assignStatus(@Body('email') email: string, @Body('status') status: string) {
+      const user = await this.usersService.setUserStatus(email, status);
+      return user;
+    }
+
     @Get('users')
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
