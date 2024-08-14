@@ -74,14 +74,14 @@ function Sidebar() {
             />
             <span>Analytics</span>
           </Link>
-          <div className="flex items-center ml-8 mb-4 cursor-pointer hover:text-[#D5292B]">
+          <Link to="/AdminDashboard" className="flex items-center ml-8 mb-4 cursor-pointer hover:text-[#D5292B]">
             <img
               src="/src/app/assets/admindash.png"
-              alt="Admin Dashboard"
-              className="mr-2"
+              alt="admindash"
+              style={{ verticalAlign: "middle", marginRight: "8px" }}
             />
             <span>Admin Dashboard</span>
-          </div>
+          </Link>
         </div>
       </div>
       <div className="w-64 p-5">
