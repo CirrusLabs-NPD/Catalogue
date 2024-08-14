@@ -59,3 +59,11 @@ export const getMembers = async () => {
   });
 };
 
+export const addStatus = async (status: any) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/statuses`,
+    method: 'POST',
+    data: status
+  });
+};
+

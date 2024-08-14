@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getStatuses} from '../api/projects';
+import { getStatuses, addStatus } from '../api/projects';
 
 interface Status {
   _id: string;
