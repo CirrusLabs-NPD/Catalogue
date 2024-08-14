@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
@@ -13,9 +12,10 @@ import Analytics from '../Component/Analytics/Analytics';
 import AddPage from '../Component/AddProject/AddPage';
 import ProjectDetails from '../Component/ProjectDesc/ProjectDesc';
 import Loginpage from '../Component/Loginpage/Loginpage';
+import FilteredProjects from '../Component/FilteredProjects';
+import AdminDashboard from '../Component/AdminDashboard/AdminDashboard';
 import ProjectStatus from '../Component/ProjectStatus';
 import ManageProject from '../Component/ManageProject';
-import AdminDashboard from '../Component/AdminDashboard/AdminDashboard';
 
 export function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -65,6 +65,14 @@ export function App() {
             element={<ProtectedRoute element={<AddPage />} />}
           />
           <Route
+            path="/description/:id"
+            element={<ProtectedRoute element={<ProjectDetails />} />}
+          />
+           <Route
+            path="/projects/filter"
+            element={<ProtectedRoute element={<FilteredProjects />} />}
+          />
+          <Route
             path="/AdminDashboard"
             element={<ProtectedRoute element={<AdminDashboard />} />}
           />
@@ -76,21 +84,8 @@ export function App() {
             path="/ManageProject"
             element={<ProtectedRoute element={<ManageProject />} />}
           />
-          <Route
-            path="/description/:id"
-            element={<ProtectedRoute element={<ProjectDetails />} />}
-          />
-           <Route
-            path="/projects/filter"
-            element={<ProtectedRoute element={<FilteredProjects />} />}
-           />
-          {/* Add more routes here */}
-          <Route path="*" element={<Navigate to="/" />} />{' '}
-          {/* Redirect to login if route not found */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-        {/* <div className="mt-6 h-full overflow-y-scroll">
-         
-        </div> */}
       </div>
     </Router>
   );
