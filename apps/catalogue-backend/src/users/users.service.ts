@@ -8,6 +8,10 @@ import { SignInDto } from '../auth/dto/sign-in.dto';
 export class UsersService {
     constructor(@InjectModel(UserClass.name) private userModel: Model<UserClass>) {}
 
+    async getUsers(): Promise<UserClass[]> {
+        return await this.userModel.find().exec();
+    }
+
     async findUser(signInDto: SignInDto): Promise<UserClass> {
         let user = await this.userModel.findOne({ email: signInDto.email }).exec();
 
