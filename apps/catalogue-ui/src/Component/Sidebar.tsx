@@ -42,7 +42,11 @@ function Sidebar() {
     
     navigate(`/projects/filter?${searchParams.toString()}`);
   };
-    
+
+  const handleAddStatusClick = () => {
+    navigate('/ProjectStatus');
+  };
+
   return (
     <aside className="fixed top-18 left-0 h-full w-64">
       <div className="w-64 p-5 border-r border-gray-300 relative">
@@ -90,7 +94,8 @@ function Sidebar() {
           <img
             src={addsquare}
             alt="Add"
-            className="h-6 w-6 object-contain ml-4"
+            className="h-6 w-6 object-contain ml-4 cursor-pointer"
+            onClick={handleAddStatusClick}
           />
         </div>
         <div>
