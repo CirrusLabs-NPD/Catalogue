@@ -50,3 +50,19 @@ export const getProjectsByFilters = async (filters: {
     params: filters,
   });
 };
+
+export const sortProjectsByName = async (order: string) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/sort/name`,
+    method: 'GET',
+    params: { order }
+  });
+};
+
+export const sortProjectsByProgress = async (order: string) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/sort/progress`,
+    method: 'GET',
+    params: { order }
+  });
+};
