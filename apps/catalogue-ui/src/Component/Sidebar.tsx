@@ -19,7 +19,8 @@ const statusColors: { [key: string]: string } = {
   "Ongoing": "#34C759",
   "Completed": "#FF9500",
   "Delayed": "#AF52DE",
-  "At Risk": "#007AFF"
+  "At Risk": "#007AFF",
+  "Awaiting Deletion": "#FF0000",
 };
 
 function Sidebar({ userRole }: { userRole: string }) {

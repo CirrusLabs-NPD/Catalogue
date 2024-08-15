@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { deleteProject, getProjects } from '../api/projects';
+import { deleteProject, getProjects, cancelDeleteProject } from '../api/projects';
 import { Project } from './ProjectInterface';
 
 const ProjectSearch: React.FC = () => {
@@ -34,12 +34,25 @@ const ProjectSearch: React.FC = () => {
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this project?')) {
       try {
-        await deleteProject(id);
-        setProjects(prevProjects => prevProjects.filter(project => project._id !== id));
-        setFilteredProjects(prevProjects => prevProjects.filter(project => project._id !== id));
+        const updatedProject = await deleteProject(id); // Update the project's status to "Awaiting Deletion"
+        setProjects(prevProjects => prevProjects.map(project => project._id === id ? updatedProject : project));
+        setFilteredProjects(prevProjects => prevProjects.map(project => project._id === id ? updatedProject : project));
       } catch (err) {
         console.error('Failed to delete project:', err);
         setError('Failed to delete project');
+      }
+    }
+  };
+
+  const handleCancelDelete = async (id: string) => {
+    if (window.confirm('Are you sure you want to cancel the deletion of this project?')) {
+      try {
+        const updatedProject = await cancelDeleteProject(id);
+        setProjects(prevProjects => prevProjects.map(project => project._id === id ? updatedProject : project));
+        setFilteredProjects(prevProjects => prevProjects.map(project => project._id === id ? updatedProject : project));
+      } catch (err) {
+        console.error('Failed to cancel project deletion:', err);
+        setError('Failed to cancel project deletion');
       }
     }
   };
@@ -77,11 +90,20 @@ const ProjectSearch: React.FC = () => {
                   View
                 </Link>
                 <button
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  className={`font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${project.projectStatus === 'Awaiting Deletion' ? 'bg-gray-500 hover:bg-gray-700' : 'bg-red-500 hover:bg-red-700 text-white'}`}
                   onClick={() => handleDelete(project._id)}
+                  disabled={project.projectStatus === 'Awaiting Deletion'}
                 >
-                  Delete
+                  {project.projectStatus === 'Awaiting Deletion' ? 'Awaiting Deletion' : 'Delete'}
                 </button>
+                {project.projectStatus === 'Awaiting Deletion' && (
+                  <button
+                    className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    onClick={() => handleCancelDelete(project._id)}
+                  >
+                    Cancel Deletion
+                  </button>
+                )}
               </div>
             </div>
           ))

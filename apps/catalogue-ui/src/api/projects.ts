@@ -45,6 +45,14 @@ export const deleteProject = async (id: string) => {
   }
 };
 
+export const cancelDeleteProject = async (id: string) => {
+  return await AxiosUtility({
+    url: `${API_BASE_URL}/projects/${id}/cancel-delete`,
+    method: 'PUT',
+    data: {}
+  })
+}
+
 export const getStatuses = async () => {
   return AxiosUtility({
     url: `${API_BASE_URL}/statuses`,

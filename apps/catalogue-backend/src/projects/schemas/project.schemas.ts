@@ -39,6 +39,9 @@ export class ProjectClass extends Document {
 
     @Prop()
     completionDate?: Date;
+
+    @Prop({ default: null })
+    deletionRequestedDate?: Date;
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(ProjectClass);
