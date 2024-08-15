@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Project } from './ProjectInterface';
 import iconlogohome from '../app/assets/iconlogohome.png';
+import { formatDate } from '../api/projects';
 
 interface ProjectCardProps {
   project: Project;
@@ -30,7 +31,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
           {project.projectName}
         </h2>
         <p className="pHome text-[#0D062D] text-sm ml-4">
-          Start Date: {project.startDate}
+          Start Date: {formatDate(project.startDate)}
         </p>
         <ul className="list-disc ml-8 text-[#787486] text-lg mt-2">
           {project.description.split('.').slice(0, 2).map((item, i) => (

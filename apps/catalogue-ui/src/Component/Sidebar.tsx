@@ -4,42 +4,33 @@ import plus from "../app/assets/Plus.png";
 import analytics from "../app/assets/category.png";
 import square from "../app/assets/task-square.png";
 import addsquare from "../app/assets/add-square.png";
-import { getStatuses } from '../api/projects';
+import { useStatusContext } from "./StatusContext";
 
 interface Status {
   _id: string;
   projectStatus: string;
 }
 
+interface SidebarProps {
+  userRole: string;
+}
+
 const statusColors: { [key: string]: string } = {
   "Ongoing": "#34C759",
   "Completed": "#FF9500",
   "Delayed": "#AF52DE",
-  "At Risk": "#007AFF"
+  "At Risk": "#007AFF",
+  "Awaiting Deletion": "#FF0000",
 };
 
-function Sidebar() {
+function Sidebar({ userRole }: { userRole: string }) {
   const [hoveredStatus, setHoveredStatus] = useState<string | null>(null);
-  const [statuses, setStatuses] = useState<Status[]>([]);
+  const { statuses } = useStatusContext();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchStatuses = async () => {
-      try {
-        const fetchedStatuses = await getStatuses();
-        setStatuses(fetchedStatuses);
-      } catch (error) {
-        console.error('Error fetching statuses:', error);
-      }
-    };
-
-    fetchStatuses();
-  }, []);
 
   const handleStatusClick = (status: string) => {
     const searchParams = new URLSearchParams();
     searchParams.append('statuses', status);
-    
     navigate(`/projects/filter?${searchParams.toString()}`);
   };
 
@@ -78,14 +69,16 @@ function Sidebar() {
             />
             <span>Analytics</span>
           </Link>
-          <Link to="/AdminDashboard" className="flex items-center ml-8 mb-4 cursor-pointer hover:text-[#D5292B]">
-            <img
-              src="/src/app/assets/admindash.png"
-              alt="admindash"
-              style={{ verticalAlign: "middle", marginRight: "8px" }}
-            />
-            <span>Admin Dashboard</span>
-          </Link>
+          {userRole === 'admin' && (
+            <Link to="/AdminDashboard" className="flex items-center ml-8 mb-4 cursor-pointer hover:text-[#D5292B]">
+              <img
+                src="/src/app/assets/admindash.png"
+                alt="admindash"
+                style={{ verticalAlign: "middle", marginRight: "8px" }}
+              />
+              <span>Admin Dashboard</span>
+            </Link>
+          )}
         </div>
       </div>
       <div className="w-64 p-5">

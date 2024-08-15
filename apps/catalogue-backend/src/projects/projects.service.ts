@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { ProjectClass } from './schemas/project.schemas';
@@ -6,6 +6,7 @@ import { CreateProjectDto } from './dto/create.project.dto';
 import { UpdateProjectDto } from './dto/update.project.dto';
 import { StatusesService } from '../statuses/statuses.service';
 import { MemberClass } from '../members/schemas/member.schema';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class ProjectsService {
@@ -54,10 +55,45 @@ export class ProjectsService {
     }
 
     async deleteProject(id: string): Promise<ProjectClass> {
-        const project = await this.projectModel.findByIdAndDelete(id);
+        const project = await this.projectModel.findById(id);
         if (!project) {
             throw new NotFoundException(`Project with ID "${id}" not found`);
         }
+
+        project.projectStatus = "Awaiting Deletion";
+        project.deletionRequestedDate = new Date();
+        await project.save();
+
+        return project;
+    }
+
+    @Cron('0 0 * * *') // Runs every day at midnight
+    async deleteExpiredProjects() {
+        const now = new Date();
+        const projectsToDelete = await this.projectModel.find({
+            projectStatus: "Awaiting Deletion",
+            deletionRequestedDate: { $lte: new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000) } // 30 days ago
+        });
+
+        for (const project of projectsToDelete) {
+            await this.projectModel.findByIdAndDelete(project._id);
+        }
+    }
+
+    async cancelDeleteProject(id: string): Promise<ProjectClass> {
+        const project = await this.projectModel.findById(id);
+        if (!project) {
+            throw new NotFoundException(`Project with ID "${id}" not found`);
+        }
+    
+        if (project.projectStatus !== "Awaiting Deletion") {
+            throw new BadRequestException(`Project with ID "${id}" is not marked for deletion`);
+        }
+    
+        project.projectStatus = "Ongoing";
+        project.deletionRequestedDate = null;
+        await project.save();
+    
         return project;
     }
 

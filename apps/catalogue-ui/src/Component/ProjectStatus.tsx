@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getStatuses, addStatus, deleteStatus } from '../api/projects';
+import { useStatusContext } from './StatusContext';
 
 interface Status {
   _id: string;
@@ -7,22 +7,9 @@ interface Status {
 }
 
 function ProjectStatus() {
-  const [statuses, setStatuses] = useState<Status[]>([]);
+  const { statuses, addStatus, deleteStatus } = useStatusContext();
   const [newStatus, setNewStatus] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchStatuses = async () => {
-      try {
-        const fetchedStatuses = await getStatuses();
-        setStatuses(fetchedStatuses);
-      } catch (error) {
-        console.error('Error fetching statuses:', error);
-      }
-    };
-
-    fetchStatuses();
-  }, []);
 
   const handleAddStatus = async () => {
     if (!newStatus.trim()) {
@@ -31,8 +18,7 @@ function ProjectStatus() {
     }
 
     try {
-      const addedStatus = await addStatus({ projectStatus: newStatus });
-      setStatuses([...statuses, addedStatus]);
+      await addStatus(newStatus);
       setNewStatus('');
       setError(null);
     } catch (error) {
@@ -44,7 +30,6 @@ function ProjectStatus() {
   const handleDeleteStatus = async (id: string) => {
     try {
       await deleteStatus(id);
-      setStatuses(statuses.filter((status) => status._id !== id));
     } catch (error) {
       console.error('Error deleting status:', error);
       setError('Failed to delete status.');
@@ -92,5 +77,4 @@ function ProjectStatus() {
     </div>
   );
 }
-
 export default ProjectStatus;

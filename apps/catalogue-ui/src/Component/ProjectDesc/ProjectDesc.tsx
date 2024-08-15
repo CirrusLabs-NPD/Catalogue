@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Project, Member } from '../ProjectInterface';
-import { getProjectById, deleteProject, updateProject, getMembers } from '../../api/projects';
+import { getProjectById, formatDate, updateProject, getMembers } from '../../api/projects';
 
 const ProjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -194,7 +194,7 @@ const ProjectDetails: React.FC = () => {
                 id="startDate"
                 type="date"
                 name="startDate"
-                value={editedProject!.startDate || ''}
+                value={editedProject!.startDate ? editedProject!.startDate.split('T')[0] : ''}
                 onChange={handleInputChange}
               />
             </div>
@@ -269,7 +269,7 @@ const ProjectDetails: React.FC = () => {
                 id="completionDate"
                 type="date"
                 name="completionDate"
-                value={editedProject!.completionDate || ''}
+                value={editedProject!.completionDate ? editedProject!.completionDate.split('T')[0] : ''}
                 onChange={handleInputChange}
               />
             </div>
@@ -329,7 +329,7 @@ const ProjectDetails: React.FC = () => {
             </div>
             <div className="mb-5 mt-4">
               <h2 className="text-2xl font-medium text-black">Start Date</h2>
-              <p className="text-lg text-[#787486]">{project.startDate || 'N/A'}</p>
+              <p className="text-lg text-[#787486]">{formatDate(project.startDate) || 'N/A'}</p>
             </div>
             <div className="mb-5 mt-4">
               <h2 className="text-2xl font-medium text-black">Members</h2>
@@ -352,7 +352,7 @@ const ProjectDetails: React.FC = () => {
             </div>
             <div className="mb-5 mt-4">
               <h2 className="text-2xl font-medium text-black">Completion Date</h2>
-              <p className="text-lg text-[#787486]">{project.completionDate || 'N/A'}</p>
+              <p className="text-lg text-[#787486]">{formatDate(project.completionDate) || 'N/A'}</p>
             </div>
             <div className="mt-6 flex space-x-4">
               <button

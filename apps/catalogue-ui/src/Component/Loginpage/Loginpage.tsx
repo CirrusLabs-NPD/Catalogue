@@ -11,7 +11,7 @@ import { json } from 'stream/consumers';
 import { getToken } from '../../api/auth';
 
 type LoginpageProps = {
-  setIsLoggedIn: (isLoggedIn: boolean) => void;
+  setIsLoggedIn: (isLoggedIn: boolean, role: string) => void;
   navigate: any;
 };
 
@@ -74,7 +74,7 @@ class Loginpage extends Component<LoginpageProps, LoginpageState> {
         isAuthenticated: true,
         user: user,
       });
-      this.props.setIsLoggedIn(true);
+      this.props.setIsLoggedIn(true, user.role);
       this.props.navigate('/home');
     } catch (err) {
       console.error('Login error:', err);
@@ -90,7 +90,9 @@ class Loginpage extends Component<LoginpageProps, LoginpageState> {
   logout() {
     this.publicClientApplication.logout();
     this.setState({ isAuthenticated: false, user: {} });
-    this.props.setIsLoggedIn(false);
+    this.props.setIsLoggedIn(false, '');
+    localStorage.removeItem('jwt_token');
+    sessionStorage.removeItem('user');
   }
 
   render() {

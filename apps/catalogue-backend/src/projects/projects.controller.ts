@@ -58,4 +58,13 @@ export class ProjectsController {
     deleteProject(@Param('id') id: string): Promise<ProjectClass> {
         return this.projectsService.deleteProject(id);
     }
+
+    @Put(':id/cancel-delete')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
+    @ApiParam({ name: 'id', type: String })
+    @ApiResponse({ status: 200, description: 'Cancels deletion of a project by ID.' })
+    cancelDeleteProject(@Param('id') id: string): Promise<ProjectClass> {
+        return this.projectsService.cancelDeleteProject(id);
+    }
 }
