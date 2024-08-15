@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Post, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/sign-in.dto';
 import { RolesGuard } from './guards/roles.guards';
 import { UsersService } from '../users/users.service';
-import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiResponse } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -30,10 +30,19 @@ export class AuthController {
         return { accessToken, role };
     }
 
-    @Post('assign-admin')
+    @Post('assign-role')
     @UseGuards(AuthGuard('jwt'), RolesGuard)
-    async assignAdmin(@Body('email') email: string) {
-      const user = await this.usersService.setUserRole(email, 'admin');
+    @ApiBearerAuth('access-token')
+    async assignRole(@Body('email') email: string, @Body('role') role: string) {
+      const user = await this.usersService.setUserRole(email, role);
+      return user;
+    }
+
+    @Post('assign-status')
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @ApiBearerAuth('access-token')
+    async assignStatus(@Body('email') email: string, @Body('status') status: string) {
+      const user = await this.usersService.setUserStatus(email, status);
       return user;
     }
 
@@ -44,5 +53,14 @@ export class AuthController {
     async getUsers() {
       const users = await this.usersService.getUsers();
       return users;
+    }
+
+    @Delete(':id')
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @ApiBearerAuth('access-token')
+    @ApiParam({ name: 'id', type: String })
+    @ApiResponse({ status: 200, description: 'Deletes a user specified by ID.' })
+    async deleteUser(@Param('id') id: string) {
+      return await this.usersService.deleteUser(id);
     }
 }

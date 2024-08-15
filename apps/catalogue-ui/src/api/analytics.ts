@@ -50,3 +50,43 @@ export const getProjectsByFilters = async (filters: {
     params: filters,
   });
 };
+
+export const sortProjectsByName = async (order: string) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/sort/name`,
+    method: 'GET',
+    params: { order }
+  });
+};
+
+export const sortProjectsByProgress = async (order: string) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/sort/progress`,
+    method: 'GET',
+    params: { order }
+  });
+};
+
+export const sortProjectsByStart = async (order: string) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/sort/start`,
+    method: 'GET',
+    params: { order }
+  });
+};
+
+export const sortProjectsByEnd = async (order: string) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/sort/completion`,
+    method: 'GET',
+    params: { order }
+  });
+};
+
+export const searchProjects = async (search: string) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/search`,
+    method: 'GET',
+    params: { search }
+  });
+};

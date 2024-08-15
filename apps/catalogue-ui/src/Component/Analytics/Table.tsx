@@ -7,12 +7,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { getPercentDash } from '../../api/analytics';
 
 interface Column {
-  id: 'projectName' | 'members' | 'duration' | 'projectStatus' | 'progressPercent';
+  id: 'projectName' | 'members' | 'startDate' | 'completionDate'| 'projectStatus' | 'progressPercent';
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -21,19 +20,18 @@ interface Column {
 
 const columns: readonly Column[] = [
   { id: 'projectName', label: 'Project Name', minWidth: 170 },
-  { id: 'members', label: 'Members', minWidth: 100 },
-  { id: 'duration', label: 'Duration', minWidth: 100 },
+  { id: 'members', label: 'Members', minWidth: 200 },
+  { id: 'startDate', label: 'Start Date', minWidth: 100 },
+  { id: 'completionDate', label: 'Completion Date', minWidth: 100 },
   {
     id: 'projectStatus',
     label: 'Project Status',
-    minWidth: 170,
-    align: 'right',
+    minWidth: 170
   },
   {
     id: 'progressPercent',
     label: 'Progress Percent',
     minWidth: 170,
-    align: 'right',
     format: (value: number) => `${value}%`,
   },
 ];
@@ -41,7 +39,8 @@ const columns: readonly Column[] = [
 interface RowData {
   projectName: string;
   members: string[];
-  duration: string;
+  startDate: string;
+  completionDate: string;
   projectStatus: string;
   progressPercent: number;
 }
@@ -74,7 +73,7 @@ export default function StickyHeadTable() {
   };
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+    <Paper sx={{ width: '100%', overflow: 'hidden', padding: 2, borderRadius: '0.5rem', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -83,11 +82,15 @@ export default function StickyHeadTable() {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  sx={{ 
+                    minWidth: column.minWidth, 
+                    backgroundColor: '#f0f0f0', 
+                    fontSize: '1rem', 
+                    fontWeight: 'bold', 
+                    fontFamily: 'inherit' 
+                  }}
                 >
-                  <Typography variant="h6" component="div" style={{ fontFamily: 'Quicksand', fontWeight: 'regular', fontSize:'5' }}>
-                    {column.label}
-                  </Typography>
+                  {column.label}
                 </TableCell>
               ))}
             </TableRow>
@@ -101,14 +104,12 @@ export default function StickyHeadTable() {
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
-                        <TableCell key={column.id} align={column.align}>
-                          <Typography variant="h6" component="div" style={{ fontFamily: 'Quicksand', fontWeight: 'lighter', fontSize:'5' }}>
+                        <TableCell key={column.id} align={column.align} sx={{ fontSize: '0.875rem', fontFamily: 'inherit' }}>
                           {column.id === 'members' && Array.isArray(value)
                               ? value.join(', ')
                               : column.format && typeof value === 'number'
                               ? column.format(value)
                               : value}
-                          </Typography>
                         </TableCell>
                       );
                     })}
@@ -126,6 +127,7 @@ export default function StickyHeadTable() {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        sx={{ fontSize: '0.875rem' }}
       />
     </Paper>
   );

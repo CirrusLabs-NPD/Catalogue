@@ -11,9 +11,9 @@ export class UsersController {
         return users;
     }
 
-    @Post('assign-admin')
-    async assignAdmin(@Body('email') email: string) {
-        const user = await this.usersService.setUserRole(email, 'admin');
+    @Post('assign-role')
+    async assignRole(@Body('email') email: string, @Body('role') role: string) {
+        const user = await this.usersService.setUserRole(email, role);
         return user;
     }
 }

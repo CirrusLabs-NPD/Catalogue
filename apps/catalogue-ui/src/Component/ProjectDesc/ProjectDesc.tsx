@@ -58,18 +58,6 @@ const ProjectDetails: React.FC = () => {
     }
   };
 
-  const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this project?')) {
-      try {
-        await deleteProject(id!);
-        navigate('/projects');
-      } catch (err) {
-        console.error('Failed to delete project:', err);
-        setError('Failed to delete project');
-      }
-    }
-  };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     if (name === 'progressPercent'){
@@ -372,12 +360,6 @@ const ProjectDetails: React.FC = () => {
                 onClick={handleEdit}
               >
                 Edit
-              </button>
-              <button
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                onClick={handleDelete}
-              >
-                Delete
               </button>
             </div>
           </>

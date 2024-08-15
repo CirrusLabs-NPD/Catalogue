@@ -14,6 +14,7 @@ interface User {
 function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
   const modalRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
 
@@ -53,6 +54,13 @@ function Header() {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
+  const handleSearch = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/search-results?search=${encodeURIComponent(searchTerm)}`);
+    }
+  };
+
   return (
     <header className="flex items-center justify-between p-2.5 bg-[#f8f9fa] border border-gray-300 relative fixed top-0 left-0 w-full">
       <div className="ml-7">
@@ -61,11 +69,15 @@ function Header() {
         </Link>
       </div>
       <div className="flex-1 ml-[10%] mr-5">
-        <input
-          type="text"
-          placeholder="Search..."
-          className="w-full p-2.5 border border-gray-300 rounded-lg"
-        />
+        <form onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}  // Update searchTerm state on input change
+            className="w-full p-2.5 border border-gray-300 rounded-lg"
+          />
+        </form>
       </div>
       <div className="flex flex-col items-end mr-5">
         <div className="text-xl font-bold">{user ? user.name : 'Guest'}</div>
