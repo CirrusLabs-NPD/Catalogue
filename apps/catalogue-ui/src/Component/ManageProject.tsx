@@ -39,8 +39,18 @@ const ProjectSearch: React.FC = () => {
     if (window.confirm('Are you sure you want to delete this project?')) {
       try {
         const updatedProject = await deleteProject(id);
-        setProjects(prevProjects => prevProjects.map(project => project._id === id ? updatedProject : project));
-        setFilteredProjects(prevProjects => prevProjects.map(project => project._id === id ? updatedProject : project));
+        console.log(projects);
+  
+        setProjects(prevProjects =>
+          prevProjects.map(project =>
+            project._id === id ? { ...project, projectStatus: 'Awaiting Deletion' } : project
+          )
+        );
+        setFilteredProjects(prevFilteredProjects =>
+          prevFilteredProjects.map(project =>
+            project._id === id ? { ...project, projectStatus: 'Awaiting Deletion' } : project
+          )
+        );
       } catch (err) {
         console.error('Failed to delete project:', err);
         setError('Failed to delete project');
@@ -52,8 +62,16 @@ const ProjectSearch: React.FC = () => {
     if (window.confirm('Are you sure you want to cancel the deletion of this project?')) {
       try {
         const updatedProject = await cancelDeleteProject(id);
-        setProjects(prevProjects => prevProjects.map(project => project._id === id ? updatedProject : project));
-        setFilteredProjects(prevProjects => prevProjects.map(project => project._id === id ? updatedProject : project));
+        setProjects(prevProjects =>
+          prevProjects.map(project =>
+            project._id === id ? updatedProject : project
+          )
+        );
+        setFilteredProjects(prevFilteredProjects =>
+          prevFilteredProjects.map(project =>
+            project._id === id ? updatedProject : project
+          )
+        );
       } catch (err) {
         console.error('Failed to cancel project deletion:', err);
         setError('Failed to cancel project deletion');
