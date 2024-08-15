@@ -11,6 +11,10 @@ interface Status {
   projectStatus: string;
 }
 
+interface SidebarProps {
+  userRole: string;
+}
+
 const statusColors: { [key: string]: string } = {
   "Ongoing": "#34C759",
   "Completed": "#FF9500",
@@ -18,7 +22,7 @@ const statusColors: { [key: string]: string } = {
   "At Risk": "#007AFF"
 };
 
-function Sidebar() {
+function Sidebar({ userRole }: SidebarProps) {
   const [hoveredStatus, setHoveredStatus] = useState<string | null>(null);
   const [statuses, setStatuses] = useState<Status[]>([]);
   const navigate = useNavigate();
@@ -78,14 +82,16 @@ function Sidebar() {
             />
             <span>Analytics</span>
           </Link>
-          <Link to="/AdminDashboard" className="flex items-center ml-8 mb-4 cursor-pointer hover:text-[#D5292B]">
-            <img
-              src="/src/app/assets/admindash.png"
-              alt="admindash"
-              style={{ verticalAlign: "middle", marginRight: "8px" }}
-            />
-            <span>Admin Dashboard</span>
-          </Link>
+          {userRole === 'admin' && (
+            <Link to="/AdminDashboard" className="flex items-center ml-8 mb-4 cursor-pointer hover:text-[#D5292B]">
+              <img
+                src="/src/app/assets/admindash.png"
+                alt="admindash"
+                style={{ verticalAlign: "middle", marginRight: "8px" }}
+              />
+              <span>Admin Dashboard</span>
+            </Link>
+          )}
         </div>
       </div>
       <div className="w-64 p-5">

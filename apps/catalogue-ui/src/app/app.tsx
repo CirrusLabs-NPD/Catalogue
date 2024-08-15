@@ -17,78 +17,62 @@ import AdminDashboard from '../Component/AdminDashboard/AdminDashboard';
 import ProjectStatus from '../Component/ProjectStatus';
 import ManageProject from '../Component/ManageProject';
 import SearchResults from '../Component/SearchResults';
+import AccessDenied from '../Component/AccessDenied';
 
 export function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState('');
 
   useEffect(() => {
-    // Check if user was previously logged in from sessionStorage
     const storedLoggedInStatus = sessionStorage.getItem('isLoggedIn');
-    if (storedLoggedInStatus && storedLoggedInStatus === 'true') {
+    const storedUserRole = sessionStorage.getItem('userRole');
+    if (storedLoggedInStatus === 'true') {
       setIsLoggedIn(true);
+      setUserRole(storedUserRole || '');
     }
   }, []);
 
-  // Function to handle login
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-    sessionStorage.setItem('isLoggedIn', 'true');
+  const handleLogin = (isLoggedIn: boolean, role: string) => {
+    setIsLoggedIn(isLoggedIn);
+    setUserRole(role);
+    sessionStorage.setItem('isLoggedIn', isLoggedIn.toString());
+    sessionStorage.setItem('userRole', role);
   };
 
-  // Function to handle logout
   const handleLogout = () => {
     setIsLoggedIn(false);
+    setUserRole('');
     sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('userRole');
   };
 
-  const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
-    return isLoggedIn ? (
-      <React.Fragment>{element}</React.Fragment>
-    ) : (
-      <Navigate to="/" />
-    );
+  const ProtectedRoute: React.FC<{ element: React.ReactElement; requiredRole?: string }> = ({ element, requiredRole }) => {
+    if (!isLoggedIn) {
+      return <Navigate to="/" />;
+    }
+    if (requiredRole && userRole !== requiredRole) {
+      return <Navigate to="/access-denied" />;
+    }
+    return element;
   };
 
   return (
     <Router>
       <div className="h-screen overflow-hidden">
-        {isLoggedIn && <Header />}
-        {isLoggedIn && <Sidebar />}
+        {isLoggedIn && <Header onLogout={handleLogout} />}
+        {isLoggedIn && <Sidebar userRole={userRole} />}
         <Routes>
           <Route path="/" element={<Loginpage setIsLoggedIn={handleLogin} />} />
           <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
-          <Route
-            path="/analytics"
-            element={<ProtectedRoute element={<Analytics />} />}
-          />
-          <Route
-            path="/addpage"
-            element={<ProtectedRoute element={<AddPage />} />}
-          />
-          <Route
-            path="/description/:id"
-            element={<ProtectedRoute element={<ProjectDetails />} />}
-          />
-           <Route
-            path="/projects/filter"
-            element={<ProtectedRoute element={<FilteredProjects />} />}
-          />
-          <Route 
-            path="/search-results" 
-            element={<ProtectedRoute element={<SearchResults />} />} 
-          />
-          <Route
-            path="/AdminDashboard"
-            element={<ProtectedRoute element={<AdminDashboard />} />}
-          />
-          <Route
-            path="/ProjectStatus"
-            element={<ProtectedRoute element={<ProjectStatus />} />}
-          />
-          <Route
-            path="/ManageProject"
-            element={<ProtectedRoute element={<ManageProject />} />}
-          />
+          <Route path="/analytics" element={<ProtectedRoute element={<Analytics />} />} />
+          <Route path="/addpage" element={<ProtectedRoute element={<AddPage />} />} />
+          <Route path="/description/:id" element={<ProtectedRoute element={<ProjectDetails />} />} />
+          <Route path="/projects/filter" element={<ProtectedRoute element={<FilteredProjects />} />} />
+          <Route path="/search-results" element={<ProtectedRoute element={<SearchResults />} />} />
+          <Route path="/AdminDashboard" element={<ProtectedRoute element={<AdminDashboard />} requiredRole="admin" />} />
+          <Route path="/ProjectStatus" element={<ProtectedRoute element={<ProjectStatus />} requiredRole="admin" />} />
+          <Route path="/ManageProject" element={<ProtectedRoute element={<ManageProject />} requiredRole="admin" />} />
+          <Route path="/access-denied" element={<AccessDenied />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
