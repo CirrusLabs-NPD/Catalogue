@@ -37,7 +37,7 @@ function ProjectStatus() {
   };
 
   return (
-    <div className="p-6 bg-gray-100 rounded-lg max-w-md mx-auto">
+    <div className="p-6 mt-10 bg-gray-100 rounded-lg max-w-md mx-auto">
       <h2 className="text-center text-xl font-semibold mb-6">Manage Project Statuses</h2>
 
       {error && <div className="text-red-500 text-center mb-4">{error}</div>}
