@@ -4,7 +4,7 @@ import plus from "../app/assets/Plus.png";
 import analytics from "../app/assets/category.png";
 import square from "../app/assets/task-square.png";
 import addsquare from "../app/assets/add-square.png";
-import { getStatuses } from '../api/projects';
+import { useStatusContext } from "./StatusContext";
 
 interface Status {
   _id: string;
@@ -22,28 +22,14 @@ const statusColors: { [key: string]: string } = {
   "At Risk": "#007AFF"
 };
 
-function Sidebar({ userRole }: SidebarProps) {
+function Sidebar({ userRole }: { userRole: string }) {
   const [hoveredStatus, setHoveredStatus] = useState<string | null>(null);
-  const [statuses, setStatuses] = useState<Status[]>([]);
+  const { statuses } = useStatusContext();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchStatuses = async () => {
-      try {
-        const fetchedStatuses = await getStatuses();
-        setStatuses(fetchedStatuses);
-      } catch (error) {
-        console.error('Error fetching statuses:', error);
-      }
-    };
-
-    fetchStatuses();
-  }, []);
 
   const handleStatusClick = (status: string) => {
     const searchParams = new URLSearchParams();
     searchParams.append('statuses', status);
-    
     navigate(`/projects/filter?${searchParams.toString()}`);
   };
 
