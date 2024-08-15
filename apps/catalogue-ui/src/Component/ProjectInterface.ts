@@ -12,6 +12,7 @@ export interface Member {
 export interface Project {
     _id: string;
     projectName: string;
+    projectManager: string;
     startDate?: string;
     gitHubLinks: string;
     technology: string[];
