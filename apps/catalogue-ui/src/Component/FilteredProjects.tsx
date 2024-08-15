@@ -61,18 +61,21 @@ function FilteredProjects() {
   };
 
   return (
-    <div className="ml-64 mt-6 h-full overflow-y-scroll">
-      <div className="overflow-y-auto h-full">
-        <h1 className="text-[#2C4B84] text-4xl pl-8 pt-1">Projects Filtered By: {renderFilterSummary()}</h1>
-        <FilterDropdown />
-        <div className="flex flex-wrap justify-center">
-          {projects.map((project, index) => (
-            <ProjectCard key={project._id} project={project} index={index} />
-          ))}
+    <div className="ml-64 mt-6 max-h-[calc(100vh-100px)] overflow-y-auto">
+      <div className="h-full">
+      <h1 className="text-[#2C4B84] text-4xl pl-8 pt-1">Projects Filtered By: {renderFilterSummary()}</h1>
+        <div className="flex space-x-4 mt-5 mb-4">
+          <FilterDropdown />
         </div>
-        {projects.length === 0 && (
-          <p className="text-center text-gray-500 mt-4">No projects found matching the selected filters.</p>
-        )}
+        <div className="flex flex-wrap justify-center">
+          {Array.isArray(projects) && projects.length > 0 ? (
+            projects.map((project, index) => (
+              <ProjectCard key={project._id} project={project} index={index} />
+            ))
+          ) : (
+            <div>No projects available</div>
+          )}
+        </div>
       </div>
     </div>
   );
