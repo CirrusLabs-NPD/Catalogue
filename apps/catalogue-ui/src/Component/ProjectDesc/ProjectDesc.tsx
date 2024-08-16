@@ -107,17 +107,14 @@ const ProjectDetails: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
-      <div className="flex-1 overflow-hidden">
-        <main className="h-full bg-gray-50">
-          <div className="container mx-auto px-4 py-8">
-            <div className="max-w-6xl mx-auto">
-              <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">
-                {isEditing ? 'Edit Project' : project.projectName}
-              </h1>
-              <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-                {isEditing ? (
-                  <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="p-6 space-y-6">
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+          {isEditing ? 'Edit Project' : project.projectName}
+        </h1>
+        <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+          {isEditing ? (
+            <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="p-6 space-y-6">
               <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
               <div>
                 <label htmlFor="projectName" className="block text-lg font-medium text-gray-700 mb-2">
@@ -300,22 +297,22 @@ const ProjectDetails: React.FC = () => {
               </select>
             </div>
             <div className="mt-6 flex justify-end space-x-4">
-                    <button
-                      type="button"
-                      onClick={handleCancelEdit}
-                      className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Save Changes
-                    </button>
-                  </div>
-                </form>
-              ) : (
+                <button
+                  type="button"
+                  onClick={handleCancelEdit}
+                  className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          ) : (
           <div className="px-6 py-8">
             <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
               <div className="sm:col-span-2">
@@ -425,10 +422,7 @@ const ProjectDetails: React.FC = () => {
         </div>
       </div>
     </div>
-  </main>
-</div>
-</div>
-);
+  );
 }
 
 export default ProjectDetails;
