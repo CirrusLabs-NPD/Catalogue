@@ -6,35 +6,40 @@ import FilterDropdown from '../FilterDropdown/filter';
 
 export default function Analytics() {
   return (
-    <div className="ml-64 mt-6 h-[calc(100%-100px)] overflow-y-scroll">
-      <div className="analytics-container">
-        <h1 className="analytics_header">Analytics</h1>
-        <div className="mt-4 mb-4 ">
+    <div className="ml-64 p-8 min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">Analytics</h1>
+        
+        <div className="mb-8">
           <FilterDropdown />
         </div>
-
-        <div className="grid grid-cols-1 ml-8 md:grid-cols-2 gap-4">
-          <div className="p-4 bg-gray-100 rounded-lg shadow-md">
-            <h2 className="text-center font-bold text-lg md:text-xl mb-3">
+  
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
               Number of Projects Per Month
             </h2>
-            <div className="flex justify-center items-center p-4 rounded-lg">
+            <div className="p-4">
               <BarGraph />
             </div>
           </div>
-          <div className="p-4 bg-gray-100 rounded-lg shadow-md">
-            <h2 className="text-center font-bold text-lg md:text-xl mb-3">
+  
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
               Total Projects by Status
             </h2>
-            <div className="flex justify-center items-center p-4 rounded-lg">
+            <div className="p-4">
               <BasicPie />
             </div>
           </div>
-          <div className="p-4 bg-gray-100 rounded-lg shadow md:col-span-2">
-            <h2 className="text-center font-bold text-lg md:text-xl mb-3">
-              Project Summary
+  
+          <div className="bg-white rounded-lg shadow-md overflow-hidden lg:col-span-2">
+            <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
+              Project Summaries
             </h2>
-            <StickyHeadTable />
+            <div className="p-4">
+              <StickyHeadTable />
+            </div>
           </div>
         </div>
       </div>

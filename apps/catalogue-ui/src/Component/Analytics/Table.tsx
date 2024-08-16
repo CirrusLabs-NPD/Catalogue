@@ -9,6 +9,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
 import { getPercentDash } from '../../api/analytics';
+import { formatDate } from '../../api/projects';
 
 interface Column {
   id: 'projectName' | 'members' | 'startDate' | 'completionDate'| 'projectStatus' | 'progressPercent';
@@ -106,10 +107,12 @@ export default function StickyHeadTable() {
                       return (
                         <TableCell key={column.id} align={column.align} sx={{ fontSize: '0.875rem', fontFamily: 'inherit' }}>
                           {column.id === 'members' && Array.isArray(value)
-                              ? value.join(', ')
-                              : column.format && typeof value === 'number'
-                              ? column.format(value)
-                              : value}
+                            ? value.join(', ')
+                            : column.id === 'startDate' || column.id === 'completionDate'
+                            ? typeof value === 'string' && formatDate(value)
+                            : column.format && typeof value === 'number'
+                            ? column.format(value)
+                            : value}
                         </TableCell>
                       );
                     })}

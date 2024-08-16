@@ -42,7 +42,7 @@ function SearchResults() {
   }
 
   return (
-    <div className="ml-64 mt-6 h-full overflow-y-scroll">
+    <div className="ml-64 mt-6 h-full">
       <div className="overflow-y-auto h-full">
         <h1 className="text-[#2C4B84] text-4xl pl-8 pt-1">Search Results:</h1>
         <div className="flex flex-wrap justify-center">

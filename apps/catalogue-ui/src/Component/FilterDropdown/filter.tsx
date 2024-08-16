@@ -93,33 +93,35 @@ const FilterDropdown: React.FC = () => {
         </MenuButton>
 
         {isOpen && (
-          <div className="absolute left-8 w-64 mt-2 origin-top-right bg-white border border-gray-200 rounded-md shadow-lg">
+          <div className="absolute left-8 w-96 mt-2 origin-top-right bg-white border border-gray-200 rounded-md shadow-lg">
             <div className="py-1">
-              {categories.map(category => (
-                <div key={category} className="px-4 py-2">
-                  <h3 className="text-sm font-medium text-gray-900">
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                  </h3>
-                  {isLoading ? (
-                    <p className="text-sm text-gray-500 mt-2">Loading options...</p>
-                  ) : options[category]?.length > 0 ? (
-                    options[category].map((option) => (
-                      <label key={option} className="flex items-center mt-2">
-                        <input
-                          type="checkbox"
-                          value={option}
-                          checked={(filterState[category] || []).includes(option)}
-                          onChange={() => handleOptionSelect(category, option)}
-                          className="form-checkbox h-4 w-4 text-blue-600"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">{option}</span>
-                      </label>
-                    ))
-                  ) : (
-                    <p className="text-sm text-gray-500 mt-2">No options available</p>
-                  )}
-                </div>
-              ))}
+              <div className="grid grid-cols-2 gap-4 px-4">
+                {categories.map(category => (
+                  <div key={category} className="py-2">
+                    <h3 className="text-sm font-medium text-gray-900">
+                      {category.charAt(0).toUpperCase() + category.slice(1)}
+                    </h3>
+                    {isLoading ? (
+                      <p className="text-sm text-gray-500 mt-2">Loading options...</p>
+                    ) : options[category]?.length > 0 ? (
+                      options[category].map((option) => (
+                        <label key={option} className="flex items-center mt-2">
+                          <input
+                            type="checkbox"
+                            value={option}
+                            checked={(filterState[category] || []).includes(option)}
+                            onChange={() => handleOptionSelect(category, option)}
+                            className="form-checkbox h-4 w-4 text-blue-600"
+                          />
+                          <span className="ml-2 text-sm text-gray-700">{option}</span>
+                        </label>
+                      ))
+                    ) : (
+                      <p className="text-sm text-gray-500 mt-2">No options available</p>
+                    )}
+                  </div>
+                ))}
+              </div>
               <div className="px-4 py-2">
                 <button
                   onClick={applyFilters}

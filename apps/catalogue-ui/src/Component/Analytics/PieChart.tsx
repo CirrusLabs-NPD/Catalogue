@@ -30,7 +30,6 @@ export default function BasicPie() {
         }));
         setChartData(transformedData);
 
-        // Generate colors based on the number of statuses
         const generatedColors = transformedData.map((_, index) => 
           generateColor(index, transformedData.length)
         );
@@ -51,7 +50,7 @@ export default function BasicPie() {
           data: chartData,
         },
       ]}
-      width={400}
+      width={500}
       height={200}
     />
   );
