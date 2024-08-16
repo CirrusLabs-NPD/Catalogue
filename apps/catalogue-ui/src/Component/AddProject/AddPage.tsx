@@ -98,16 +98,16 @@ const AddPage: React.FC = () => {
   };
 
   return (
-    <div className="ml-64 mt-6">
-      <h1 className="ml-5 text-[#2C4B84] text-[35px] p-2">Add Project</h1>
-      <div className="mx-auto h-[calc(100vh-200px)]">
-        <div className="AddPage">
-          <div className="flex items-center">
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="bg-gray-100 p-8 rounded-lg ml-7 w-full"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="ml-64 p-8 min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-90 mb-8">Add Project</h1>
+        
+        <div className="bg-gray-100 rounded-lg shadow-md p-8">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-6"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Project Name Field */}
                 <div className="mb-4">
                   <label
@@ -463,7 +463,6 @@ const AddPage: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
     
   );
 };
