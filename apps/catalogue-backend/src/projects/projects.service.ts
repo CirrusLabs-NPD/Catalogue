@@ -39,6 +39,10 @@ export class ProjectsService {
             throw new NotFoundException('One or more member IDs are invalid');
         }
 
+        if (createProjectDto.completionDate === '') {
+            createProjectDto.completionDate = null;
+          }
+
         const newProject = new this.projectModel({
             ...createProjectDto,
             members: members.map(member => ({

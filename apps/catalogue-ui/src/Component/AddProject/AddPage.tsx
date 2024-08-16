@@ -82,7 +82,7 @@ const AddPage: React.FC = () => {
         description: data.description,
         progressPercent: Number(data.progressPercent),
         demoURL: data.demoURL,
-        completionDate: data.completionDate,
+        completionDate: data.completionDate || null,
       };
       await addProject(newProject);
       reset();
@@ -430,7 +430,7 @@ const AddPage: React.FC = () => {
                     type="date"
                     id="completionDate"
                     placeholder="Enter completion date"
-                    {...register('completionDate')}
+                    {...register('completionDate', { required: false })}
                     className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
                       errors.completionDate ? 'border-red-500' : 'border-gray-300'
                     }`}

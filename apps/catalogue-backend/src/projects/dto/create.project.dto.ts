@@ -64,6 +64,6 @@ export class CreateProjectDto {
 
     @IsDateString()
     @IsOptional()
-    @ApiProperty({ example: '2020-01-31', description: 'Completion date of project in YYYY-MM-DD format', required: false })
-    completionDate: string;
+    @ApiProperty({ example: '2020-01-31', description: 'Completion date of project in YYYY-MM-DD format', required: false, nullable: true })
+    completionDate?: string | null;
 }
