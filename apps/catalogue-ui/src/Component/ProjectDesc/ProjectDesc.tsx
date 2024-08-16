@@ -44,7 +44,7 @@ const ProjectDetails: React.FC = () => {
       setLoading(true);
       const projectToUpdate = {
         ...editedProject!,
-        membersId: editedProject!.members.map(m => m._id)
+        members: editedProject!.members.map(m => m._id)
       };
       const updatedProject = await updateProject(id!, projectToUpdate);
       setProject(updatedProject);
@@ -107,15 +107,15 @@ const ProjectDetails: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="flex-1 ml-64 p-8">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+        <h1 className="text-4xl font-bold mb-8 text-blue-900">
           {isEditing ? 'Edit Project' : project.projectName}
         </h1>
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
           {isEditing ? (
             <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="p-6 space-y-6">
-              <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2 lg:grid-cols-4">
               <div>
                 <label htmlFor="projectName" className="block text-lg font-medium text-gray-700 mb-2">
                   Project Name
