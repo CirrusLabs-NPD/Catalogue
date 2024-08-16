@@ -80,73 +80,75 @@ const ProjectSearch: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 mt-6">
-      <h1 className="text-4xl font-bold mb-6 text-blue-900">Manage Projects</h1>
+    <div className="flex-1 ml-64 p-8">
+      <div className="max-w-6xl mx-auto"> 
+        <h1 className="text-4xl font-bold mb-8 text-blue-900">Manage Projects</h1>
 
-      {error && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded" role="alert">
-          <p className="font-bold">Error</p>
-          <p>{error}</p>
+        {error && (
+          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-8 rounded" role="alert">
+            <p className="font-bold">Error</p>
+            <p>{error}</p>
+          </div>
+        )}
+
+        <div className="mb-8">
+          <input
+            type="text"
+            className="w-full p-4 text-lg text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+            placeholder="Search projects by name"
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+          />
         </div>
-      )}
 
-      <div className="mb-6">
-        <input
-          type="text"
-          className="w-full p-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
-          placeholder="Search projects by name"
-          value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
-        />
-      </div>
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-900 mx-auto"></div>
+            <p className="mt-6 text-xl text-gray-600">Loading projects...</p>
+          </div>
+        ) : filteredProjects.length === 0 ? (
+          <div className="text-center py-12 text-xl text-gray-600">No projects found</div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-h-[calc(100vh-300px)] pb-8">
+            {filteredProjects.map(project => (
+              <div key={project._id} className="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1">
+                <div className="p-6">
+                  <h2 className="text-2xl font-bold mb-3 text-blue-900">{project.projectName}</h2>
+                  <p className="text-gray-600 mb-6">{project.description}</p>
 
-      {loading ? (
-        <div className="text-center py-10">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-900 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading projects...</p>
-        </div>
-      ) : filteredProjects.length === 0 ? (
-        <div className="text-center py-10 text-gray-600">No projects found</div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[calc(100vh-300px)] overflow-y-auto pb-6">
-          {filteredProjects.map(project => (
-            <div key={project._id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
-              <div className="p-6">
-                <h2 className="text-2xl font-bold mb-2 text-blue-900">{project.projectName}</h2>
-                <p className="text-gray-600 mb-4">{project.description}</p>
-
-                <div className="flex flex-wrap gap-2">
-                  <Link
-                    to={`/description/${project._id}`}
-                    className="flex-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out text-center"
-                  >
-                    View
-                  </Link>
-                  <button
-                    className={`flex-1 font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-opacity-50 transition duration-150 ease-in-out ${
-                      project.projectStatus === 'Awaiting Deletion'
-                        ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                        : 'bg-red-500 hover:bg-red-700 text-white focus:ring-red-500'
-                    }`}
-                    onClick={() => handleDelete(project._id)}
-                    disabled={project.projectStatus === 'Awaiting Deletion'}
-                  >
-                    {project.projectStatus === 'Awaiting Deletion' ? 'Awaiting Deletion' : 'Delete'}
-                  </button>
-                  {project.projectStatus === 'Awaiting Deletion' && (
-                    <button
-                      className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
-                      onClick={() => handleCancelDelete(project._id)}
+                  <div className="flex flex-wrap gap-3">
+                    <Link
+                      to={`/description/${project._id}`}
+                      className="flex-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out text-center"
                     >
-                      Cancel Deletion
+                      View
+                    </Link>
+                    <button
+                      className={`flex-1 font-bold py-3 px-4 rounded focus:outline-none focus:ring-2 focus:ring-opacity-50 transition duration-150 ease-in-out ${
+                        project.projectStatus === 'Awaiting Deletion'
+                          ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                          : 'bg-red-500 hover:bg-red-700 text-white focus:ring-red-500'
+                      }`}
+                      onClick={() => handleDelete(project._id)}
+                      disabled={project.projectStatus === 'Awaiting Deletion'}
+                    >
+                      {project.projectStatus === 'Awaiting Deletion' ? 'Awaiting Deletion' : 'Delete'}
                     </button>
-                  )}
+                    {project.projectStatus === 'Awaiting Deletion' && (
+                      <button
+                        className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-4 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
+                        onClick={() => handleCancelDelete(project._id)}
+                      >
+                        Cancel Deletion
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

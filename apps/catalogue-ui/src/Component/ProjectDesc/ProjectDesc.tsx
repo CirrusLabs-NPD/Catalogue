@@ -107,12 +107,18 @@ const ProjectDetails: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-4xl font-bold text-gray-900 mb-10">{isEditing ? 'Edit Project' : project.projectName}</h1>
-      <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-        {isEditing ? (
-          <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="p-8 space-y-10">
-            <div className="grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-2">
+    <div className="flex flex-col h-screen overflow-hidden">
+      <div className="flex-1 overflow-hidden">
+        <main className="h-full bg-gray-50">
+          <div className="container mx-auto px-4 py-8">
+            <div className="max-w-6xl mx-auto">
+              <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+                {isEditing ? 'Edit Project' : project.projectName}
+              </h1>
+              <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+                {isEditing ? (
+                  <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="p-6 space-y-6">
+              <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
               <div>
                 <label htmlFor="projectName" className="block text-lg font-medium text-gray-700 mb-2">
                   Project Name
@@ -262,12 +268,12 @@ const ProjectDetails: React.FC = () => {
               </div>
             </div>
             <div>
-              <label htmlFor="members" className="block text-lg font-medium text-gray-700 mb-2">
+              <label htmlFor="members" className="block text-lg font-medium text-gray-700 mb-3">
                 Members
               </label>
-              <div className="mt-1 space-y-3">
+              <div className="mt-2 space-y-3 max-h-60 overflow-y-auto p-4 bg-gray-50 rounded-md">
                 {editedProject!.members.map((member, index) => (
-                  <div key={member._id} className="flex items-center space-x-3">
+                  <div key={member._id} className="flex items-center justify-between bg-white p-3 rounded-md shadow-sm">
                     <span className="text-base text-gray-700">{member.name} ({member.email})</span>
                     <button
                       type="button"
@@ -281,7 +287,7 @@ const ProjectDetails: React.FC = () => {
               </div>
               <select
                 onChange={handleAddMember}
-                className="mt-3 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
+                className="mt-4 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
               >
                 <option value="">Add a member</option>
                 {allMembers
@@ -293,28 +299,28 @@ const ProjectDetails: React.FC = () => {
                   ))}
               </select>
             </div>
-            <div className="flex justify-end space-x-4">
-              <button
-                type="button"
-                onClick={handleCancelEdit}
-                className="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-lg font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-lg font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Save
-              </button>
-            </div>
-          </form>
-        ) : (
+            <div className="mt-6 flex justify-end space-x-4">
+                    <button
+                      type="button"
+                      onClick={handleCancelEdit}
+                      className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Save Changes
+                    </button>
+                  </div>
+                </form>
+              ) : (
           <div className="px-6 py-8">
-            <dl className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2">
+            <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
               <div className="sm:col-span-2">
-                <dt className="text-xl font-medium text-gray-700 mb-2">Description</dt>
-                <dd className="mt-1 text-lg text-gray-900">{project.description}</dd>
+                <dt className="text-lg font-medium text-gray-700 mb-2">Description</dt>
+                <dd className="mt-1 text-base text-gray-900">{project.description}</dd>
               </div>
               <div>
                 <dt className="text-xl font-medium text-gray-700 mb-2">Project Manager</dt>
@@ -378,8 +384,19 @@ const ProjectDetails: React.FC = () => {
                 </dd>
               </div>
               <div>
-                <dt className="text-xl font-medium text-gray-700 mb-2">Status</dt>
-                <dd className="mt-1 text-lg text-gray-900">{project.projectStatus}</dd>
+                <dt className="text-xl font-medium text-gray-700 mb-3">Status</dt>
+                <dd className="mt-1 text-lg text-gray-900">
+                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-base font-medium ${
+                    project.projectStatus === 'Completed' ? 'bg-green-100 text-green-800' :
+                    project.projectStatus === 'Ongoing' ? 'bg-blue-100 text-blue-800' :
+                    project.projectStatus === 'At Risk' ? 'bg-oranges-100 text-orange-800' :
+                    project.projectStatus === 'Awaiting Deletion' ? 'bg-red-100 text-red-800' :
+                    project.projectStatus === 'Delayed' ? 'bg-yellow-100 text-yellow-800' :
+                    'bg-blue-100 text-blue-800'
+                  }`}>
+                    {project.projectStatus}
+                  </span>
+                </dd>
               </div>
               <div>
                 <dt className="text-xl font-medium text-gray-700 mb-2">Progress</dt>
@@ -395,19 +412,23 @@ const ProjectDetails: React.FC = () => {
                 <dd className="mt-1 text-lg text-gray-900">{formatDate(project.completionDate) || 'N/A'}</dd>
               </div>
             </dl>
-            <div className="mt-10">
+            <div className="mt-8 text-center">
               <button
                 onClick={handleEdit}
-                className="inline-flex items-center px-6 py-3 border border-transparent text-lg font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Edit Project
               </button>
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
-  );
-};
+  </main>
+</div>
+</div>
+);
+}
 
 export default ProjectDetails;

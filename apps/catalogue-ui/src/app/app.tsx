@@ -60,9 +60,11 @@ export function App() {
   return (
     <StatusProvider>
       <Router>
-        <div className="h-screen overflow-hidden">
+        <div className="flex flex-col h-screen overflow-hidden">
           {isLoggedIn && <Header onLogout={handleLogout} />}
-          {isLoggedIn && <Sidebar userRole={userRole} />}
+          <div className="flex flex-1 overflow-hidden">
+            {isLoggedIn && <Sidebar userRole={userRole} />}
+            <main className="flex-1 overflow-y-auto bg-gray-50">
           <Routes>
             <Route path="/" element={<Loginpage setIsLoggedIn={handleLogin} />} />
             <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
@@ -76,7 +78,9 @@ export function App() {
             <Route path="/ManageProject" element={<ProtectedRoute element={<ManageProject />} requiredRole="admin" />} />
             <Route path="/access-denied" element={<AccessDenied />} />
             <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
+            </Routes>
+            </main>
+          </div>
         </div>
       </Router>
     </StatusProvider>

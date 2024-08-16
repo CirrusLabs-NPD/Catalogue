@@ -100,7 +100,7 @@ const AddPage: React.FC = () => {
   return (
     <div className="ml-64 mt-6">
       <h1 className="ml-5 text-[#2C4B84] text-[35px] p-2">Add Project</h1>
-      <div className="mx-auto overflow-auto h-[calc(100vh-200px)]">
+      <div className="mx-auto h-[calc(100vh-200px)]">
         <div className="AddPage">
           <div className="flex items-center">
             <form
