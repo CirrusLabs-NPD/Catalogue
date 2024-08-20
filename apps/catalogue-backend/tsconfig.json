@@ -11,6 +11,7 @@
     }
   ],
   "compilerOptions": {
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": ["jest"]  // Added Jest types for testing support
   }
 }

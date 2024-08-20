@@ -41,7 +41,7 @@ export class MembersService {
     }
 
     async deleteMember(id: string): Promise<MemberClass> {
-        const member = await this.memberModel.findByIdAndDelete(id);
+        const member = await this.memberModel.findByIdAndDelete(id).exec();
         if (!member) {
             throw new NotFoundException(`Member with ID "${id}" not found`);
         }
