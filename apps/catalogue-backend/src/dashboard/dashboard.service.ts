@@ -17,11 +17,11 @@ export class DashboardService {
             const completionDate = new Date(project.completionDate);
 
             // Skip projects that were not completed in the current year
-            if(completionDate.getFullYear() !== new Date().getFullYear()){
+            if(completionDate.getUTCFullYear() !== new Date().getUTCFullYear()){
                 return;
             }
             
-            monthlyCompletions[completionDate.getMonth()]++;
+            monthlyCompletions[completionDate.getUTCMonth()]++;
         });
 
         return { monthlyCompletions };
@@ -39,8 +39,7 @@ export class DashboardService {
                             in: "$$member.email"
                         }
                     },
-                    startDate: 1,
-                    completionDate: 1,
+                    duration: 1,
                     projectStatus: 1,
                     progressPercent: 1
                 }
