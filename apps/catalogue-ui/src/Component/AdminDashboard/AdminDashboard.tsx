@@ -57,7 +57,7 @@ export default function AdminDashboard() {
   };
 
   const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    (user.name?.toLowerCase() || '').includes(searchTerm.toLowerCase())
   );
 
   const currentUsers = filteredUsers.slice(

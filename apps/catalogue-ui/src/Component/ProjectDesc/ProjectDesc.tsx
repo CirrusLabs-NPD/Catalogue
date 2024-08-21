@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Project, Member } from '../ProjectInterface';
 import { getProjectById, formatDate, updateProject, getMembers } from '../../api/projects';
+import axios from 'axios';
 
 const ProjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -11,6 +12,7 @@ const ProjectDetails: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedProject, setEditedProject] = useState<Project | null>(null);
   const [allMembers, setAllMembers] = useState<Member[]>([]);
+  const [readmeContent, setReadmeContent] = useState<string | null>(null); // State for README content
 
   const navigate = useNavigate();
 
@@ -85,6 +87,24 @@ const ProjectDetails: React.FC = () => {
     }
   };
 
+  const handleViewReadme = async () => {
+    if (project?.gitHubLinks) {
+      try {
+        const repoName = project.gitHubLinks.split('github.com/')[1]; // Extract repo name from URL
+        const apiUrl = `https://api.github.com/repos/${repoName}/readme`;
+        const response = await axios.get(apiUrl, {
+          headers: {
+            Accept: 'application/vnd.github.v3.raw',
+          },
+        });
+        setReadmeContent(response.data);
+      } catch (error) {
+        console.error('Failed to fetch README:', error);
+        setError('Failed to fetch README');
+      }
+    }
+  };
+  const handleCloseReadme = () => setReadmeContent(null);
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -318,6 +338,25 @@ const ProjectDetails: React.FC = () => {
               <div className="sm:col-span-2">
                 <dt className="text-lg font-medium text-gray-700 mb-2">Description</dt>
                 <dd className="mt-1 text-base text-gray-900">{project.description}</dd>
+                <dd className="mt-4 font-semibold text-base text-gray-900">Click below to open the README file containing instructions to run this project.</dd>
+                  <button
+                    onClick={handleViewReadme}
+                    className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    View README
+                  </button>
+                  {readmeContent && (
+                    <div className="mt-4 p-4 bg-gray-50 rounded-md shadow-sm">
+                      <h3 className="text-lg font-semibold text-gray-800">README Content</h3>
+                      <pre className="mt-2 text-sm text-gray-700 whitespace-pre-wrap">{readmeContent}</pre>
+                      <button
+                      onClick={handleCloseReadme}
+                      className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                    >
+                      Close README
+                    </button>
+                    </div>
+                  )}
               </div>
               <div>
                 <dt className="text-xl font-medium text-gray-700 mb-2">Project Manager</dt>
