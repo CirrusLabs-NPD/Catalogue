@@ -8,8 +8,6 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 async function bootstrap() {
-  console.log(process.env.MONGODB_URI);
-
   const app = await NestFactory.create(AppModule);
 
   // Set global prefix
@@ -22,14 +20,18 @@ async function bootstrap() {
     .setDescription('API documentation for Your Project')
     .setVersion('1.0')
     .addTag('projects') // Add tag for 'projects' controller
-    .build();
-  
+    .addBearerAuth(
+      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      'access-token', // This is the name of the field that will be added to the Swagger UI
+    )
+    .build();  
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document); // Setup Swagger UI at '/api-docs'
 
   // Start listening
   const port = process.env.BACKEND_PORT;
   const host = process.env.HOST;
+  app.enableCors();
   await app.listen(port, host);
   Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
 

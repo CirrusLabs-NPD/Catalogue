@@ -1,20 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import './AddPage.css';
+import { addProject, getStatuses, getMembers } from '../../api/projects';
+import { useNavigate } from 'react-router-dom';
+import { Member } from '../ProjectInterface';
 
 interface FormData {
   projectName: string;
-  duration: string;
-  githubLink: string;
+  startDate?: string;
+  gitHubLinks: string;
   technology: string;
-  otherTechnology: string;
+  resources: string;
   projectStatus: string;
-  members: string;
+  projectManager: string;
   description: string;
-  websiteLink: string; // New field for Website Link
+  progressPercent: number;
+  demoURL: string;
+  completionDate?: string;
+}
+
+interface Status {
+  _id: string;
+  projectStatus: string;
 }
 
 const AddPage: React.FC = () => {
+  const [statuses, setStatuses] = useState<Status[]>([]);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
   const {
     register,
     handleSubmit,
@@ -22,8 +35,62 @@ const AddPage: React.FC = () => {
     reset,
   } = useForm<FormData>();
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchStatuses = async () => {
+      try {
+        const fetchedStatuses = await getStatuses();
+        setStatuses(fetchedStatuses);
+      } catch (error) {
+        console.error('Error fetching statuses:', error);
+      }
+    };
+
+    const fetchMembers = async () => {
+      try {
+        const fetchedMembers = await getMembers();
+        setMembers(fetchedMembers);
+      } catch (error) {
+        console.error('Error fetching members:', error);
+      }
+    };
+
+    fetchStatuses();
+    fetchMembers();
+  }, []);
+
+  const handleMemberSelection = (memberId: string) => {
+    setSelectedMembers(prevSelected => 
+      prevSelected.includes(memberId)
+        ? prevSelected.filter(id => id !== memberId)
+        : [...prevSelected, memberId]
+    );
+  };
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      const newProject = {
+        projectName: data.projectName,
+        startDate: data.startDate,
+        gitHubLinks: data.gitHubLinks,
+        technology: data.technology.split(',').map((tech) => tech.trim()),
+        resources: data.resources.split(',').map((resource) => resource.trim()),
+        projectStatus: data.projectStatus,
+        projectManager: data.projectManager,
+        members: selectedMembers,
+        description: data.description,
+        progressPercent: Number(data.progressPercent),
+        demoURL: data.demoURL,
+        completionDate: data.completionDate || null,
+      };
+      await addProject(newProject);
+      reset();
+      setSelectedMembers([]);
+      navigate('/home');
+    } catch (error) {
+      console.error('Error adding project:', error);
+    }
   };
 
   const handleCancel = () => {
@@ -31,275 +98,372 @@ const AddPage: React.FC = () => {
   };
 
   return (
-    <div className="ml-64 mt-6 h-full overflow-y-scroll">
-      <div className="AddPage">
-        <h1 className="home_header mb-1">Add Project</h1>
-        <div className="flex items-center">
+    <div className="ml-64 p-8 min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-90 mb-8">Add Project</h1>
+        
+        <div className="bg-gray-100 rounded-lg shadow-md p-8">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="bg-gray-100 p-8 rounded-lg ml-7 w-full w-1x9 "
+            className="space-y-6"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Project Name Field */}
-              <div className="mb-4">
-                <label
-                  htmlFor="projectName"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
-                >
-                  Project Name
-                </label>
-                <input
-                  type="text"
-                  id="projectName"
-                  placeholder="Enter project name"
-                  {...register('projectName', {
-                    required: 'Project Name is required',
-                  })}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.projectName ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.projectName && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.projectName.message}
-                  </p>
-                )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Project Name Field */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="projectName"
+                    className="text-lg block text-gray-700 font-bold mb-2"
+                  >
+                    Project Name
+                  </label>
+                  <input
+                    type="text"
+                    id="projectName"
+                    placeholder="Enter project name"
+                    {...register('projectName', {
+                      required: 'Project Name is required',
+                    })}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                      errors.projectName ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  />
+                  {errors.projectName && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.projectName.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="mb-4">
+                  <label
+                    htmlFor="projectManager"
+                    className="text-lg block text-gray-700 font-bold mb-2"
+                  >
+                    Project Manager
+                  </label>
+                  <input
+                    type="text"
+                    id="projectManager"
+                    placeholder="Enter project name"
+                    {...register('projectManager', {
+                      required: 'Project Manager is required',
+                    })}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                      errors.projectManager ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  />
+                  {errors.projectManager && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.projectManager.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Start Date Field */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="startDate"
+                    className="text-lg block text-gray-700 font-bold mb-2"
+                  >
+                    Start Date
+                  </label>
+                  <input
+                    type="date"
+                    id="startDate"
+                    placeholder="Enter start date"
+                    {...register('startDate', {
+                      required: 'Start Date is required',
+                    })}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                      errors.startDate ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  />
+                  {errors.startDate && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.startDate.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* GitHub Links Field */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="gitHubLinks"
+                    className="text-lg block text-gray-700 font-bold mb-2"
+                  >
+                    GitHub Links
+                  </label>
+                  <input
+                    type="text"
+                    id="gitHubLinks"
+                    placeholder="Enter GitHub links (comma separated)"
+                    {...register('gitHubLinks', {
+                      required: 'GitHub Links are required',
+                    })}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                      errors.gitHubLinks ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  />
+                  {errors.gitHubLinks && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.gitHubLinks.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Technology Field */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="technology"
+                    className="text-lg block text-gray-700 font-bold mb-2"
+                  >
+                    Technology
+                  </label>
+                  <input
+                    type="text"
+                    id="technology"
+                    placeholder="Enter technologies (comma separated)"
+                    {...register('technology', {
+                      required: 'Technology is required',
+                    })}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                      errors.technology ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  />
+                  {errors.technology && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.technology.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Resources Field */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="resources"
+                    className="text-lg block text-gray-700 font-bold mb-2"
+                  >
+                    Resources
+                  </label>
+                  <input
+                    type="text"
+                    id="resources"
+                    placeholder="Enter resources (comma separated)"
+                    {...register('resources', {
+                      required: 'Resources are required',
+                    })}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                      errors.resources ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  />
+                  {errors.resources && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.resources.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Members Field */}
+                <div className="mb-4 col-span-1">
+                  <label
+                    htmlFor="members"
+                    className="text-lg block text-gray-700 font-bold mb-2"
+                  >
+                    Members
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      id="members"
+                      placeholder={selectedMembers.length > 0 
+                        ? `${selectedMembers.length} member(s) selected`
+                        : 'Select members'}
+                      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline text-left bg-white"
+                      readOnly
+                      onClick={() => setIsOpen(!isOpen)}
+                    />
+                    {isOpen && (
+                      <div className="absolute z-10 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-60 overflow-auto">
+                        {members.map(member => (
+                          <div
+                            key={member._id}
+                            className="px-3 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                            onClick={() => handleMemberSelection(member._id)}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={selectedMembers.includes(member._id)}
+                              onChange={() => {}}
+                              className="mr-2"
+                            />
+                            {member.name}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Project Status Field */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="projectStatus"
+                    className="text-lg block text-gray-700 font-bold mb-2"
+                  >
+                    Project Status
+                  </label>
+                  <select
+                    id="projectStatus"
+                    {...register('projectStatus', {
+                      required: 'Project Status is required',
+                    })}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                      errors.projectStatus ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  >
+                    <option value="">Select status</option>
+                    {statuses.map((status) => (
+                      <option key={status._id} value={status.projectStatus}>
+                        {status.projectStatus}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.projectStatus && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.projectStatus.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Description Field */}
+                <div className="mb-4 col-span-2">
+                  <label
+                    htmlFor="description"
+                    className="text-lg block text-gray-700 font-bold mb-2"
+                  >
+                    Description
+                  </label>
+                  <textarea
+                    id="description"
+                    placeholder="Enter project description"
+                    {...register('description', {
+                      required: 'Description is required',
+                    })}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                      errors.description ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  />
+                  {errors.description && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.description.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Progress Percent Field */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="progressPercent"
+                    className="text-lg block text-gray-700 font-bold mb-2"
+                  >
+                    Progress Percent
+                  </label>
+                  <input
+                    type="number"
+                    id="progressPercent"
+                    placeholder="Enter progress percentage"
+                    {...register('progressPercent', {
+                      required: 'Progress Percent is required',
+                      min: { value: 0, message: 'Minimum value is 0' },
+                      max: { value: 100, message: 'Maximum value is 100' },
+                    })}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                      errors.progressPercent ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  />
+                  {errors.progressPercent && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.progressPercent.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Demo URL Field */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="demoURL"
+                    className="text-lg block text-gray-700 font-bold mb-2"
+                  >
+                    Demo URL
+                  </label>
+                  <input
+                    type="url"
+                    id="demoURL"
+                    placeholder="Enter demo URL"
+                    {...register('demoURL', {
+                      required: 'Demo URL is required',
+                      pattern: {
+                        value: /^(ftp|http|https):\/\/[^ "]+$/,
+                        message: 'Enter a valid URL',
+                      },
+                    })}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                      errors.demoURL ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  />
+                  {errors.demoURL && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.demoURL.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Completion Date Field */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="completionDate"
+                    className="text-lg block text-gray-700 font-bold mb-2"
+                  >
+                    Completion Date
+                  </label>
+                  <input
+                    type="date"
+                    id="completionDate"
+                    placeholder="Enter completion date"
+                    {...register('completionDate', { required: false })}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
+                      errors.completionDate ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  />
+                  {errors.completionDate && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.completionDate.message}
+                    </p>
+                  )}
+                </div>
               </div>
 
-              {/* Duration Field */}
-              <div className="mb-4">
-                <label
-                  htmlFor="duration"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
+              {/* Submit and Cancel Buttons */}
+              <div className="flex justify-start mt-4 space-x-4">
+                <button
+                  type="submit"
+                  className="text-lg bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:shadow-outline"
                 >
-                  Duration
-                </label>
-                <input
-                  type="text"
-                  id="duration"
-                  placeholder="Enter duration"
-                  {...register('duration', {
-                    required: 'Duration is required',
-                  })}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.duration ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.duration && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.duration.message}
-                  </p>
-                )}
+                  Submit
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  className="text-lg bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg focus:outline-none focus:shadow-outline"
+                >
+                  Cancel
+                </button>
               </div>
-
-              {/* Github Link Field */}
-              <div className="mb-4">
-                <label
-                  htmlFor="githubLink"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
-                >
-                  Github Link
-                </label>
-                <input
-                  type="url"
-                  id="githubLink"
-                  placeholder="Enter GitHub link"
-                  {...register('githubLink', {
-                    required: 'GitHub Link is required',
-                  })}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.githubLink ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.githubLink && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.githubLink.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Technology Field */}
-              <div className="mb-4">
-                <label
-                  htmlFor="technology"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
-                >
-                  Technology
-                </label>
-                <input
-                  type="text"
-                  id="technology"
-                  placeholder="Enter technology"
-                  {...register('technology', {
-                    required: 'Technology is required',
-                  })}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.technology ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.technology && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.technology.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Other Technology Field */}
-              <div className="mb-4">
-                <label
-                  htmlFor="otherTechnology"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
-                >
-                  Other Technology
-                </label>
-                <input
-                  type="text"
-                  id="otherTechnology"
-                  placeholder="Enter other technology"
-                  {...register('otherTechnology', {
-                    required: 'Other Technology is required',
-                  })}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.otherTechnology ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.otherTechnology && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.otherTechnology.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Members Field (Displayed on the left) */}
-              <div className="mb-4 col-span-1">
-                <label
-                  htmlFor="members"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
-                >
-                  Members
-                </label>
-                <input
-                  type="text"
-                  id="members"
-                  placeholder="Enter members"
-                  {...register('members', { required: 'Members are required' })}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.members ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.members && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.members.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Website Link Field (Displayed on the right) */}
-              <div className="mb-4 col-span-1">
-                <label
-                  htmlFor="websiteLink"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
-                >
-                  Website Link
-                </label>
-                <input
-                  type="url"
-                  id="websiteLink"
-                  placeholder="Enter website link"
-                  {...register('websiteLink', {
-                    required: 'Website Link is required',
-                    pattern: {
-                      value: /^(ftp|http|https):\/\/[^ "]+$/,
-                      message: 'Enter a valid URL',
-                    },
-                  })}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.websiteLink ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.websiteLink && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.websiteLink.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Project Status Field */}
-              <div className="mb-4">
-                <label
-                  htmlFor="projectStatus"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
-                >
-                  Project Status
-                </label>
-                <select
-                  id="projectStatus"
-                  {...register('projectStatus', {
-                    required: 'Project Status is required',
-                  })}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.projectStatus ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                >
-                  <option value="">Select status</option>
-                  <option value="ongoing">Ongoing</option>
-                  <option value="completed">Completed</option>
-                  <option value="atrisk">At Risk</option>
-                  <option value="delayed">Delayed</option>
-                </select>
-                {errors.projectStatus && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.projectStatus.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Description Field */}
-              <div className="mb-4 col-span-2">
-                <label
-                  htmlFor="description"
-                  className="font-quicksand text-lg block text-gray-700 font-bold mb-2"
-                >
-                  Description
-                </label>
-                <textarea
-                  id="description"
-                  placeholder="Enter project description"
-                  {...register('description', {
-                    required: 'Description is required',
-                  })}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${
-                    errors.description ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.description && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.description.message}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Submitand Cancel Buttons */}
-            <div className="flex justify-start mt-4 space-x-4">
-              <button
-                type="submit"
-                className="font-quicksand text-lg  bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:shadow-outline"
-              >
-                Submit
-              </button>
-              <button
-                type="button"
-                onClick={handleCancel}
-                className="font-quicksand text-lg  bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg focus:outline-none focus:shadow-outline"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    
   );
 };
 

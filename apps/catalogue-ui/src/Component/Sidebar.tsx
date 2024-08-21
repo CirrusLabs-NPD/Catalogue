@@ -1,113 +1,117 @@
-import React from "react";
-import { Link } from "react-router-dom"; // Import Link
-import "./Sidebar.css";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import plus from "../app/assets/Plus.png";
 import analytics from "../app/assets/category.png";
 import square from "../app/assets/task-square.png";
-import settings from "../app/assets/setting-2.png";
 import addsquare from "../app/assets/add-square.png";
-import green from "../app/assets/Ellipse 8.png";
-import orange from "../app/assets/Ellipse 9.png";
-import purple from "../app/assets/Ellipse 10.png";
-import blue from "../app/assets/Ellipse 11.png";
+import { useStatusContext } from "./StatusContext";
 
-function Sidebar() {
+interface Status {
+  _id: string;
+  projectStatus: string;
+}
+
+interface SidebarProps {
+  userRole: string;
+}
+
+const statusColors: { [key: string]: string } = {
+  "Ongoing": "#34C759",
+  "Completed": "#FF9500",
+  "Delayed": "#AF52DE",
+  "At Risk": "#007AFF",
+  "Awaiting Deletion": "#FF0000",
+};
+
+function Sidebar({ userRole }: { userRole: string }) {
+  const [hoveredStatus, setHoveredStatus] = useState<string | null>(null);
+  const { statuses } = useStatusContext();
+  const navigate = useNavigate();
+
+  const handleStatusClick = (status: string) => {
+    const searchParams = new URLSearchParams();
+    searchParams.append('statuses', status);
+    navigate(`/projects/filter?${searchParams.toString()}`);
+  };
+
+  const handleAddStatusClick = () => {
+    navigate('/ProjectStatus');
+  };
+
   return (
     <aside className="fixed top-18 left-0 h-full w-64">
-      <div className="sidebar">
-      <Link to="/addpage" className="sidebar_link">
-        <button className="sidebar__button">
-          <img
-            src={plus}
-            alt="Logo"
-            style={{ verticalAlign: "middle", marginRight: "8px" }}
-          />
-          <span style={{ verticalAlign: "middle" }}>Add Project</span>
-        </button>
-      </Link>
+      <div className="w-64 p-5 border-r border-gray-300 relative">
+        <Link to="/addpage" className="block mb-4">
+          <button className="w-full flex items-center justify-center rounded-lg p-2.5 mb-2 bg-[#D5292B] text-white h-16 hover:bg-[#a31517]">
+            <img
+              src={plus}
+              alt="Logo"
+              className="mr-2"
+            />
+            <span>Add Project</span>
+          </button>
+        </Link>
 
-      {/* <div className="sidebar__link"> */}
-      <Link to="/home" className="sidebar__link">
+        <div className="border-b border-gray-300">
+          <Link to="/home" className="flex items-center ml-8 mb-4 cursor-pointer hover:text-[#D5292B]">
             <img
               src={square}
               alt="Projects"
-              style={{ verticalAlign: "middle", marginRight: "8px" }}
+              className="mr-2"
             />
             <span>Projects</span>
-            </Link>
-          {/* </div> */}
-        <div className="sidebar__links">
-          <Link to="/analytics" className="sidebar__link">
+          </Link>
+          <Link to="/analytics" className="flex items-center ml-8 mb-4 cursor-pointer hover:text-[#D5292B]">
             <img
               src={analytics}
               alt="Analytics"
-              style={{ verticalAlign: "middle", marginRight: "8px" }}
+              className="mr-2"
             />
             <span>Analytics</span>
           </Link>
-         
-          <div className="sidebar__link">
-            <img
-              src={settings}
-              alt="Settings"
-              style={{ verticalAlign: "middle", marginRight: "8px" }}
-            />
-            <span>Settings</span>
-          </div>
+          {userRole === 'admin' && (
+            <Link to="/AdminDashboard" className="flex items-center ml-8 mb-4 cursor-pointer hover:text-[#D5292B]">
+              <img
+                src="/src/app/assets/admindash.png"
+                alt="admindash"
+                style={{ verticalAlign: "middle", marginRight: "8px" }}
+              />
+              <span>Admin Dashboard</span>
+            </Link>
+          )}
         </div>
       </div>
-      <div className="sidebar">
-        <p className="sidebar__button2">
-          {/* <div className="project_status">
-            <span style={{ verticalAlign: "middle" }}>MY PROJECT STATUS</span>
-            <img
-              src={addsquare}
-              alt="Add"
-              style={{ verticalAlign: "middle", marginLeft: "20px" }}
-            />
-          </div> */}
-           <div className="project_status flex items-center justify-between  p-4">
-           <span className="text-sm whitespace-nowrap">MY PROJECT STATUS</span>
-      <img
-        src={addsquare}
-        alt="Add"
-        className="h-6 w-6 object-contain ml-4"
-      />
-    </div>
-        </p>
-        <div className="sidebar__links1">
-          <p className="sidebar__link">
-            <img
-              src={green}
-              alt="Ongoing"
-              style={{ verticalAlign: "middle", marginRight: "20px", width: "15px", height: "15px", marginTop: "6px" }}
-            />
-            Ongoing
-          </p>
-          <p className="sidebar__link">
-            <img
-              src={orange}
-              alt="Completed"
-              style={{ verticalAlign: "middle", marginRight: "20px", width: "15px", height: "15px", marginTop: "6px" }}
-            />
-            Completed
-          </p>
-          <p className="sidebar__link">
-            <img
-              src={purple}
-              alt="Delayed"
-              style={{ verticalAlign: "middle", marginRight: "20px", width: "15px", height: "15px", marginTop: "6px" }}
-            />
-            Delayed
-          </p>
-          <p className="sidebar__link">
-            <img
-              src={blue}
-              alt="At Risk"
-              style={{ verticalAlign: "middle", marginRight: "20px", width: "15px", height: "15px", marginTop: "6px" }}
-            />
-            At Risk
-          </p>
+      <div className="w-64 p-5">
+        <div className="flex items-center justify-between p-4">
+          <span className="text-sm whitespace-nowrap">MY PROJECT STATUS</span>
+          <img
+            src={addsquare}
+            alt="Add"
+            className="h-6 w-6 object-contain ml-4 cursor-pointer"
+            onClick={handleAddStatusClick}
+          />
+        </div>
+        <div>
+          {statuses.map((status) => (
+            <p 
+              key={status._id} 
+              className="flex items-center ml-8 mb-4 cursor-pointer relative hover:text-[#D5292B]"
+              onMouseEnter={() => setHoveredStatus(status.projectStatus)}
+              onMouseLeave={() => setHoveredStatus(null)}
+              onClick={() => handleStatusClick(status.projectStatus)}
+            >
+              <span
+                className="inline-block w-4 h-4 rounded-full mr-5 mt-1.5"
+                style={{ backgroundColor: statusColors[status.projectStatus] || "#CCCCCC" }}
+              />
+              {status.projectStatus}
+              {hoveredStatus === status.projectStatus && (
+                <div className="absolute left-full top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-1.5 rounded text-xs whitespace-nowrap z-10">
+                  {`View projects with status ${status.projectStatus}`}
+                </div>
+              )}
+            </p>
+          ))}
         </div>
       </div>
     </aside>
