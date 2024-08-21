@@ -2,6 +2,7 @@ import './Analytics.css';
 import StickyHeadTable from './Table';
 import BarGraph from './BarGraph';
 import BasicPie from './PieChart';
+import Chart from './Chart';
 import FilterDropdown from '../FilterDropdown/filter';
 
 export default function Analytics() {
@@ -39,6 +40,7 @@ export default function Analytics() {
             </h2>
             <div className="p-4">
               <StickyHeadTable />
+              <Chart />
             </div>
           </div>
         </div>

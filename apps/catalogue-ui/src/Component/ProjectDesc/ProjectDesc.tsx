@@ -291,7 +291,7 @@ const ProjectDetails: React.FC = () => {
               <div className="mt-2 space-y-3 max-h-60 overflow-y-auto p-4 bg-gray-50 rounded-md">
                 {editedProject!.members.map((member, index) => (
                   <div key={member._id} className="flex items-center justify-between bg-white p-3 rounded-md shadow-sm">
-                    <span className="text-base text-gray-700">{member.name} ({member.email})</span>
+                    <span className="text-base text-gray-700">{member.name} ({member.email}) ({member.title})</span>
                     <button
                       type="button"
                       onClick={() => handleRemoveMember(index)}
@@ -414,6 +414,7 @@ const ProjectDetails: React.FC = () => {
                       <span key={member._id} className="inline-flex flex-col items-center px-3 py-2 rounded-lg text-base font-medium bg-gray-100 text-gray-800">
                         <span>{member.name}</span>
                         <span className="text-sm text-gray-600">{member.email}</span>
+                        <span className="text-sm text-gray-600">{member.title}</span>
                       </span>
                     ))}
                   </div>
