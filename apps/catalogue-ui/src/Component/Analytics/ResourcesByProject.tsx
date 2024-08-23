@@ -63,7 +63,7 @@ const ResourcesByProject: React.FC = () => {
 
   return (
     <div className="p-8">
-      <div className="max-w-6xl mx-auto" style={{ height: 400 }}>
+      <div className="max-w-6xl mx-auto" style={{ height: 350 }}>
         <ResponsiveContainer>
           <PieChart>
             <Pie

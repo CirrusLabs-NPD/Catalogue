@@ -70,7 +70,7 @@ export default function Chart() {
           <p className="label font-semibold mb-2">{label}</p>
           <ul>
             {payload.map((entry: any, index: number) => (
-              <li key={`item-${index}`} style={{ color: entry.color }}>
+              <li key={`item-${index}`}>
                 {entry.name}
               </li>
             ))}
