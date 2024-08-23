@@ -40,8 +40,15 @@ export default function Analytics() {
             </h2>
             <div className="p-4">
               <StickyHeadTable />
+              </div>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
+              Members and assigned projects
+            </h2>
+            <div className="p-4">
               <Chart />
             </div>
+          </div>    
           </div>
         </div>
       </div>
