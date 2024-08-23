@@ -4,6 +4,7 @@ import BarGraph from './BarGraph';
 import BasicPie from './PieChart';
 import Chart from './Chart';
 import FilterDropdown from '../FilterDropdown/filter';
+import ResourcesByProject from './ResourcesByProject';
 
 export default function Analytics() {
   return (
@@ -33,7 +34,24 @@ export default function Analytics() {
               <BasicPie />
             </div>
           </div>
-  
+          </div>
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
+              Members and assigned projects
+            </h2>
+            <div className="p-4">
+              <Chart />
+            </div>
+          </div>
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
+              Resources Used
+            </h2>
+            <div className="p-4">
+              <ResourcesByProject />
+            </div>
+          </div>    
+
           <div className="bg-white rounded-lg shadow-md overflow-hidden lg:col-span-2">
             <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
               Project Summaries
@@ -41,17 +59,8 @@ export default function Analytics() {
             <div className="p-4">
               <StickyHeadTable />
               </div>
-              <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
-              Members and assigned projects
-            </h2>
-            <div className="p-4">
-              <Chart />
-            </div>
-          </div>    
-          </div>
+         </div>
         </div>
-      </div>
     </div>
   );
 }
