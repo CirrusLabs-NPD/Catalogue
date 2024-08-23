@@ -63,7 +63,6 @@ const ResourcesByProject: React.FC = () => {
 
   return (
     <div className="p-8">
-      <h1 className="text-4xl font-bold mb-8 text-blue-900">Resources by Project</h1>
       <div className="max-w-6xl mx-auto" style={{ height: 400 }}>
         <ResponsiveContainer>
           <PieChart>
