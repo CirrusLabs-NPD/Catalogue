@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getPercentDash } from '../../api/analytics';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { Typography, Paper } from '@mui/material';
 
 interface RowData {
@@ -17,7 +17,29 @@ interface MemberData {
   projects: { [key: string]: number };
 }
 
-export default function Chart() {
+const getRandomColor = (): string => {
+  return '#' + Math.floor(Math.random() * 16777215).toString(16);
+};
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip bg-white p-4 rounded shadow-md">
+        <p className="label font-semibold mb-2">{label}</p>
+        <ul>
+          {payload.map((entry: any, index: number) => (
+            <li key={`item-${index}`}>
+              {entry.name}: {entry.value}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+  return null;
+};
+
+const Chart: React.FC = () => {
   const [membersData, setMembersData] = useState<MemberData[]>([]);
   const [allProjects, setAllProjects] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -59,28 +81,6 @@ export default function Chart() {
     fetchData();
   }, []);
 
-  const getRandomColor = () => {
-    return '#' + Math.floor(Math.random() * 16777215).toString(16);
-  };
-  
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="custom-tooltip bg-white p-4 rounded shadow-md">
-          <p className="label font-semibold mb-2">{label}</p>
-          <ul>
-            {payload.map((entry: any, index: number) => (
-              <li key={`item-${index}`}>
-                {entry.name}
-              </li>
-            ))}
-          </ul>
-        </div>
-      );
-    }
-    return null;
-  };
-  
   return (
     <Paper elevation={3} className="max-w-7xl mx-auto p-4">
       {error ? (
@@ -98,7 +98,7 @@ export default function Chart() {
               <XAxis type="number" />
               <YAxis type="category" dataKey="name" width={100} />
               <Tooltip content={<CustomTooltip />} />
-              {allProjects.map((project, index) => (
+              {allProjects.map((project) => (
                 <Bar 
                   key={project} 
                   dataKey={`projects.${project}`} 
@@ -113,4 +113,6 @@ export default function Chart() {
       )}
     </Paper>
   );
-}
+};
+
+export default Chart;

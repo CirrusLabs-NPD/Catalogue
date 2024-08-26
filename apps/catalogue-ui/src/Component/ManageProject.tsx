@@ -18,8 +18,7 @@ const ProjectSearch: React.FC = () => {
         setProjects(projectData);
         setFilteredProjects(projectData);
       } catch (err) {
-        console.error('Failed to fetch projects:', err);
-        setError('Failed to load projects');
+        handleError('Failed to load projects', err);
       } finally {
         setLoading(false);
       }
@@ -29,31 +28,29 @@ const ProjectSearch: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const results = projects.filter(project =>
-      project.projectName.toLowerCase().includes(searchTerm.toLowerCase())
+    setFilteredProjects(
+      projects.filter(project =>
+        project.projectName.toLowerCase().includes(searchTerm.toLowerCase())
+      )
     );
-    setFilteredProjects(results);
   }, [searchTerm, projects]);
+
+  const handleError = (message: string, err: any) => {
+    console.error(message, err);
+    setError(message);
+  };
 
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this project?')) {
       try {
-        const updatedProject = await deleteProject(id);
-        console.log(projects);
-  
-        setProjects(prevProjects =>
-          prevProjects.map(project =>
-            project._id === id ? { ...project, projectStatus: 'Awaiting Deletion' } : project
-          )
-        );
-        setFilteredProjects(prevFilteredProjects =>
-          prevFilteredProjects.map(project =>
+        await deleteProject(id);
+        setProjects(prev => 
+          prev.map(project =>
             project._id === id ? { ...project, projectStatus: 'Awaiting Deletion' } : project
           )
         );
       } catch (err) {
-        console.error('Failed to delete project:', err);
-        setError('Failed to delete project');
+        handleError('Failed to delete project', err);
       }
     }
   };
@@ -62,26 +59,20 @@ const ProjectSearch: React.FC = () => {
     if (window.confirm('Are you sure you want to cancel the deletion of this project?')) {
       try {
         const updatedProject = await cancelDeleteProject(id);
-        setProjects(prevProjects =>
-          prevProjects.map(project =>
-            project._id === id ? updatedProject : project
-          )
-        );
-        setFilteredProjects(prevFilteredProjects =>
-          prevFilteredProjects.map(project =>
+        setProjects(prev => 
+          prev.map(project =>
             project._id === id ? updatedProject : project
           )
         );
       } catch (err) {
-        console.error('Failed to cancel project deletion:', err);
-        setError('Failed to cancel project deletion');
+        handleError('Failed to cancel project deletion', err);
       }
     }
   };
 
   return (
     <div className="flex-1 ml-64 p-8">
-      <div className="max-w-6xl mx-auto"> 
+      <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-bold mb-8 text-blue-900">Manage Projects</h1>
 
         {error && (
@@ -111,7 +102,7 @@ const ProjectSearch: React.FC = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-h-[calc(100vh-300px)] pb-8">
             {filteredProjects.map(project => (
-              <div key={project._id} className="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1">
+              <div key={project._id} className="bg-white rounded-lg shadow-md hover:shadow-xl transition-transform duration-300 ease-in-out transform hover:-translate-y-1">
                 <div className="p-6">
                   <h2 className="text-2xl font-bold mb-3 text-blue-900">{project.projectName}</h2>
                   <p className="text-gray-600 mb-6">{project.description}</p>
@@ -119,7 +110,7 @@ const ProjectSearch: React.FC = () => {
                   <div className="flex flex-wrap gap-3">
                     <Link
                       to={`/description/${project._id}`}
-                      className="flex-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out text-center"
+                      className="flex-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out text-center"
                     >
                       View
                     </Link>
@@ -136,7 +127,7 @@ const ProjectSearch: React.FC = () => {
                     </button>
                     {project.projectStatus === 'Awaiting Deletion' && (
                       <button
-                        className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-4 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
+                        className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-4 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-150 ease-in-out"
                         onClick={() => handleCancelDelete(project._id)}
                       >
                         Cancel Deletion

@@ -1,10 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useStatusContext } from './StatusContext';
-
-interface Status {
-  _id: string;
-  projectStatus: string;
-}
 
 function ProjectStatus() {
   const { statuses, addStatus, deleteStatus } = useStatusContext();
@@ -77,4 +72,5 @@ function ProjectStatus() {
     </div>
   );
 }
+
 export default ProjectStatus;

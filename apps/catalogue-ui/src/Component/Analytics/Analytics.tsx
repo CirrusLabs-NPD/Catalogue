@@ -16,7 +16,7 @@ export default function Analytics() {
           <FilterDropdown />
         </div>
   
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
               Number of Projects Per Month
@@ -34,33 +34,37 @@ export default function Analytics() {
               <BasicPie />
             </div>
           </div>
-          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
-              Members and assigned projects
+            <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
+              Members and Assigned Projects
             </h2>
             <div className="p-4">
               <Chart />
             </div>
           </div>
+  
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
+            <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
               Resources Used
             </h2>
             <div className="p-4">
               <ResourcesByProject />
             </div>
-          </div>    
-
-          <div className="bg-white rounded-lg shadow-md overflow-hidden lg:col-span-2">
-            <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
-              Project Summaries
-            </h2>
-            <div className="p-4">
-              <StickyHeadTable />
-              </div>
-         </div>
+          </div>
         </div>
+  
+        <div className="bg-white rounded-lg shadow-md overflow-hidden lg:col-span-2">
+          <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
+            Project Summaries
+          </h2>
+          <div className="p-4">
+            <StickyHeadTable />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

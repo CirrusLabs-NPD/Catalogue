@@ -3,6 +3,8 @@ import { Project } from '../ProjectInterface';
 import { getProjects } from '../../api/projects'; 
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6384', '#36A2EB', '#FFCE56'];
+
 const ResourcesByProject: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -11,12 +13,12 @@ const ResourcesByProject: React.FC = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const projectData = await getProjects(); // Fetch all projects
+        const projectData = await getProjects();
         setProjects(projectData);
-        setLoading(false);
       } catch (err) {
         console.error('Failed to fetch projects:', err);
         setError('Failed to load projects');
+      } finally {
         setLoading(false);
       }
     };
@@ -43,23 +45,21 @@ const ResourcesByProject: React.FC = () => {
 
   // Prepare data for Recharts
   const resourceProjects: { [key: string]: string[] } = {};
-  projects.forEach(project => {
-    project.resources.forEach(resource => {
-      if (resourceProjects[resource]) {
-        resourceProjects[resource].push(project.projectName);
-      } else {
-        resourceProjects[resource] = [project.projectName];
+
+  projects.forEach(({ resources, projectName }) => {
+    resources.forEach(resource => {
+      if (!resourceProjects[resource]) {
+        resourceProjects[resource] = [];
       }
+      resourceProjects[resource].push(projectName);
     });
   });
 
-  const data = Object.keys(resourceProjects).map(resource => ({
+  const data = Object.keys(resourceProjects).map((resource, index) => ({
     name: resource,
     value: resourceProjects[resource].length,
     projects: resourceProjects[resource].join(', '),
   }));
-
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6384', '#36A2EB', '#FFCE56'];
 
   return (
     <div className="p-8">
@@ -74,9 +74,9 @@ const ResourcesByProject: React.FC = () => {
               cy="50%"
               outerRadius={150}
               fill="#8884d8"
-              label={({ name }) => name} 
+              label={({ name }) => name}
             >
-              {data.map((entry, index) => (
+              {data.map((_, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>

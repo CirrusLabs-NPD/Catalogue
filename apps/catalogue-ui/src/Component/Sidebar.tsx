@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import plus from "../app/assets/Plus.png";
 import analytics from "../app/assets/category.png";
@@ -23,7 +23,7 @@ const statusColors: { [key: string]: string } = {
   "Awaiting Deletion": "#FF0000",
 };
 
-function Sidebar({ userRole }: { userRole: string }) {
+function Sidebar({ userRole }: SidebarProps) {
   const [hoveredStatus, setHoveredStatus] = useState<string | null>(null);
   const { statuses } = useStatusContext();
   const navigate = useNavigate();
@@ -45,8 +45,9 @@ function Sidebar({ userRole }: { userRole: string }) {
           <button className="w-full flex items-center justify-center rounded-lg p-2.5 mb-2 bg-[#D5292B] text-white h-16 hover:bg-[#a31517]">
             <img
               src={plus}
-              alt="Logo"
+              alt="Add Project"
               className="mr-2"
+              loading="lazy"
             />
             <span>Add Project</span>
           </button>
@@ -58,6 +59,7 @@ function Sidebar({ userRole }: { userRole: string }) {
               src={square}
               alt="Projects"
               className="mr-2"
+              loading="lazy"
             />
             <span>Projects</span>
           </Link>
@@ -66,6 +68,7 @@ function Sidebar({ userRole }: { userRole: string }) {
               src={analytics}
               alt="Analytics"
               className="mr-2"
+              loading="lazy"
             />
             <span>Analytics</span>
           </Link>
@@ -73,8 +76,9 @@ function Sidebar({ userRole }: { userRole: string }) {
             <Link to="/AdminDashboard" className="flex items-center ml-8 mb-4 cursor-pointer hover:text-[#D5292B]">
               <img
                 src="/src/app/assets/admindash.png"
-                alt="admindash"
-                style={{ verticalAlign: "middle", marginRight: "8px" }}
+                alt="Admin Dashboard"
+                className="mr-2"
+                loading="lazy"
               />
               <span>Admin Dashboard</span>
             </Link>
@@ -86,32 +90,37 @@ function Sidebar({ userRole }: { userRole: string }) {
           <span className="text-sm whitespace-nowrap">MY PROJECT STATUS</span>
           <img
             src={addsquare}
-            alt="Add"
+            alt="Add Status"
             className="h-6 w-6 object-contain ml-4 cursor-pointer"
             onClick={handleAddStatusClick}
+            loading="lazy"
           />
         </div>
         <div>
-          {statuses.map((status) => (
-            <p 
-              key={status._id} 
-              className="flex items-center ml-8 mb-4 cursor-pointer relative hover:text-[#D5292B]"
-              onMouseEnter={() => setHoveredStatus(status.projectStatus)}
-              onMouseLeave={() => setHoveredStatus(null)}
-              onClick={() => handleStatusClick(status.projectStatus)}
-            >
-              <span
-                className="inline-block w-4 h-4 rounded-full mr-5 mt-1.5"
-                style={{ backgroundColor: statusColors[status.projectStatus] || "#CCCCCC" }}
-              />
-              {status.projectStatus}
-              {hoveredStatus === status.projectStatus && (
-                <div className="absolute left-full top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-1.5 rounded text-xs whitespace-nowrap z-10">
-                  {`View projects with status ${status.projectStatus}`}
-                </div>
-              )}
-            </p>
-          ))}
+          {statuses.length > 0 ? (
+            statuses.map((status) => (
+              <p 
+                key={status._id} 
+                className="flex items-center ml-8 mb-4 cursor-pointer relative hover:text-[#D5292B]"
+                onMouseEnter={() => setHoveredStatus(status.projectStatus)}
+                onMouseLeave={() => setHoveredStatus(null)}
+                onClick={() => handleStatusClick(status.projectStatus)}
+              >
+                <span
+                  className="inline-block w-4 h-4 rounded-full mr-5 mt-1.5"
+                  style={{ backgroundColor: statusColors[status.projectStatus] || "#CCCCCC" }}
+                />
+                {status.projectStatus}
+                {hoveredStatus === status.projectStatus && (
+                  <div className="absolute left-full top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-1.5 rounded text-xs whitespace-nowrap z-10">
+                    {`View projects with status ${status.projectStatus}`}
+                  </div>
+                )}
+              </p>
+            ))
+          ) : (
+            <p className="ml-8 mb-4 text-gray-500">No statuses available</p>
+          )}
         </div>
       </div>
     </aside>

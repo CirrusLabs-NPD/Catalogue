@@ -1,7 +1,6 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { getStatusCount } from '../../api/analytics';
-import { useEffect, useState } from 'react';
 
 interface ChartData {
   id: number;
@@ -9,13 +8,13 @@ interface ChartData {
   label: string;
 }
 
-// Function to generate a color
-function generateColor(index: number, total: number): string {
+// Memoize the color generation function
+const generateColor = (index: number, total: number): string => {
   const hue = (index / total) * 360;
   return `hsl(${hue}, 70%, 50%)`;
-}
+};
 
-export default function BasicPie() {
+const BasicPie: React.FC = () => {
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const [colors, setColors] = useState<string[]>([]);
 
@@ -28,12 +27,9 @@ export default function BasicPie() {
           value: data[key],
           label: key
         }));
-        setChartData(transformedData);
 
-        const generatedColors = transformedData.map((_, index) => 
-          generateColor(index, transformedData.length)
-        );
-        setColors(generatedColors);
+        setChartData(transformedData);
+        setColors(transformedData.map((_, index) => generateColor(index, transformedData.length)));
       } catch (error) {
         console.error("Error fetching status count:", error);
       }
@@ -41,17 +37,15 @@ export default function BasicPie() {
 
     fetchData();
   }, []);
-  
+
   return (
     <PieChart
       colors={colors}
-      series={[
-        {
-          data: chartData,
-        },
-      ]}
+      series={[{ data: chartData }]}
       width={500}
       height={200}
     />
   );
-}
+};
+
+export default BasicPie;
