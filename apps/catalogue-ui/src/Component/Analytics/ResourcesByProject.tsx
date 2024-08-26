@@ -63,7 +63,7 @@ const ResourcesByProject: React.FC = () => {
 
   return (
     <div className="p-8">
-      <div className="max-w-6xl mx-auto" style={{ height: 350 }}>
+      <div className="max-w-6xl mx-auto" style={{ height: 370 }}>
         <ResponsiveContainer>
           <PieChart>
             <Pie
@@ -74,7 +74,7 @@ const ResourcesByProject: React.FC = () => {
               cy="50%"
               outerRadius={150}
               fill="#8884d8"
-              label
+              label={({ name }) => name} 
             >
               {data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
