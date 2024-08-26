@@ -8,10 +8,12 @@ interface ChartData {
   label: string;
 }
 
-// Memoize the color generation function
-const generateColor = (index: number, total: number): string => {
-  const hue = (index / total) * 360;
-  return `hsl(${hue}, 70%, 50%)`;
+const statusColors: { [key: string]: string } = {
+  "Ongoing": "#34C759",
+  "Completed": "#FF9500",
+  "Delayed": "#AF52DE",
+  "At Risk": "#007AFF",
+  "Awaiting Deletion": "#FF0000",
 };
 
 const BasicPie: React.FC = () => {
@@ -22,14 +24,30 @@ const BasicPie: React.FC = () => {
     const fetchData = async () => {
       try {
         const data = await getStatusCount();
+        
+        const statuses = ["At Risk", "Awaiting Deletion"];
+        
+        
         const transformedData = Object.keys(data).map((key, index) => ({
           id: index,
           value: data[key],
           label: key
         }));
 
+        
+        statuses.forEach(status => {
+          if (!transformedData.some(item => item.label === status)) {
+            transformedData.push({
+              id: transformedData.length,
+              value: 0,
+              label: status
+            });
+          }
+        });
+
         setChartData(transformedData);
-        setColors(transformedData.map((_, index) => generateColor(index, transformedData.length)));
+        // Map colors based on the status
+        setColors(transformedData.map(item => statusColors[item.label] || '#CCCCCC')); // Default to grey if status is not in color map
       } catch (error) {
         console.error("Error fetching status count:", error);
       }
