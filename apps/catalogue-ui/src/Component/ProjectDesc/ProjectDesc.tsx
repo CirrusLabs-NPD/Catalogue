@@ -87,32 +87,17 @@ const ProjectDetails: React.FC = () => {
     }
   };
 
-  const handleViewReadme = async () => {
-    if (project?.gitHubLinks) {
-      try {
-        const repoName = project.gitHubLinks.split('github.com/')[1]; // Extract repo name from URL
-        const apiUrl = `https://api.github.com/repos/${repoName}/readme`;
-        const response = await axios.get(apiUrl, {
-          headers: {
-            Accept: 'application/vnd.github.v3.raw',
-          },
-        });
-        setReadmeContent(response.data);
-      } catch (error) {
-        console.error('Failed to fetch README:', error);
-        setError('Failed to fetch README');
-      }
+  const handleViewReadme = () => {
+    if (project?.readmeFile) {
+      setReadmeContent(project.readmeFile);
+    } else {
+      setReadmeContent('No README file available.');
     }
   };
-  const handleCloseReadme = () => setReadmeContent(null);
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
 
+  const handleCloseReadme = () => {
+    setReadmeContent(null);
+  };
   if (error) {
     return (
       <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -284,6 +269,22 @@ const ProjectDetails: React.FC = () => {
                 />
               </div>
             </div>
+            <div className="mb-4">
+                  <label
+                    htmlFor="readmeFile"
+                    className="text-lg block text-gray-700 font-bold mb-2"
+                  >
+                    Upload README.md
+                  </label>
+                  <input
+                    type="file"
+                    id="readmeFile"
+                    accept=".md"
+                    value={editedProject!.readmeFile}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline"
+                  />
+                </div>
             <div>
               <label htmlFor="members" className="block text-lg font-medium text-gray-700 mb-3">
                 Members
@@ -302,6 +303,7 @@ const ProjectDetails: React.FC = () => {
                   </div>
                 ))}
               </div>
+
               <select
                 onChange={handleAddMember}
                 className="mt-4 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
@@ -339,22 +341,22 @@ const ProjectDetails: React.FC = () => {
                 <dt className="text-lg font-medium text-gray-700 mb-2">Description</dt>
                 <dd className="mt-1 text-base text-gray-900">{project.description}</dd>
                 <dd className="mt-4 font-semibold text-base text-gray-900">Click below to open the README file containing instructions to run this project.</dd>
-                  <button
-                    onClick={handleViewReadme}
-                    className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                  >
-                    View README
-                  </button>
-                  {readmeContent && (
-                    <div className="mt-4 p-4 bg-gray-50 rounded-md shadow-sm">
-                      <h3 className="text-lg font-semibold text-gray-800">README Content</h3>
-                      <pre className="mt-2 text-sm text-gray-700 whitespace-pre-wrap">{readmeContent}</pre>
-                      <button
-                      onClick={handleCloseReadme}
-                      className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                    >
-                      Close README
-                    </button>
+                <button
+            onClick={handleViewReadme}
+            className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            View README
+          </button>
+          {readmeContent && (
+            <div className="mt-4 p-4 bg-gray-50 rounded-md shadow-sm">
+              <h3 className="text-lg font-semibold text-gray-800">README Content</h3>
+              <pre className="mt-2 text-sm text-gray-700 whitespace-pre-wrap">{readmeContent}</pre>
+              <button
+                onClick={handleCloseReadme}
+                className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              >
+                Close README
+              </button>
                     </div>
                   )}
               </div>

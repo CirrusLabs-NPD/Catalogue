@@ -16,6 +16,7 @@ interface FormData {
   progressPercent: number;
   demoURL: string;
   completionDate?: string;
+  readmeFile?: string;
 }
 
 interface Status {
@@ -33,6 +34,7 @@ const AddPage: React.FC = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<FormData>();
 
   const navigate = useNavigate();
@@ -83,6 +85,7 @@ const AddPage: React.FC = () => {
         progressPercent: Number(data.progressPercent),
         demoURL: data.demoURL,
         completionDate: data.completionDate || null,
+        readmeFile: data.readmeFile,
       };
       await addProject(newProject);
       reset();
@@ -95,6 +98,20 @@ const AddPage: React.FC = () => {
 
   const handleCancel = () => {
     reset();
+  };
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const content = event.target?.result as string;
+        if (content) {
+          setValue('readmeFile', content); // Use setValue to set the README file content
+        }
+      };
+      reader.readAsText(file);
+    }
   };
 
   return (
@@ -442,6 +459,23 @@ const AddPage: React.FC = () => {
                   )}
                 </div>
               </div>
+              
+              {/* README File Upload Field */}
+              <div className="mb-4">
+                  <label
+                    htmlFor="readmeFile"
+                    className="text-lg block text-gray-700 font-bold mb-2"
+                  >
+                    Upload README.md
+                  </label>
+                  <input
+                    type="file"
+                    id="readmeFile"
+                    accept=".md"
+                    onChange={handleFileChange}
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline"
+                  />
+                </div>
 
               {/* Submit and Cancel Buttons */}
               <div className="flex justify-start mt-4 space-x-4">

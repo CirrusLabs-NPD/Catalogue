@@ -77,4 +77,8 @@ export class UpdateProjectDto {
     @IsOptional()
     @ApiProperty({ example: '2020-01-31', description: 'Completion date of project in YYYY-MM-DD format', required: false })
     completionDate: string;
+
+    @IsOptional()
+    @ApiProperty({ type: 'string', format: 'binary', description: 'README file for the project', required: false })
+    readmeFile?: string;
 }

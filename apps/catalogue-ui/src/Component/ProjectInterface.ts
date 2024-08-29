@@ -23,4 +23,5 @@ export interface Project {
     progressPercent: number;
     demoURL: string;
     completionDate?: string;
+    readmeFile?: string;
   }
