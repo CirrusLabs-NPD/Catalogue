@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Project, Member } from '../ProjectInterface';
 import { getProjectById, formatDate, updateProject, getMembers } from '../../api/projects';
-import axios from 'axios';
 
 const ProjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -12,8 +11,8 @@ const ProjectDetails: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedProject, setEditedProject] = useState<Project | null>(null);
   const [allMembers, setAllMembers] = useState<Member[]>([]);
-  const [readmeContent, setReadmeContent] = useState<string | null>(null); // State for README content
-
+  const [readmeContent, setReadmeContent] = useState<string>(''); 
+  const [isReadmeVisible, setIsReadmeVisible] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,6 +21,7 @@ const ProjectDetails: React.FC = () => {
         const projectData = await getProjectById(id);
         setProject(projectData);
         setEditedProject(projectData);
+        
         const membersData = await getMembers();
         setAllMembers(membersData);
         setLoading(false);
@@ -41,13 +41,29 @@ const ProjectDetails: React.FC = () => {
     setEditedProject(project);
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const content = event.target?.result as string;
+        if (content) {
+          setReadmeContent(content);
+        }
+      };
+      reader.readAsText(file);
+    }
+  };
+
   const handleSave = async () => {
     try {
       setLoading(true);
       const projectToUpdate = {
         ...editedProject!,
-        members: editedProject!.members.map(m => m._id)
+        members: editedProject!.members.map((m) => m._id),
+        readmeFile: readmeContent
       };
+
       const updatedProject = await updateProject(id!, projectToUpdate);
       setProject(updatedProject);
       setIsEditing(false);
@@ -87,17 +103,25 @@ const ProjectDetails: React.FC = () => {
     }
   };
 
-  const handleViewReadme = () => {
+  const handleViewReadme = async () => {
     if (project?.readmeFile) {
-      setReadmeContent(project.readmeFile);
+      try {
+        const fetchedReadmeContent = project.readmeFile; 
+        setReadmeContent(fetchedReadmeContent);
+        setIsReadmeVisible(true);
+      } catch (error) {
+        console.error('Error fetching the README file:', error);
+        setError('Failed to fetch README content.');
+      }
     } else {
-      setReadmeContent('No README file available.');
+      setError('No README file available for this project.');
     }
   };
 
   const handleCloseReadme = () => {
-    setReadmeContent(null);
+    setIsReadmeVisible(false);
   };
+
   if (error) {
     return (
       <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -269,22 +293,7 @@ const ProjectDetails: React.FC = () => {
                 />
               </div>
             </div>
-            <div className="mb-4">
-                  <label
-                    htmlFor="readmeFile"
-                    className="text-lg block text-gray-700 font-bold mb-2"
-                  >
-                    Upload README.md
-                  </label>
-                  <input
-                    type="file"
-                    id="readmeFile"
-                    accept=".md"
-                    value={editedProject!.readmeFile}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline"
-                  />
-                </div>
+            
             <div>
               <label htmlFor="members" className="block text-lg font-medium text-gray-700 mb-3">
                 Members
@@ -318,6 +327,19 @@ const ProjectDetails: React.FC = () => {
                   ))}
               </select>
             </div>
+
+            <div>
+            <label htmlFor="readmeFile" className="block text-lg font-medium text-gray-700 mb-2">
+              README File (Markdown)
+            </label>
+            <input
+              type="file"
+              accept=".md"
+              onChange={handleFileChange}
+              className="mt-1 block w-full text-lg border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+
             <div className="mt-6 flex justify-end space-x-4">
                 <button
                   type="button"
@@ -347,16 +369,16 @@ const ProjectDetails: React.FC = () => {
           >
             View README
           </button>
-          {readmeContent && (
-            <div className="mt-4 p-4 bg-gray-50 rounded-md shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-800">README Content</h3>
-              <pre className="mt-2 text-sm text-gray-700 whitespace-pre-wrap">{readmeContent}</pre>
-              <button
-                onClick={handleCloseReadme}
-                className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-              >
-                Close README
-              </button>
+          {isReadmeVisible && readmeContent && (
+                <div className="mt-4 p-4 bg-gray-50 rounded-md shadow-sm">
+                  <h3 className="text-lg font-semibold text-gray-800">README Content</h3>
+                  <pre className="mt-2 text-sm text-gray-700 whitespace-pre-wrap">{readmeContent}</pre>
+                  <button
+                    onClick={handleCloseReadme}
+                    className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                  >
+                    Close README
+                  </button>
                     </div>
                   )}
               </div>
