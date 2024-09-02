@@ -12,4 +12,9 @@ describe('App', () => {
     const { getByText } = render(<App />);
     expect(getByText(/Welcome catalogue-ui/gi)).toBeTruthy();
   });
+
+  it('should match the snapshot', () => {
+    const { asFragment } = render(<App />);
+    expect(asFragment()).toMatchSnapshot();
+  });
 });

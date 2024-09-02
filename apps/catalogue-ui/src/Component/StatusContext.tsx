@@ -10,6 +10,7 @@ interface StatusContextType {
   statuses: Status[];
   addStatus: (status: string) => Promise<void>;
   deleteStatus: (id: string) => Promise<void>;
+  fetchStatuses: () => Promise<void>; // Add fetchStatuses to the context type
   loading: boolean;
   error: string | null;
 }
@@ -29,6 +30,7 @@ export const StatusProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch statuses from the server
   const fetchStatuses = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -43,32 +45,43 @@ export const StatusProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, []);
 
+  // Fetch statuses on component mount
   useEffect(() => {
     fetchStatuses();
   }, [fetchStatuses]);
 
+  // Add a new status
   const addStatus = useCallback(async (status: string) => {
+    setLoading(true);
+    setError(null);
     try {
       const addedStatus = await apiAddStatus({ projectStatus: status });
       setStatuses((prevStatuses) => [...prevStatuses, addedStatus]);
     } catch (error) {
       console.error('Error adding status:', error);
       setError('Failed to add status.');
+    } finally {
+      setLoading(false);
     }
   }, []);
 
+  // Delete an existing status
   const deleteStatus = useCallback(async (id: string) => {
+    setLoading(true);
+    setError(null);
     try {
       await apiDeleteStatus(id);
       setStatuses((prevStatuses) => prevStatuses.filter((status) => status._id !== id));
     } catch (error) {
       console.error('Error deleting status:', error);
       setError('Failed to delete status.');
+    } finally {
+      setLoading(false);
     }
   }, []);
 
   return (
-    <StatusContext.Provider value={{ statuses, addStatus, deleteStatus, loading, error }}>
+    <StatusContext.Provider value={{ statuses, addStatus, deleteStatus, fetchStatuses, loading, error }}>
       {children}
     </StatusContext.Provider>
   );
