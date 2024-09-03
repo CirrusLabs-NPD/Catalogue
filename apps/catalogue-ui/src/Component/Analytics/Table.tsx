@@ -10,10 +10,9 @@ import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
 import { getPercentDash } from '../../api/analytics';
-import { formatDate } from '../../api/projects';
 
 interface Column {
-  id: 'projectName' | 'members' | 'startDate' | 'completionDate'| 'projectStatus' | 'progressPercent';
+  id: 'projectName' | 'members' | 'projectStatus' | 'progressPercent';
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -23,8 +22,6 @@ interface Column {
 const columns: readonly Column[] = [
   { id: 'projectName', label: 'Project Name', minWidth: 170 },
   { id: 'members', label: 'Members', minWidth: 200 },
-  { id: 'startDate', label: 'Start Date', minWidth: 100 },
-  { id: 'completionDate', label: 'Completion Date', minWidth: 100 },
   {
     id: 'projectStatus',
     label: 'Project Status',
@@ -41,8 +38,6 @@ const columns: readonly Column[] = [
 interface RowData {
   projectName: string;
   members: string[];
-  startDate: string;
-  completionDate: string;
   projectStatus: string;
   progressPercent: number;
 }
@@ -75,8 +70,8 @@ export default function StickyHeadTable() {
     setPage(0);
   };
 
-  const filteredRows = rows.filter((row) => 
-    row.members.some(member => 
+  const filteredRows = rows.filter((row) =>
+    row.members.some(member =>
       member.toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
@@ -124,8 +119,6 @@ export default function StickyHeadTable() {
                         <TableCell key={column.id} align={column.align} sx={{ fontSize: '0.875rem', fontFamily: 'inherit' }}>
                           {column.id === 'members' && Array.isArray(value)
                             ? value.join(', ')
-                            : column.id === 'startDate' || column.id === 'completionDate'
-                            ? typeof value === 'string' && formatDate(value)
                             : column.format && typeof value === 'number'
                             ? column.format(value)
                             : value}
