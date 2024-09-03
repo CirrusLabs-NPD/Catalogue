@@ -466,7 +466,7 @@ const AddPage: React.FC = () => {
                     htmlFor="readmeFile"
                     className="text-lg block text-gray-700 font-bold mb-2"
                   >
-                    Upload README.md
+                    Upload README File (Markdown)
                   </label>
                   <input
                     type="file"

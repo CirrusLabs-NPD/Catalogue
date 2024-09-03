@@ -330,7 +330,7 @@ const ProjectDetails: React.FC = () => {
 
             <div>
             <label htmlFor="readmeFile" className="block text-lg font-medium text-gray-700 mb-2">
-              README File (Markdown)
+              Upload README File (Markdown)
             </label>
             <input
               type="file"
