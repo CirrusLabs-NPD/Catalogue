@@ -4,6 +4,7 @@ import { Project } from './ProjectInterface';
 import FilterDropdown from './FilterDropdown/filter';
 import SortDropdown from './FilterDropdown/SortDropdown';
 import ProjectCard from './ProjectCard';
+import { Loader2 } from 'lucide-react';
 
 const Home: React.FC = () => {
   const [projectData, setProjects] = useState<Project[]>([]);
@@ -41,31 +42,32 @@ const Home: React.FC = () => {
     }
   };
 
-  if (loading) {
-    return <div></div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
   return (
-    <div className="ml-64 mt-6 max-h-[calc(100vh-100px)]">
+    <div className="ml-64 mt-6 pl-10 max-h-[calc(100vh-100px)]">
       <div className="h-full">
         <h1 className="text-[#2C4B84] text-4xl pl-8 pt-1">Project Catalogue</h1>
-        <div className="flex space-x-4 mt-5 mb-4">
+        <div className="flex space-x-4 mt-5 ml-4 mb-4">
           <FilterDropdown />
           <SortDropdown onSortChange={handleSortChange} />
         </div>
-        <div className="flex flex-wrap justify-center">
-          {Array.isArray(projectData) && projectData.length > 0 ? (
-            projectData.map((project, index) => (
-              <ProjectCard key={project._id} project={project} index={index} />
-            ))
-          ) : (
-            <div>No projects available</div>
-          )}
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <Loader2 className="w-12 h-12 text-[#2C4B84] animate-spin" />
+            <span className="ml-3 text-lg text-[#2C4B84]">Loading projects...</span>
+          </div>
+        ) : error ? (
+          <div className="text-red-500 text-center text-lg">{error}</div>
+        ) : (
+          <div className="flex flex-wrap justify-center">
+            {Array.isArray(projectData) && projectData.length > 0 ? (
+              projectData.map((project, index) => (
+                <ProjectCard key={project._id} project={project} index={index} />
+              ))
+            ) : (
+              <div>No projects available</div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

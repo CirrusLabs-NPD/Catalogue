@@ -25,12 +25,24 @@ const Loginpage: React.FC<{ setIsLoggedIn: (isLoggedIn: boolean, role: string) =
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Initialize the MSAL client
-    const initializeMsal = async () => {
+    const checkAuthStatus = async () => {
       await publicClientApplication.initialize();
+      const accounts = publicClientApplication.getAllAccounts();
+      if (accounts.length > 0) {
+        const storedUser = sessionStorage.getItem('user');
+        const jwtToken = localStorage.getItem('jwt_token');
+        if (storedUser && jwtToken) {
+          const parsedUser = JSON.parse(storedUser);
+          setIsAuthenticated(true);
+          setUser(parsedUser);
+          setIsLoggedIn(true, parsedUser.role);
+          navigate('/home');
+        }
+      }
     };
-    initializeMsal();
-  }, []);
+
+    checkAuthStatus();
+  }, [navigate, setIsLoggedIn]);
 
   const login = async () => {
     try {
@@ -47,7 +59,7 @@ const Loginpage: React.FC<{ setIsLoggedIn: (isLoggedIn: boolean, role: string) =
       const user = {
         name: response.account.name,
         username: response.account.username,
-        role: jwtResponse.role, // Ensure the role is included
+        role: jwtResponse.role,
       };
 
       sessionStorage.setItem('user', JSON.stringify(user));
@@ -71,7 +83,12 @@ const Loginpage: React.FC<{ setIsLoggedIn: (isLoggedIn: boolean, role: string) =
     setIsLoggedIn(false, '');
     localStorage.removeItem('jwt_token');
     sessionStorage.removeItem('user');
+    navigate('/');
   };
+
+  if (isAuthenticated) {
+    return null; // or a loading spinner if you prefer
+  }
 
   return (
     <div
@@ -91,21 +108,12 @@ const Loginpage: React.FC<{ setIsLoggedIn: (isLoggedIn: boolean, role: string) =
           <p className="mb-6 ml-3 text-2xl">
             The one stop integrated platform for all the POC's across CirrusLabs
           </p>
-          {isAuthenticated ? (
-            <button
-              onClick={logout}
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out"
-            >
-              Log out
-            </button>
-          ) : (
-            <button
-              onClick={login}
-              className="text-2l w-70 ml-3 bg-red-600 hover:bg-red-800 text-white font-bold py-3 px-10 rounded-lg shadow-md transition duration-300 ease-in-out"
-            >
-              Login
-            </button>
-          )}
+          <button
+            onClick={login}
+            className="text-2l w-70 ml-3 bg-red-600 hover:bg-red-800 text-white font-bold py-3 px-10 rounded-lg shadow-md transition duration-300 ease-in-out"
+          >
+            Login
+          </button>
         </div>
       </div>
     </div>

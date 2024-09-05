@@ -136,72 +136,83 @@ export default function AdminDashboard() {
     });
   };
 
+  // New function to handle navigation to AddMember.tsx
+  const handleAddMemberClick = () => {
+    navigate('/AddMember'); // Assuming '/AddMember' is the route for AddMember component
+  };
+
   if (loading) return <div className="flex justify-center items-center h-screen"><CircularProgress /></div>;
   if (error) return <div className="text-red-600 text-center p-4">{error}</div>;
 
   return (
-  <div className="flex-1 ml-64 p-8">
-    <div className="max-w-7xl mx-auto">
-      <h1 className="text-4xl font-bold text-gray-900 mb-10">Admin Dashboard</h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-        <StatCard
-          icon={faUsers}
-          title="Total Users"
-          total={userCounts.total.toString()}
-          active={`Active Users ${userCounts.active}`}
-          inactive={`Inactive Users ${userCounts.inactive}`}
-        />
-        <DashboardCard
-          icon="../src/app/assets/Managestatus.png"
-          title="Manage Projects"
-          description="Click to manage projects"
-          onClick={() => navigate('/ManageProject')}
-        />
-        <DashboardCard
-          icon="../src/app/assets/projects.png"
-          title="Manage Project Status"
-          description="Click to manage project statuses"
-          onClick={() => navigate('/ProjectStatus')}
-        />
-      </div>
+    <div className="flex-1 ml-64 p-8">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold text-gray-900 mb-10">Admin Dashboard</h1>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          <StatCard
+            icon={faUsers}
+            title="Total Users"
+            total={userCounts.total.toString()}
+            active={`Active Users ${userCounts.active}`}
+            inactive={`Inactive Users ${userCounts.inactive}`}
+          />
+          <DashboardCard
+            icon="../src/app/assets/Managestatus.png"
+            title="Manage Projects"
+            description="Click to manage projects"
+            onClick={() => navigate('/ManageProject')}
+          />
+          <DashboardCard
+            icon="../src/app/assets/projects.png"
+            title="Manage Project Status"
+            description="Click to manage project statuses"
+            onClick={() => navigate('/ProjectStatus')}
+          />
+        </div>
 
-      <h2 className="text-3xl font-semibold text-gray-900 mb-6">User Management</h2>
-      <div className="bg-white rounded-lg shadow-lg p-8 mb-12">
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Search users"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="mb-6"
-        />
-        <UserTable
-          users={currentUsers}
-          onDelete={handleDeleteClick}
-          onStatusChange={handleStatusChange}
-          onRoleChange={handleRoleChange}
-        />
-      </div>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-3xl font-semibold text-gray-900">User Management</h2>
+          <Button variant="contained" color="primary" onClick={handleAddMemberClick}>
+            Add New Member
+          </Button>
+        </div>
 
-      <Dialog
-        open={deleteDialogOpen}
-        onClose={handleDeleteCancel}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">Confirm Delete</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this user? This action cannot be undone.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDeleteCancel} color="primary">Cancel</Button>
-          <Button onClick={handleDeleteConfirm} color="error" autoFocus>Delete</Button>
-        </DialogActions>
-      </Dialog>
+        <div className="bg-white rounded-lg shadow-lg p-8 mb-12">
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Search users"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="mb-6"
+          />
+          <UserTable
+            users={currentUsers}
+            onDelete={handleDeleteClick}
+            onStatusChange={handleStatusChange}
+            onRoleChange={handleRoleChange}
+          />
+        </div>
+
+        <Dialog
+          open={deleteDialogOpen}
+          onClose={handleDeleteCancel}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Confirm Delete</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to delete this user? This action cannot be undone.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDeleteCancel} color="primary">Cancel</Button>
+            <Button onClick={handleDeleteConfirm} color="error" autoFocus>Delete</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </div>
-  </div>
-);
+  );
 }

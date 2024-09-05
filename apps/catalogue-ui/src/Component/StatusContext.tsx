@@ -4,13 +4,14 @@ import { getStatuses, addStatus as apiAddStatus, deleteStatus as apiDeleteStatus
 interface Status {
   _id: string;
   projectStatus: string;
+  color: string; // Add color property
 }
 
 interface StatusContextType {
   statuses: Status[];
   addStatus: (status: string) => Promise<void>;
   deleteStatus: (id: string) => Promise<void>;
-  fetchStatuses: () => Promise<void>; // Add fetchStatuses to the context type
+  fetchStatuses: () => Promise<void>;
   loading: boolean;
   error: string | null;
 }
@@ -29,6 +30,16 @@ export const StatusProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [statuses, setStatuses] = useState<Status[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Function to generate a random color
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
 
   // Fetch statuses from the server
   const fetchStatuses = useCallback(async () => {
@@ -55,7 +66,8 @@ export const StatusProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setLoading(true);
     setError(null);
     try {
-      const addedStatus = await apiAddStatus({ projectStatus: status });
+      const color = getRandomColor(); // Generate a random color
+      const addedStatus = await apiAddStatus({ projectStatus: status, color });
       setStatuses((prevStatuses) => [...prevStatuses, addedStatus]);
     } catch (error) {
       console.error('Error adding status:', error);

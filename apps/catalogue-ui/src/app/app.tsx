@@ -19,6 +19,7 @@ import ManageProject from '../Component/ManageProject';
 import SearchResults from '../Component/SearchResults';
 import AccessDenied from '../Component/AccessDenied';
 import { StatusProvider } from '../Component/StatusContext';
+import AddMember from '../Component/AddMember';
 
 export function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -76,6 +77,7 @@ export function App() {
                 <Route path="/AdminDashboard" element={<ProtectedRoute element={<AdminDashboard />} requiredRole="admin" />} />
                 <Route path="/ProjectStatus" element={<ProtectedRoute element={<ProjectStatus />} requiredRole="admin" />} />
                 <Route path="/ManageProject" element={<ProtectedRoute element={<ManageProject />} requiredRole="admin" />} />
+                <Route path="/AddMember" element={<ProtectedRoute element={<AddMember />} requiredRole="admin" />} /> 
                 <Route path="/access-denied" element={<AccessDenied />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>

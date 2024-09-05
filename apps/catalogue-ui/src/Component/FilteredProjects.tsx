@@ -52,7 +52,7 @@ function FilteredProjects() {
     return <div>{error}</div>;
   }
 
-  const renderFilterSummary = () => {
+    const renderFilterSummary = () => {
     return Object.entries(filters).map(([category, options]) => (
       <div key={category} className="mb-2">
         <span className="font-semibold">{category.charAt(0).toUpperCase() + category.slice(1)}:</span> {options.join(', ')}
@@ -65,7 +65,7 @@ function FilteredProjects() {
       <div className="h-full">
       <h1 className="text-[#2C4B84] text-4xl pl-8 pt-1">Projects Filtered By:</h1>
       <h1 className="text-[#2C4B84] text-3xl pl-8 pt-1">{renderFilterSummary()}</h1>
-        <div className="flex space-x-4 mt-5 mb-4">
+        <div className="flex space-x-4 ml-4 mt-5 mb-4">
           <FilterDropdown />
         </div>
         <div className="flex flex-wrap justify-center">

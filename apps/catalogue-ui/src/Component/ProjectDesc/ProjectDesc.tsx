@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Project, Member } from '../ProjectInterface';
 import { getProjectById, formatDate, updateProject, getMembers } from '../../api/projects';
+import ProjectStatusDropdown from './ProjectStatusDropdown';
+import { motion } from 'framer-motion';
 
 const ProjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -136,14 +138,25 @@ const ProjectDetails: React.FC = () => {
   }
 
   return (
-    <div className="flex-1 ml-64 p-8">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8 text-blue-900">
-          {isEditing ? 'Edit Project' : project.projectName}
-        </h1>
-        <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-          {isEditing ? (
-            <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="p-6 space-y-6">
+    <div className="flex-1 ml-64 p-8 bg-gray-100 min-h-screen">
+    <div className="max-w-6xl mx-auto">
+      <motion.h1 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-4xl font-bold mb-8 text-indigo-900"
+      >
+        {isEditing ? 'Edit Project' : project.projectName}
+      </motion.h1>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="bg-white shadow-xl rounded-lg overflow-hidden"
+      >
+        {isEditing ? (
+          <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="p-8 space-y-8">
+
               <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2 lg:grid-cols-4">
               <div>
                 <label htmlFor="projectName" className="block text-lg font-medium text-gray-700 mb-2">
@@ -155,7 +168,7 @@ const ProjectDetails: React.FC = () => {
                   id="projectName"
                   value={editedProject!.projectName}
                   onChange={handleInputChange}
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm text-lg border-gray-300 rounded-md"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
               <div>
@@ -168,7 +181,7 @@ const ProjectDetails: React.FC = () => {
                   id="projectManager"
                   value={editedProject!.projectManager}
                   onChange={handleInputChange}
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm text-lg border-gray-300 rounded-md"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
               <div>
@@ -181,7 +194,7 @@ const ProjectDetails: React.FC = () => {
                   rows={3}
                   value={editedProject!.description}
                   onChange={handleInputChange}
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm text-lg border-gray-300 rounded-md"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
               <div>
@@ -194,7 +207,7 @@ const ProjectDetails: React.FC = () => {
                   id="gitHubLinks"
                   value={editedProject!.gitHubLinks}
                   onChange={handleInputChange}
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm text-lg border-gray-300 rounded-md"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
               <div>
@@ -207,7 +220,7 @@ const ProjectDetails: React.FC = () => {
                   id="demoURL"
                   value={editedProject!.demoURL}
                   onChange={handleInputChange}
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm text-lg border-gray-300 rounded-md"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
               <div>
@@ -220,7 +233,7 @@ const ProjectDetails: React.FC = () => {
                   id="technology"
                   value={editedProject!.technology.join(', ')}
                   onChange={(e) => handleArrayInputChange(e, 'technology')}
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm text-lg border-gray-300 rounded-md"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
               <div>
@@ -233,7 +246,7 @@ const ProjectDetails: React.FC = () => {
                   id="resources"
                   value={editedProject!.resources.join(', ')}
                   onChange={(e) => handleArrayInputChange(e, 'resources')}
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm text-lg border-gray-300 rounded-md"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
               <div>
@@ -246,25 +259,11 @@ const ProjectDetails: React.FC = () => {
                   id="startDate"
                   value={editedProject!.startDate ? editedProject!.startDate.split('T')[0] : ''}
                   onChange={handleInputChange}
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm text-lg border-gray-300 rounded-md"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
               <div>
-                <label htmlFor="projectStatus" className="block text-lg font-medium text-gray-700 mb-2">
-                  Project Status
-                </label>
-                <select
-                  id="projectStatus"
-                  name="projectStatus"
-                  value={editedProject!.projectStatus}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-lg border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
-                >
-                  <option value="Ongoing">Ongoing</option>
-                  <option value="Completed">Completed</option>
-                  <option value="At Risk">At Risk</option>
-                  <option value="Delayed">Delayed</option>
-                </select>
+                <ProjectStatusDropdown editedProject={editedProject} handleInputChange={handleInputChange} />
               </div>
               <div>
                 <label htmlFor="progressPercent" className="block text-lg font-medium text-gray-700 mb-2">
@@ -276,7 +275,7 @@ const ProjectDetails: React.FC = () => {
                   id="progressPercent"
                   value={editedProject!.progressPercent}
                   onChange={handleInputChange}
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm text-lg border-gray-300 rounded-md"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
               <div>
@@ -289,7 +288,7 @@ const ProjectDetails: React.FC = () => {
                   id="completionDate"
                   value={editedProject!.completionDate ? editedProject!.completionDate.split('T')[0] : ''}
                   onChange={handleInputChange}
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm text-lg border-gray-300 rounded-md"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
             </div>
@@ -315,7 +314,7 @@ const ProjectDetails: React.FC = () => {
 
               <select
                 onChange={handleAddMember}
-                className="mt-4 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               >
                 <option value="">Add a member</option>
                 {allMembers
@@ -336,157 +335,166 @@ const ProjectDetails: React.FC = () => {
               type="file"
               accept=".md"
               onChange={handleFileChange}
-              className="mt-1 block w-full text-lg border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
 
-            <div className="mt-6 flex justify-end space-x-4">
+          <div className="mt-8 flex justify-end space-x-4">
                 <button
                   type="button"
                   onClick={handleCancelEdit}
-                  className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
                 >
                   Save Changes
                 </button>
               </div>
             </form>
           ) : (
-          <div className="px-6 py-8">
-            <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+            <div className="px-8 py-10">
+            <dl className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
               <div className="sm:col-span-2">
-                <dt className="text-lg font-medium text-gray-700 mb-2">Description</dt>
-                <dd className="mt-1 text-base text-gray-900">{project.description}</dd>
-                <dd className="mt-4 font-semibold text-base text-gray-900">Click below to open the README file containing instructions to run this project.</dd>
+                <dt className="text-lg font-semibold text-gray-900 mb-2">Description</dt>
+                <dd className="mt-1 text-base text-gray-700 bg-gray-50 p-4 rounded-lg shadow-inner">{project.description}</dd>
+                <dd className="mt-6 font-semibold text-base text-gray-900">README Instructions</dd>
                 <button
-            onClick={handleViewReadme}
-            className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            View README
-          </button>
-          {isReadmeVisible && readmeContent && (
-                <div className="mt-4 p-4 bg-gray-50 rounded-md shadow-sm">
-                  <h3 className="text-lg font-semibold text-gray-800">README Content</h3>
-                  <pre className="mt-2 text-sm text-gray-700 whitespace-pre-wrap">{readmeContent}</pre>
-                  <button
-                    onClick={handleCloseReadme}
-                    className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                  onClick={handleViewReadme}
+                  className="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+                >
+                  View README
+                </button>
+                {isReadmeVisible && readmeContent && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="mt-4 p-4 bg-gray-50 rounded-lg shadow-inner"
                   >
-                    Close README
-                  </button>
-                    </div>
-                  )}
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">README Content</h3>
+                    <pre className="mt-2 text-sm text-gray-700 whitespace-pre-wrap overflow-auto max-h-96">{readmeContent}</pre>
+                    <button
+                      onClick={handleCloseReadme}
+                      className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-150 ease-in-out"
+                    >
+                      Close README
+                    </button>
+                  </motion.div>
+                )}
               </div>
-              <div>
-                <dt className="text-xl font-medium text-gray-700 mb-2">Project Manager</dt>
-                <dd className="mt-1 text-lg text-gray-900">{project.projectManager}</dd>
-              </div>
-              <div>
-                <dt className="text-xl font-medium text-gray-700 mb-2">GitHub Link</dt>
-                <dd className="mt-1 text-lg text-gray-900">
-                  <a href={project.gitHubLinks} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+              
+              {/* Project details */}
+              <DetailItem title="Project Manager" content={project.projectManager} />
+              <DetailItem 
+                title="GitHub Link" 
+                content={
+                  <a href={project.gitHubLinks} className="text-indigo-600 hover:text-indigo-800 transition duration-150 ease-in-out" target="_blank" rel="noopener noreferrer">
                     {project.gitHubLinks}
                   </a>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-xl font-medium text-gray-700 mb-2">Website</dt>
-                <dd className="mt-1 text-lg text-gray-900">
-                  <a href={project.demoURL} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+                } 
+              />
+              <DetailItem 
+                title="Website" 
+                content={
+                  <a href={project.demoURL} className="text-indigo-600 hover:text-indigo-800 transition duration-150 ease-in-out" target="_blank" rel="noopener noreferrer">
                     {project.demoURL}
                   </a>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-xl font-medium text-gray-700 mb-2">Technology</dt>
-                <dd className="mt-1 text-lg text-gray-900">
-                  <div className="flex flex-wrap gap-3">
+                } 
+              />
+              <DetailItem 
+                title="Technology" 
+                content={
+                  <div className="flex flex-wrap gap-2">
                     {project.technology.map((tech, index) => (
-                      <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-base font-medium bg-blue-100 text-blue-800">
+                      <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
                         {tech}
                       </span>
                     ))}
                   </div>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-xl font-medium text-gray-700 mb-2">Resources</dt>
-                <dd className="mt-1 text-lg text-gray-900">
-                  <div className="flex flex-wrap gap-3">
+                } 
+              />
+              <DetailItem 
+                title="Resources" 
+                content={
+                  <div className="flex flex-wrap gap-2">
                     {project.resources.map((resource, index) => (
-                      <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-base font-medium bg-green-100 text-green-800">
+                      <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
                         {resource}
                       </span>
                     ))}
                   </div>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-xl font-medium text-gray-700 mb-2">Start Date</dt>
-                <dd className="mt-1 text-lg text-gray-900">{formatDate(project.startDate) || 'N/A'}</dd>
-              </div>
-              <div>
-                <dt className="text-xl font-medium text-gray-700 mb-2">Members</dt>
-                <dd className="mt-1 text-lg text-gray-900">
+                } 
+              />
+              <DetailItem title="Start Date" content={formatDate(project.startDate) || 'N/A'} />
+              <DetailItem 
+                title="Members" 
+                content={
                   <div className="flex flex-wrap gap-3">
                     {project.members.map((member) => (
-                      <span key={member._id} className="inline-flex flex-col items-center px-3 py-2 rounded-lg text-base font-medium bg-gray-100 text-gray-800">
+                      <span key={member._id} className="inline-flex flex-col items-center px-3 py-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-800 transition duration-150 ease-in-out hover:bg-gray-200">
                         <span>{member.name}</span>
-                        <span className="text-sm text-gray-600">{member.email}</span>
-                        <span className="text-sm text-gray-600">{member.title}</span>
+                        <span className="text-xs text-gray-600">{member.email}</span>
+                        <span className="text-xs text-gray-600">{member.title}</span>
                       </span>
                     ))}
                   </div>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-xl font-medium text-gray-700 mb-3">Status</dt>
-                <dd className="mt-1 text-lg text-gray-900">
-                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-base font-medium ${
+                } 
+              />
+              <DetailItem 
+                title="Status" 
+                content={
+                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
                     project.projectStatus === 'Completed' ? 'bg-green-100 text-green-800' :
                     project.projectStatus === 'Ongoing' ? 'bg-blue-100 text-blue-800' :
-                    project.projectStatus === 'At Risk' ? 'bg-oranges-100 text-orange-800' :
+                    project.projectStatus === 'At Risk' ? 'bg-orange-100 text-orange-800' :
                     project.projectStatus === 'Awaiting Deletion' ? 'bg-red-100 text-red-800' :
                     project.projectStatus === 'Delayed' ? 'bg-yellow-100 text-yellow-800' :
                     'bg-blue-100 text-blue-800'
                   }`}>
                     {project.projectStatus}
                   </span>
-                </dd>
-              </div>
+                } 
+              />
               <div>
-                <dt className="text-xl font-medium text-gray-700 mb-2">Progress</dt>
-                <dd className="mt-1 text-lg text-gray-900">
-                  <div className="w-full bg-gray-200 rounded-full h-4">
-                    <div className="bg-blue-600 h-4 rounded-full" style={{ width: `${project.progressPercent}%` }}></div>
+                <dt className="text-lg font-semibold text-gray-900 mb-2">Progress</dt>
+                <dd className="mt-1">
+                  <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                    <div 
+                      className="bg-indigo-600 h-4 rounded-full transition-all duration-500 ease-out" 
+                      style={{ width: `${project.progressPercent}%` }}
+                    ></div>
                   </div>
                   <span className="text-base text-gray-700 mt-2">{project.progressPercent}%</span>
                 </dd>
               </div>
-              <div>
-                <dt className="text-xl font-medium text-gray-700 mb-2">Completion Date</dt>
-                <dd className="mt-1 text-lg text-gray-900">{formatDate(project.completionDate) || 'N/A'}</dd>
-              </div>
+              <DetailItem title="Completion Date" content={formatDate(project.completionDate) || 'N/A'} />
             </dl>
             <div className="mt-8 text-center">
               <button
                 onClick={handleEdit}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
               >
                 Edit Project
               </button>
             </div>
           </div>
         )}
-        </div>
-      </div>
+      </motion.div>
     </div>
-  );
+  </div>
+);
 }
+
+const DetailItem: React.FC<{ title: string; content: React.ReactNode }> = ({ title, content }) => (
+<div>
+  <dt className="text-lg font-semibold text-gray-900 mb-2">{title}</dt>
+  <dd className="mt-1 text-base text-gray-700">{content}</dd>
+</div>
+);
 
 export default ProjectDetails;
