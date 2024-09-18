@@ -46,7 +46,7 @@ const AdminDashboard = () => {
       setError('Failed to add member');
     }
   };
-
+  
   const handleUpdateMember = async (id: string) => {
     try {
       const updatedMember = await updateMember(id, newMember);
@@ -70,7 +70,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="admin-dashboard ml-60 p-6 lg:p-10">
+    <div className="admin-dashboard ml-64 p-6 lg:p-10">
       <h1 className="text-2xl font-semibold mb-4">Add New Member</h1>
       <div className="mb-8 max-w-lg space-y-4">
         <TextField
@@ -104,7 +104,7 @@ const AdminDashboard = () => {
           fullWidth
         />
         <button
-          onClick={handleAddMember}
+          onClick={handleAddMember} 
           className="group flex items-center space-x-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-sans font-semibold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-400"
         >
           <PlusCircle className="w-5 h-5 transition-transform group-hover:rotate-90" />

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { ProjectClass } from './schemas/project.schemas';
@@ -18,7 +18,7 @@ export class ProjectsService {
     ) {}
 
     async getProjects(): Promise<ProjectClass[]> {
-        return await this.projectModel.find().exec();
+        return this.projectModel.find().exec();
     }
 
     async getById(id: string): Promise<ProjectClass> {
@@ -34,6 +34,7 @@ export class ProjectsService {
         
         const memberIds = createProjectDto.members.map(id => new Types.ObjectId(id));
         const members = await this.memberModel.find({ _id: { $in: memberIds } }).exec();
+        
         if (members.length !== createProjectDto.members.length) {
             throw new NotFoundException('One or more member IDs are invalid');
         }
@@ -50,7 +51,7 @@ export class ProjectsService {
             }))
         });
 
-        return await newProject.save();
+        return newProject.save();
     }
 
     async deleteProject(id: string): Promise<ProjectClass> {
@@ -70,9 +71,11 @@ export class ProjectsService {
         if (updateProjectDto.members) {
             const memberIds = updateProjectDto.members.map(id => new Types.ObjectId(id));
             const members = await this.memberModel.find({ _id: { $in: memberIds } }).exec();
+            
             if (members.length !== updateProjectDto.members.length) {
                 throw new NotFoundException('One or more member IDs are invalid');
             }
+
             updatedMembers = members.map(member => ({
                 _id: member._id,
                 name: member.name,
@@ -101,14 +104,36 @@ export class ProjectsService {
         return existingProject;
     }
 
-    // Updated cancelDeleteProject method
     async cancelDeleteProject(id: string): Promise<ProjectClass> {
         const project = await this.projectModel.findById(id).exec();
         if (!project) {
             throw new NotFoundException(`Project with ID "${id}" not found`);
         }
-        // Assuming status is a field that determines the deletion state
-        project.status = 'Active';  // Or whatever status represents non-deletion
-        return await project.save();
+        project.projectStatus = 'Active'; // Or appropriate status for non-deletion
+        return project.save();
+    }
+
+    async approveProject(id: string): Promise<ProjectClass> {
+        const project = await this.projectModel.findById(id).exec();
+        if (!project) {
+            throw new NotFoundException(`Project with ID "${id}" not found`);
+        }
+        if (project.projectStatus === 'Approved') {
+            throw new ConflictException('Project is already approved');
+        }
+        project.projectStatus = 'Approved'; // Update to approved status
+        return project.save();
+    }
+
+    async rejectProject(id: string): Promise<ProjectClass> {
+        const project = await this.projectModel.findById(id).exec();
+        if (!project) {
+            throw new NotFoundException(`Project with ID "${id}" not found`);
+        }
+        if (project.projectStatus === 'Rejected') {
+            throw new ConflictException('Project is already rejected');
+        }
+        project.projectStatus = 'Rejected'; // Update to rejected status
+        return project.save();
     }
 }

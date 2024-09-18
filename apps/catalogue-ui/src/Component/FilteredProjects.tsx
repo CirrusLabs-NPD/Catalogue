@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import { getProjectsByFilters } from '../api/analytics';
 import { Project } from './ProjectInterface';
 import ProjectCard from './ProjectCard';
-import FilterDropdown from './FilterDropdown/filter';
 
 function FilteredProjects() {
   const location = useLocation();
@@ -61,14 +60,13 @@ function FilteredProjects() {
   };
 
   return (
-    <div className="ml-64 mt-6 max-h-[calc(100vh-100px)]">
+    <div className="ml-64 pl-4 mt-6 max-h-[calc(100vh-100px)]">
       <div className="h-full">
       <h1 className="text-[#2C4B84] text-4xl pl-8 pt-1">Projects Filtered By:</h1>
       <h1 className="text-[#2C4B84] text-3xl pl-8 pt-1">{renderFilterSummary()}</h1>
-        <div className="flex space-x-4 ml-4 mt-5 mb-4">
-          <FilterDropdown />
+        <div className="flex space-x-4 p-4 ml-4 mt-5 mb-4">
         </div>
-        <div className="flex flex-wrap justify-center">
+        <div className="flex flex-wrap pl-4 justify-center">
           {Array.isArray(projects) && projects.length > 0 ? (
             projects.map((project, index) => (
               <ProjectCard key={project._id} project={project} index={index} />

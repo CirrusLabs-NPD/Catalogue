@@ -24,4 +24,5 @@ export interface Project {
     demoURL: string;
     completionDate?: string;
     readmeFile?: string;
+    approvalStatus: 'pending' | 'approved' | 'rejected';
   }

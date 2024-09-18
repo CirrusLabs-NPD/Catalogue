@@ -2,7 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { addProject, getStatuses, getMembers } from '../../api/projects';
 import { useNavigate } from 'react-router-dom';
-import { Member } from '../ProjectInterface';
+
+// Define the Project interface
+interface Project {
+  projectName: string;
+  startDate?: string;
+  gitHubLinks: string;
+  technology: string[];
+  resources: string[];
+  projectStatus: string;
+  projectManager: string;
+  description: string;
+  progressPercent: number;
+  demoURL: string;
+  completionDate?: string | null;
+  readmeFile?: string;
+  members: string[];
+  approvalStatus: 'pending' | 'approved' | 'disapproved';
+}
 
 interface FormData {
   projectName: string;
@@ -24,6 +41,11 @@ interface Status {
   projectStatus: string;
 }
 
+interface Member {
+  _id: string;
+  name: string;
+}
+
 const AddPage: React.FC = () => {
   const [statuses, setStatuses] = useState<Status[]>([]);
   const [members, setMembers] = useState<Member[]>([]);
@@ -42,9 +64,8 @@ const AddPage: React.FC = () => {
 
   const handleCapitalization = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    // Capitalize the first letter of each word
     const capitalizedValue = value.replace(/\b\w/g, (char) => char.toUpperCase());
-    setValue(e.target.name, capitalizedValue);
+    setValue(e.target.name as keyof FormData, capitalizedValue);
   };
 
   useEffect(() => {
@@ -80,7 +101,7 @@ const AddPage: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const newProject = {
+      const newProject: Project = {
         projectName: data.projectName,
         startDate: data.startDate,
         gitHubLinks: data.gitHubLinks,
@@ -94,6 +115,7 @@ const AddPage: React.FC = () => {
         demoURL: data.demoURL,
         completionDate: data.completionDate || null,
         readmeFile: data.readmeFile,
+        approvalStatus: 'pending', // Set initial approval status
       };
       await addProject(newProject);
       reset();

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import AxiosUtility from './AxiosUtility';
 
 const API_BASE_URL = 'http://localhost:3000/api';
@@ -87,3 +88,41 @@ export function formatDate(dateString: string | undefined): string {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
+
+// New functions for project approval and rejection
+
+export const approveProject = async (projectId: string) => {
+  try {
+    const response = await axios.post(`/api/projects/approve/${projectId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error approving project:', error);
+    throw error;
+  }
+};
+
+export const rejectProject = async (id: string) => {
+  try {
+    const response = await AxiosUtility({
+      url: `${API_BASE_URL}/projects/${id}/reject`,
+      method: 'PUT',
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error rejecting project:', error);
+    throw error;
+  }
+};
+
+export const getProjectsByStatus = async (status: 'pending' | 'approved' | 'rejected') => {
+  try {
+    const response = await AxiosUtility({
+      url: `${API_BASE_URL}/projects/status/${status}`,
+      method: 'GET',
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching projects by status:', error);
+    throw error;
+  }
+};

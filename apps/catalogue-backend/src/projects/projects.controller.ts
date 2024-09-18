@@ -2,9 +2,10 @@ import { Body, Controller, Get, Post, Put, Delete, Param, ValidationPipe, UseGua
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create.project.dto';
 import { ProjectClass } from './schemas/project.schemas';
-import { ApiTags, ApiResponse, ApiParam, ApiBody, ApiBearerAuth } from '@nestjs/swagger'; // Import Swagger decorators
+import { ApiTags, ApiResponse, ApiParam, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateProjectDto } from './dto/update.project.dto';
+import { NotFoundException } from '@nestjs/common';
 
 @ApiTags('projects') // Tag for Swagger documentation
 @Controller('projects')
@@ -15,6 +16,7 @@ export class ProjectsController {
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
     @ApiResponse({ status: 200, description: 'Returns all projects.' })
+    @ApiResponse({ status: 404, description: 'No projects found.' })
     getProjects(): Promise<ProjectClass[]> {
         return this.projectsService.getProjects();
     }
@@ -24,6 +26,7 @@ export class ProjectsController {
     @ApiBearerAuth('access-token')
     @ApiBody({ type: CreateProjectDto })
     @ApiResponse({ status: 201, description: 'Creates a new project.' })
+    @ApiResponse({ status: 400, description: 'Invalid input data.' })
     addProject(@Body(ValidationPipe) createProjectDto: CreateProjectDto): Promise<ProjectClass> {
         return this.projectsService.addProject(createProjectDto);
     }
@@ -33,6 +36,7 @@ export class ProjectsController {
     @ApiBearerAuth('access-token')
     @ApiParam({ name: 'id', type: String })
     @ApiResponse({ status: 200, description: 'Returns a project by ID.' })
+    @ApiResponse({ status: 404, description: 'Project not found.' })
     getById(@Param('id') id: string): Promise<ProjectClass> {
         return this.projectsService.getById(id);
     }
@@ -43,6 +47,8 @@ export class ProjectsController {
     @ApiParam({ name: 'id', type: String })
     @ApiBody({ type: UpdateProjectDto })
     @ApiResponse({ status: 200, description: 'Updates a project by ID.' })
+    @ApiResponse({ status: 404, description: 'Project not found.' })
+    @ApiResponse({ status: 400, description: 'Invalid input data.' })
     updateProject(
         @Param('id') id: string,
         @Body(ValidationPipe) updateProjectDto: UpdateProjectDto
@@ -55,6 +61,7 @@ export class ProjectsController {
     @ApiBearerAuth('access-token')
     @ApiParam({ name: 'id', type: String })
     @ApiResponse({ status: 200, description: 'Deletes a project by ID.' })
+    @ApiResponse({ status: 404, description: 'Project not found.' })
     deleteProject(@Param('id') id: string): Promise<ProjectClass> {
         return this.projectsService.deleteProject(id);
     }
@@ -64,7 +71,28 @@ export class ProjectsController {
     @ApiBearerAuth('access-token')
     @ApiParam({ name: 'id', type: String })
     @ApiResponse({ status: 200, description: 'Cancels deletion of a project by ID.' })
+    @ApiResponse({ status: 404, description: 'Project not found.' })
     cancelDeleteProject(@Param('id') id: string): Promise<ProjectClass> {
         return this.projectsService.cancelDeleteProject(id);
+    }
+
+    @Put(':id/approve')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
+    @ApiParam({ name: 'id', type: String })
+    @ApiResponse({ status: 200, description: 'Approves a project by ID.' })
+    @ApiResponse({ status: 404, description: 'Project not found.' })
+    approveProject(@Param('id') id: string): Promise<ProjectClass> {
+        return this.projectsService.approveProject(id);
+    }
+
+    @Put(':id/reject')
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth('access-token')
+    @ApiParam({ name: 'id', type: String })
+    @ApiResponse({ status: 200, description: 'Rejects a project by ID.' })
+    @ApiResponse({ status: 404, description: 'Project not found.' })
+    rejectProject(@Param('id') id: string): Promise<ProjectClass> {
+        return this.projectsService.rejectProject(id);
     }
 }

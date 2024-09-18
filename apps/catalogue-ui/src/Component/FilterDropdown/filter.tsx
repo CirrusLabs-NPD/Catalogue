@@ -23,10 +23,15 @@ const FilterDropdown: React.FC = () => {
   const fetchFilterOptions = async (category: string) => {
     setIsLoading(true);
     try {
-      const response = await getFilters(category);
+      const response: any = await getFilters(category); // Use 'any' for flexibility
+      const filteredOptions: string[] = Array.from(new Set(
+        (Array.isArray(response) ? response : response.data || [])
+          .map((option: string) => option.toLowerCase()) // Convert to lowercase
+      ));
+
       setOptions(prev => ({
         ...prev,
-        [category]: Array.isArray(response) ? response : response.data || []
+        [category]: filteredOptions
       }));
     } catch (error) {
       console.error(`Error fetching filter options for ${category}:`, error);
@@ -37,12 +42,13 @@ const FilterDropdown: React.FC = () => {
   };
 
   const handleOptionSelect = (category: string, option: string) => {
+    const lowerCaseOption = option.toLowerCase(); // Ensure option is lowercase
     setFilterState(prev => {
       const categoryOptions = prev[category] || [];
-      const updatedOptions = categoryOptions.includes(option)
-        ? categoryOptions.filter(o => o !== option)
-        : [...categoryOptions, option];
-      
+      const updatedOptions = categoryOptions.includes(lowerCaseOption)
+        ? categoryOptions.filter(o => o !== lowerCaseOption)
+        : [...categoryOptions, lowerCaseOption];
+
       return {
         ...prev,
         [category]: updatedOptions
@@ -52,32 +58,35 @@ const FilterDropdown: React.FC = () => {
 
   const applyFilters = () => {
     const searchParams = new URLSearchParams();
-    
+
     Object.entries(filterState).forEach(([category, selectedOptions]) => {
       if (selectedOptions.length > 0) {
         searchParams.append(category, selectedOptions.join(','));
       }
     });
-    
+
     if (searchParams.toString()) {
       navigate(`/projects/filter?${searchParams.toString()}`);
+    } else {
+      navigate('/projects');
     }
   };
 
   const clearFilters = () => {
     setFilterState({});
+    navigate('/projects'); // Clear filters in the URL as well
   };
 
   const removeFilter = (category: string, option: string) => {
+    const lowerCaseOption = option.toLowerCase(); // Ensure option is lowercase
     setFilterState(prev => ({
       ...prev,
-      [category]: prev[category].filter(o => o !== option)
+      [category]: prev[category].filter(o => o !== lowerCaseOption)
     }));
   };
 
   return (
     <div className="font-quicksand flex justify-end">
-      {/* Added flex justify-end to align it to the right */}
       <Menu as="div" className="relative inline-block text-left">
         <Menu.Button className="inline-flex justify-center items-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
           <Filter className="w-5 h-5 mr-2" />
@@ -100,7 +109,7 @@ const FilterDropdown: React.FC = () => {
                       {isLoading ? (
                         <div className="px-4 py-2 text-sm text-gray-500">Loading options...</div>
                       ) : options[category]?.length > 0 ? (
-                        options[category].map((option) => (
+                        options[category].map((option: string) => ( // Explicitly type option as string
                           <Menu.Item key={option}>
                             <label className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                               <input

@@ -20,7 +20,9 @@ const Home: React.FC = () => {
       setLoading(true);
       const response = await getProjects();
       if (Array.isArray(response)) {
-        setProjects(response);
+        // Filter only approved projects
+        const approvedProjects = response.filter(project => project.approvalStatus === 'approved');
+        setProjects(approvedProjects);
       } else {
         console.error('Received non-array response:', response);
         setError('Unexpected data format received');
@@ -45,7 +47,7 @@ const Home: React.FC = () => {
   return (
     <div className="ml-64 mt-6 pl-10 max-h-[calc(100vh-100px)]">
       <div className="h-full">
-        <h1 className="text-[#2C4B84] text-4xl pl-8 pt-1">Project Catalogue</h1>
+        <h1 className="text-[#2C4B84] text-4xl pl-8 pt-1">Approved Projects</h1>
         <div className="flex space-x-4 mt-5 ml-4 mb-4">
           <FilterDropdown />
           <SortDropdown onSortChange={handleSortChange} />
@@ -53,7 +55,7 @@ const Home: React.FC = () => {
         {loading ? (
           <div className="flex justify-center items-center h-64">
             <Loader2 className="w-12 h-12 text-[#2C4B84] animate-spin" />
-            <span className="ml-3 text-lg text-[#2C4B84]">Loading projects...</span>
+            <span className="ml-3 text-lg text-[#2C4B84]">Loading approved projects...</span>
           </div>
         ) : error ? (
           <div className="text-red-500 text-center text-lg">{error}</div>
@@ -64,7 +66,7 @@ const Home: React.FC = () => {
                 <ProjectCard key={project._id} project={project} index={index} />
               ))
             ) : (
-              <div>No projects available</div>
+              <div>No approved projects available</div>
             )}
           </div>
         )}

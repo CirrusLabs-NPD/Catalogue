@@ -130,7 +130,7 @@ const ProjectSearch: React.FC = () => {
                           to={`/description/${project._id}`}
                           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out text-lg"
                         >
-                          View
+                          View 
                         </Link>
                         <button
                           className={`font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-opacity-50 transition duration-150 ease-in-out text-lg ${
