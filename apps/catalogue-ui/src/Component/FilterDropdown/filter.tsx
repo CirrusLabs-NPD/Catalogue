@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Menu } from '@headlessui/react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronDown, Filter, X } from 'lucide-react';
@@ -23,11 +23,8 @@ const FilterDropdown: React.FC = () => {
   const fetchFilterOptions = async (category: string) => {
     setIsLoading(true);
     try {
-      const response: any = await getFilters(category); // Use 'any' for flexibility
-      const filteredOptions: string[] = Array.from(new Set(
-        (Array.isArray(response) ? response : response.data || [])
-          .map((option: string) => option.toLowerCase()) // Convert to lowercase
-      ));
+      const response: any = await getFilters(category);
+      const filteredOptions: string[] = Array.isArray(response) ? response : response.data || [];
 
       setOptions(prev => ({
         ...prev,
@@ -42,12 +39,11 @@ const FilterDropdown: React.FC = () => {
   };
 
   const handleOptionSelect = (category: string, option: string) => {
-    const lowerCaseOption = option.toLowerCase(); // Ensure option is lowercase
     setFilterState(prev => {
       const categoryOptions = prev[category] || [];
-      const updatedOptions = categoryOptions.includes(lowerCaseOption)
-        ? categoryOptions.filter(o => o !== lowerCaseOption)
-        : [...categoryOptions, lowerCaseOption];
+      const updatedOptions = categoryOptions.includes(option)
+        ? categoryOptions.filter(o => o !== option)
+        : [...categoryOptions, option];
 
       return {
         ...prev,
@@ -74,16 +70,31 @@ const FilterDropdown: React.FC = () => {
 
   const clearFilters = () => {
     setFilterState({});
-    navigate('/projects'); // Clear filters in the URL as well
+    navigate('/projects');
   };
 
   const removeFilter = (category: string, option: string) => {
-    const lowerCaseOption = option.toLowerCase(); // Ensure option is lowercase
     setFilterState(prev => ({
       ...prev,
-      [category]: prev[category].filter(o => o !== lowerCaseOption)
+      [category]: prev[category].filter(o => o !== option)
     }));
   };
+
+  // Function to remove duplicates for display
+  const removeDuplicatesForDisplay = (options: string[]): string[] => {
+    return Array.from(new Set(options.map(option => option.toLowerCase())))
+      .map(lowercaseOption => {
+        return options.find(option => option.toLowerCase() === lowercaseOption) || lowercaseOption;
+      });
+  };
+
+  // Memoized display options to avoid unnecessary re-computations
+  const displayOptions = useMemo(() => {
+    return Object.entries(options).reduce((acc, [category, categoryOptions]) => {
+      acc[category] = removeDuplicatesForDisplay(categoryOptions);
+      return acc;
+    }, {} as { [key: string]: string[] });
+  }, [options]);
 
   return (
     <div className="font-quicksand flex justify-end">
@@ -108,8 +119,8 @@ const FilterDropdown: React.FC = () => {
                     <div className="py-1 max-h-60 overflow-y-auto">
                       {isLoading ? (
                         <div className="px-4 py-2 text-sm text-gray-500">Loading options...</div>
-                      ) : options[category]?.length > 0 ? (
-                        options[category].map((option: string) => ( // Explicitly type option as string
+                      ) : displayOptions[category]?.length > 0 ? (
+                        displayOptions[category].map((option: string) => (
                           <Menu.Item key={option}>
                             <label className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                               <input
@@ -136,7 +147,7 @@ const FilterDropdown: React.FC = () => {
             <h4 className="text-sm font-medium text-gray-900 mb-2">Active Filters:</h4>
             <div className="flex flex-wrap gap-2">
               {Object.entries(filterState).map(([category, selectedOptions]) =>
-                selectedOptions.map(option => (
+                removeDuplicatesForDisplay(selectedOptions).map(option => (
                   <span key={`${category}-${option}`} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
                     {option}
                     <button

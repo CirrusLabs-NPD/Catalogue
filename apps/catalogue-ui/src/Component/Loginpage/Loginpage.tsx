@@ -87,7 +87,7 @@ const Loginpage: React.FC<{ setIsLoggedIn: (isLoggedIn: boolean, role: string) =
   };
 
   if (isAuthenticated) {
-    return null; // or a loading spinner if you prefer
+    return null; 
   }
 
   return (

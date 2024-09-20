@@ -21,10 +21,10 @@ export class MemberClass extends Document {
     @Prop({ required: true })
     title: string;
 
-    @Prop({ required: true })
+    @Prop({ type: [String], required: true }) 
     techStack: string[];
 
-    @Prop({ required: true })
+    @Prop({ type: [String], required: true }) 
     projects: string[];
 }
 

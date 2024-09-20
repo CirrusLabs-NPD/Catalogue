@@ -121,10 +121,10 @@ const AdminDashboard = () => {
           <p><strong>Tech Stack:</strong> {member.techStack.join(', ')}</p>
           <p><strong>Projects:</strong> {member.projects.join(', ')}</p>
           <div className="mt-2 flex space-x-2">
-            <Button variant="contained" color="secondary" onClick={() => handleUpdateMember(member._id!)}>
+            <Button variant="contained" color="secondary" onClick={() => handleUpdateMember(member._id)}>
               Update
             </Button>
-            <Button variant="contained" color="error" onClick={() => handleDeleteMember(member._id!)}>
+            <Button variant="contained" color="error" onClick={() => handleDeleteMember(member._id)}>
               Delete
             </Button>
           </div>
@@ -142,7 +142,7 @@ const AdminDashboard = () => {
       </Snackbar>
 
       <Snackbar
-        open={!!success}
+        open={!!success} 
         autoHideDuration={6000}
         onClose={() => setSuccess(null)}
       >

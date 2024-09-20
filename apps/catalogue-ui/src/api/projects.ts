@@ -51,8 +51,8 @@ export const cancelDeleteProject = async (id: string) => {
     url: `${API_BASE_URL}/projects/${id}/cancel-delete`,
     method: 'PUT',
     data: {}
-  })
-}
+  });
+};
 
 export const getStatuses = async () => {
   return AxiosUtility({
@@ -89,29 +89,18 @@ export function formatDate(dateString: string | undefined): string {
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
-// New functions for project approval and rejection
-
-export const approveProject = async (projectId: string) => {
-  try {
-    const response = await axios.post(`/api/projects/approve/${projectId}`);
-    return response.data;
-  } catch (error) {
-    console.error('Error approving project:', error);
-    throw error;
-  }
+export const approveProject = async (id: string) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/projects/${id}/approve`,
+    method: 'PUT',
+  });
 };
 
 export const rejectProject = async (id: string) => {
-  try {
-    const response = await AxiosUtility({
-      url: `${API_BASE_URL}/projects/${id}/reject`,
-      method: 'PUT',
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error rejecting project:', error);
-    throw error;
-  }
+  return AxiosUtility({
+    url: `${API_BASE_URL}/projects/${id}/reject`,
+    method: 'PUT',
+  });
 };
 
 export const getProjectsByStatus = async (status: 'pending' | 'approved' | 'rejected') => {

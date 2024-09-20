@@ -20,16 +20,14 @@ const Home: React.FC = () => {
       setLoading(true);
       const response = await getProjects();
       if (Array.isArray(response)) {
-        // Filter only approved projects
         const approvedProjects = response.filter(project => project.approvalStatus === 'approved');
         setProjects(approvedProjects);
       } else {
-        console.error('Received non-array response:', response);
-        setError('Unexpected data format received');
+        throw new Error('Unexpected data format received');
       }
     } catch (err) {
       console.error('Failed to fetch projects:', err);
-      setError('Failed to load projects');
+      setError(err instanceof Error ? err.message : 'Failed to load projects');
     } finally {
       setLoading(false);
     }
@@ -61,9 +59,9 @@ const Home: React.FC = () => {
           <div className="text-red-500 text-center text-lg">{error}</div>
         ) : (
           <div className="flex flex-wrap justify-center">
-            {Array.isArray(projectData) && projectData.length > 0 ? (
-              projectData.map((project, index) => (
-                <ProjectCard key={project._id} project={project} index={index} />
+            {projectData.length > 0 ? (
+              projectData.map(project => (
+                <ProjectCard key={project._id} project={project} />
               ))
             ) : (
               <div>No approved projects available</div>

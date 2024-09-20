@@ -11,7 +11,6 @@ interface ProjectApprovalTableProps {
   loading?: boolean;
 }
 
-// Styled components using MUI's styling solution
 const StyledTableContainer = styled(TableContainer)({
   borderRadius: '8px',
   overflow: 'hidden',

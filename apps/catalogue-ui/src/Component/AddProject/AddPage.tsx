@@ -3,7 +3,6 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { addProject, getStatuses, getMembers } from '../../api/projects';
 import { useNavigate } from 'react-router-dom';
 
-// Define the Project interface
 interface Project {
   projectName: string;
   startDate?: string;
@@ -148,7 +147,6 @@ const AddPage: React.FC = () => {
     <div className="ml-64 p-8 min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Add Project</h1>
-        
         <div className="bg-gray-100 rounded-lg shadow-md p-8">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -193,7 +191,7 @@ const AddPage: React.FC = () => {
                 {errors.startDate && <p className="text-red-500 text-sm mt-1">{errors.startDate.message}</p>}
               </div>
 
-              {/* GitHub Links Field */}
+              {/* GitHub Links Field */} 
               <div className="mb-4">
                 <label htmlFor="gitHubLinks" className="text-lg block text-gray-700 font-bold mb-2">GitHub Links</label>
                 <input
@@ -268,7 +266,7 @@ const AddPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Project Status Field */}
+              {/* Project Status Field */} 
               <div className="mb-4">
                 <label htmlFor="projectStatus" className="text-lg block text-gray-700 font-bold mb-2">Project Status</label>
                 <select
