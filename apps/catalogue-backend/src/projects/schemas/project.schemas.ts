@@ -43,9 +43,11 @@ export class ProjectClass extends Document {
     @Prop({ default: null })
     deletionRequestedDate?: Date;
 
-    // Added status property
-    @Prop({ required: true, default: 'Active' })  // Default to 'Active'
+    @Prop({ required: true, default: 'Active' })  
     status: string;
+
+    @Prop({ type: String, required: false })
+    readmeFile?: string;  
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(ProjectClass);

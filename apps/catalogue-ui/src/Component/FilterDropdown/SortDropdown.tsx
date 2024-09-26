@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import sortIcon from '../../app/assets/setting-2.png';
-import downarr from '../../app/assets/arrow-down.png';
+import { Menu } from '@headlessui/react';
+import { ChevronDown, SortAsc } from 'lucide-react';
 import { sortProjectsByName, sortProjectsByProgress, sortProjectsByEnd, sortProjectsByStart } from '../../api/analytics';
-import './filter.css'
 
 type SortOption = {
   label: string;
@@ -47,37 +45,32 @@ const SortDropdown: React.FC<{ onSortChange: (projects: any[]) => void }> = ({ o
   };
 
   return (
-    <div className="relative inline-block text-left font-quicksand">
-      <Menu>
-        {({ open }) => (
-          <>
-            <MenuButton className="filter_align-1 flex items-center">
-              <img src={sortIcon} alt="Sort Icon" className="h-5 m-1" />
-              <span className="text-gray-600">{selectedOption.label}</span>
-              <img src={downarr} alt="Dropdown Icon" className="h-5 m-1 ml-auto" />
-            </MenuButton>
-            {open && (
-              <MenuItems className="absolute left-2 w-64 mt-2 origin-top-right bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                <div className="py-1">
-                  {sortOptions.map((option) => (
-                    <MenuItem key={option.label}>
-                      {({ active }) => (
-                        <button
-                          onClick={() => handleSort(option)}
-                          className={`${
-                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
-                          } group flex items-center w-full px-4 py-2 text-sm`}
-                        >
-                          {option.label}
-                        </button>
-                      )}
-                    </MenuItem>
-                  ))}
-                </div>
-              </MenuItems>
-            )}
-          </>
-        )}
+    <div className="font-quicksand">
+      <Menu as="div" className="relative inline-block text-left">
+        <Menu.Button className="inline-flex justify-center items-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          <SortAsc className="w-5 h-5 mr-2" />
+          {selectedOption.label}
+          <ChevronDown className="w-5 h-5 ml-2 -mr-1" aria-hidden="true" />
+        </Menu.Button>
+
+        <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <div className="py-1">
+            {sortOptions.map((option) => (
+              <Menu.Item key={option.label}>
+                {({ active }) => (
+                  <button
+                    onClick={() => handleSort(option)}
+                    className={`${
+                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                    } group flex items-center w-full px-4 py-2 text-sm`}
+                  >
+                    {option.label}
+                  </button>
+                )}
+              </Menu.Item>
+            ))}
+          </div>
+        </Menu.Items>
       </Menu>
     </div>
   );

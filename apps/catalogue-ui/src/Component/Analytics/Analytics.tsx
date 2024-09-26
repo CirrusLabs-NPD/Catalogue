@@ -2,7 +2,8 @@ import './Analytics.css';
 import StickyHeadTable from './Table';
 import BarGraph from './BarGraph';
 import BasicPie from './PieChart';
-import FilterDropdown from '../FilterDropdown/filter';
+import Chart from './Chart';
+import ResourcesByProject from './ResourcesByProject';
 
 export default function Analytics() {
   return (
@@ -10,11 +11,7 @@ export default function Analytics() {
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Analytics</h1>
         
-        <div className="mb-8">
-          <FilterDropdown />
-        </div>
-  
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
               Number of Projects Per Month
@@ -23,7 +20,7 @@ export default function Analytics() {
               <BarGraph />
             </div>
           </div>
-  
+          
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
               Total Projects by Status
@@ -32,14 +29,34 @@ export default function Analytics() {
               <BasicPie />
             </div>
           </div>
-  
-          <div className="bg-white rounded-lg shadow-md overflow-hidden lg:col-span-2">
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
-              Project Summaries
+              Members and Assigned Projects
             </h2>
             <div className="p-4">
-              <StickyHeadTable />
+              <Chart />
             </div>
+          </div>
+  
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
+              Resources Used
+            </h2>
+            <div className="p-4">
+              <ResourcesByProject />
+            </div>
+          </div>
+        </div>
+  
+        <div className="bg-white rounded-lg shadow-md overflow-hidden lg:col-span-2">
+          <h2 className="text-xl font-semibold text-gray-800 p-4 bg-gray-100 border-b">
+            Project Summaries
+          </h2>
+          <div className="p-4">
+            <StickyHeadTable />
           </div>
         </div>
       </div>

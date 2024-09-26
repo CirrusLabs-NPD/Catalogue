@@ -23,4 +23,6 @@ export interface Project {
     progressPercent: number;
     demoURL: string;
     completionDate?: string;
+    readmeFile?: string;
+    approvalStatus: 'pending' | 'approved' | 'rejected';
   }

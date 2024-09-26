@@ -1,7 +1,6 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { getStatusCount } from '../../api/analytics';
-import { useEffect, useState } from 'react';
 
 interface ChartData {
   id: number;
@@ -9,13 +8,15 @@ interface ChartData {
   label: string;
 }
 
-// Function to generate a color
-function generateColor(index: number, total: number): string {
-  const hue = (index / total) * 360;
-  return `hsl(${hue}, 70%, 50%)`;
-}
+const statusColors: { [key: string]: string } = {
+  "Ongoing": "#34C759",
+  "Completed": "#FF9500",
+  "Delayed": "#AF52DE",
+  "At Risk": "#007AFF",
+  "Awaiting Deletion": "#FF0000",
+};
 
-export default function BasicPie() {
+const BasicPie: React.FC = () => {
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const [colors, setColors] = useState<string[]>([]);
 
@@ -23,17 +24,30 @@ export default function BasicPie() {
     const fetchData = async () => {
       try {
         const data = await getStatusCount();
+        
+        const statuses = ["At Risk", "Awaiting Deletion"];
+        
+        
         const transformedData = Object.keys(data).map((key, index) => ({
           id: index,
           value: data[key],
           label: key
         }));
-        setChartData(transformedData);
 
-        const generatedColors = transformedData.map((_, index) => 
-          generateColor(index, transformedData.length)
-        );
-        setColors(generatedColors);
+        
+        statuses.forEach(status => {
+          if (!transformedData.some(item => item.label === status)) {
+            transformedData.push({
+              id: transformedData.length,
+              value: 0,
+              label: status
+            });
+          }
+        });
+
+        setChartData(transformedData);
+        // Map colors based on the status
+        setColors(transformedData.map(item => statusColors[item.label] || '#CCCCCC')); // Default to grey if status is not in color map
       } catch (error) {
         console.error("Error fetching status count:", error);
       }
@@ -41,17 +55,15 @@ export default function BasicPie() {
 
     fetchData();
   }, []);
-  
+
   return (
     <PieChart
       colors={colors}
-      series={[
-        {
-          data: chartData,
-        },
-      ]}
+      series={[{ data: chartData }]}
       width={500}
       height={200}
     />
   );
-}
+};
+
+export default BasicPie;

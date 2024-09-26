@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App should match the snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="flex flex-col h-screen overflow-hidden"
+  >
+    <div
+      class="flex flex-1 overflow-hidden"
+    >
+      <main
+        class="flex-1 overflow-y-auto bg-gray-50"
+      >
+        <div
+          class="h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat relative"
+          style="background-image: url(loginblank.png); background-size: cover; background-position: center; padding: 0px; margin: 0px; box-sizing: border-box;"
+        >
+          <div
+            class="absolute inset-0 flex items-center justify-start pl-16"
+          >
+            <div>
+              <h1
+                class="text-6xl font-normal mb-4"
+              >
+                Project Catalogue
+              </h1>
+              <p
+                class="mb-6 ml-3 text-2xl"
+              >
+                The one stop integrated platform for all the POC's across CirrusLabs
+              </p>
+              <button
+                class="text-2l w-70 ml-3 bg-red-600 hover:bg-red-800 text-white font-bold py-3 px-10 rounded-lg shadow-md transition duration-300 ease-in-out"
+              >
+                Login
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</DocumentFragment>
+`;

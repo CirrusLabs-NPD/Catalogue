@@ -1,3 +1,4 @@
+import axios from 'axios';
 import AxiosUtility from './AxiosUtility';
 
 const API_BASE_URL = 'http://localhost:3000/api';
@@ -50,8 +51,8 @@ export const cancelDeleteProject = async (id: string) => {
     url: `${API_BASE_URL}/projects/${id}/cancel-delete`,
     method: 'PUT',
     data: {}
-  })
-}
+  });
+};
 
 export const getStatuses = async () => {
   return AxiosUtility({
@@ -87,3 +88,30 @@ export function formatDate(dateString: string | undefined): string {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
+
+export const approveProject = async (id: string) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/projects/${id}/approve`,
+    method: 'PUT',
+  });
+};
+
+export const rejectProject = async (id: string) => {
+  return AxiosUtility({
+    url: `${API_BASE_URL}/projects/${id}/reject`,
+    method: 'PUT',
+  });
+};
+
+export const getProjectsByStatus = async (status: 'pending' | 'approved' | 'rejected') => {
+  try {
+    const response = await AxiosUtility({
+      url: `${API_BASE_URL}/projects/status/${status}`,
+      method: 'GET',
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching projects by status:', error);
+    throw error;
+  }
+};

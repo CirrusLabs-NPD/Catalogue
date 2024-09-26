@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { faTrash, faUsers } from '@fortawesome/free-solid-svg-icons';
-import { TextField, Select, MenuItem, Switch, Dialog, DialogTitle, DialogContent, DialogContentText, Button, DialogActions, CircularProgress } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faUsers, faProjectDiagram } from '@fortawesome/free-solid-svg-icons';
+import { TextField, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, CircularProgress } from '@mui/material';
 import { getUsers, deleteUser, assignRole, assignStatus } from '../../api/auth';
+import { getProjects, approveProject, rejectProject } from '../../api/projects'; 
 import StatCard from './StatCard';
 import DashboardCard from './DashboardCard';
 import UserTable from './UserTable';
+import ProjectApprovalTable from './ProjectApprovalTable';
 
 interface User {
   _id: string;
@@ -14,6 +15,14 @@ interface User {
   email: string;
   role: string;
   status: string;
+}
+
+interface Project {
+  _id: string;
+  projectName: string;
+  projectManager: string;
+  startDate: string;
+  approvalStatus: 'pending' | 'approved' | 'rejected';
 }
 
 export default function AdminDashboard() {
@@ -30,12 +39,37 @@ export default function AdminDashboard() {
   });
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [projectCounts, setProjectCounts] = useState({
+    total: 0,
+    pending: 0,
+    approved: 0,
+    rejected: 0,
+  });
 
   const usersPerPage = 5;
 
   useEffect(() => {
     fetchUsers();
+    fetchProjects();
   }, []);
+  
+  const fetchProjects = async () => {
+    try {
+      const response = await getProjects();
+      const projectsData: Project[] = response || [];
+      setProjects(projectsData);
+      setProjectCounts({
+        total: projectsData.length,
+        pending: projectsData.filter(project => project.approvalStatus === 'pending').length,
+        approved: projectsData.filter(project => project.approvalStatus === 'approved').length,
+        rejected: projectsData.filter(project => project.approvalStatus === 'rejected').length,
+      });
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+      setError('Failed to load projects');
+    }
+  };
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -68,6 +102,30 @@ export default function AdminDashboard() {
   const handleDeleteClick = (user: User) => {
     setUserToDelete(user);
     setDeleteDialogOpen(true);
+  };
+  
+  const handleApproveProject = async (projectId: string) => {
+    try {
+      await approveProject(projectId);
+      setProjects(prevProjects =>
+        prevProjects.map(project =>
+          project._id === projectId ? { ...project, approvalStatus: 'approved' } : project
+        )
+      );
+    } catch (error) {
+      console.error('Error approving project:', error);
+      setError('Failed to approve project');
+    }
+  };
+
+  const handleRejectProject = async (projectId: string) => {
+    try {
+      await rejectProject(projectId);
+      await fetchProjects();
+    } catch (error) {
+      console.error('Error rejecting project:', error);
+      setError('Failed to reject project');
+    }
   };
 
   const handleDeleteConfirm = async () => {
@@ -136,72 +194,105 @@ export default function AdminDashboard() {
     });
   };
 
+  const handleAddMemberClick = () => {
+    navigate('/AddMember');
+  };
+
   if (loading) return <div className="flex justify-center items-center h-screen"><CircularProgress /></div>;
   if (error) return <div className="text-red-600 text-center p-4">{error}</div>;
 
   return (
-  <div className="flex-1 ml-64 p-8">
-    <div className="max-w-7xl mx-auto">
-      <h1 className="text-4xl font-bold text-gray-900 mb-10">Admin Dashboard</h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-        <StatCard
-          icon={faUsers}
-          title="Total Users"
-          total={userCounts.total.toString()}
-          active={`Active Users ${userCounts.active}`}
-          inactive={`Inactive Users ${userCounts.inactive}`}
-        />
-        <DashboardCard
-          icon="../src/app/assets/Managestatus.png"
-          title="Manage Projects"
-          description="Click to manage projects"
-          onClick={() => navigate('/ManageProject')}
-        />
-        <DashboardCard
-          icon="../src/app/assets/projects.png"
-          title="Manage Project Status"
-          description="Click to manage project statuses"
-          onClick={() => navigate('/ProjectStatus')}
-        />
-      </div>
+    <div className="flex-1 ml-64 p-8">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold text-gray-900 mb-10">Admin Dashboard</h1>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          <StatCard
+            icon={faUsers}
+            title="Total Users"
+            total={userCounts.total.toString()}
+            active={`Active Users ${userCounts.active}`}
+            inactive={`Inactive Users ${userCounts.inactive}`}
+          />
+          <StatCard
+            icon={faProjectDiagram}
+            title="Total Projects"
+            total={projectCounts.total.toString()}
+            active={`Pending Approval ${projectCounts.pending}`}
+            inactive={`Approved ${projectCounts.approved}`}
+          />
+          <DashboardCard
+            icon="../src/app/assets/Managestatus.png"
+            title="Manage Projects"
+            description="Click to manage projects"
+            onClick={() => navigate('/ManageProject')}
+          />
+          <DashboardCard
+            icon="../src/app/assets/projects.png"
+            title="Manage Project Status"
+            description="Click to manage project statuses"
+            onClick={() => navigate('/ProjectStatus')}
+          />
+        </div>
+        
+        <div className="my-4">
+          <h2 className="text-2xl font-bold text-gray-700 mb-4">Manage Users</h2>
+          <div className="flex justify-between items-center mb-4">
+            <TextField
+              label="Search Users"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              variant="outlined"
+              size="small"
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddMemberClick}
+              className="ml-4"
+            >
+              Add Member
+            </Button>
+          </div>
+          <UserTable
+            users={currentUsers}
+            onDelete={handleDeleteClick}
+            onStatusChange={handleStatusChange}
+            onRoleChange={handleRoleChange}
+          />
+        </div>
 
-      <h2 className="text-3xl font-semibold text-gray-900 mb-6">User Management</h2>
-      <div className="bg-white rounded-lg shadow-lg p-8 mb-12">
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Search users"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="mb-6"
-        />
-        <UserTable
-          users={currentUsers}
-          onDelete={handleDeleteClick}
-          onStatusChange={handleStatusChange}
-          onRoleChange={handleRoleChange}
-        />
+        <div className="my-4">
+          <h2 className="text-2xl font-bold text-gray-700 mb-4">Project Approval</h2>
+          <ProjectApprovalTable
+            projects={projects}
+            onApprove={handleApproveProject}
+            onReject={handleRejectProject}
+          />
+        </div>
       </div>
 
       <Dialog
         open={deleteDialogOpen}
         onClose={handleDeleteCancel}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        aria-labelledby="delete-dialog-title"
+        aria-describedby="delete-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Confirm Delete</DialogTitle>
+        <DialogTitle id="delete-dialog-title">Confirm Delete</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this user? This action cannot be undone.
+          <DialogContentText id="delete-dialog-description">
+            Are you sure you want to delete {userToDelete?.name}?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteCancel} color="primary">Cancel</Button>
-          <Button onClick={handleDeleteConfirm} color="error" autoFocus>Delete</Button>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="secondary" autoFocus>
+            Delete
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
-  </div>
-);
+  );
 }

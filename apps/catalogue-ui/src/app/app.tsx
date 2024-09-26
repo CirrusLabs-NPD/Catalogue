@@ -19,6 +19,7 @@ import ManageProject from '../Component/ManageProject';
 import SearchResults from '../Component/SearchResults';
 import AccessDenied from '../Component/AccessDenied';
 import { StatusProvider } from '../Component/StatusContext';
+import AddMember from '../Component/AddMember';
 
 export function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -65,20 +66,21 @@ export function App() {
           <div className="flex flex-1 overflow-hidden">
             {isLoggedIn && <Sidebar userRole={userRole} />}
             <main className="flex-1 overflow-y-auto bg-gray-50">
-          <Routes>
-            <Route path="/" element={<Loginpage setIsLoggedIn={handleLogin} />} />
-            <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
-            <Route path="/analytics" element={<ProtectedRoute element={<Analytics />} />} />
-            <Route path="/addpage" element={<ProtectedRoute element={<AddPage />} />} />
-            <Route path="/description/:id" element={<ProtectedRoute element={<ProjectDetails />} />} />
-            <Route path="/projects/filter" element={<ProtectedRoute element={<FilteredProjects />} />} />
-            <Route path="/search-results" element={<ProtectedRoute element={<SearchResults />} />} />
-            <Route path="/AdminDashboard" element={<ProtectedRoute element={<AdminDashboard />} requiredRole="admin" />} />
-            <Route path="/ProjectStatus" element={<ProtectedRoute element={<ProjectStatus />} requiredRole="admin" />} />
-            <Route path="/ManageProject" element={<ProtectedRoute element={<ManageProject />} requiredRole="admin" />} />
-            <Route path="/access-denied" element={<AccessDenied />} />
-            <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
+              <Routes>
+                <Route path="/" element={<Loginpage setIsLoggedIn={handleLogin} />} />
+                <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
+                <Route path="/analytics" element={<ProtectedRoute element={<Analytics />} />} />
+                <Route path="/addpage" element={<ProtectedRoute element={<AddPage />} />} />
+                <Route path="/description/:id" element={<ProtectedRoute element={<ProjectDetails />} />} />
+                <Route path="/projects/filter" element={<ProtectedRoute element={<FilteredProjects />} />} />
+                <Route path="/search-results" element={<ProtectedRoute element={<SearchResults />} />} />
+                <Route path="/AdminDashboard" element={<ProtectedRoute element={<AdminDashboard />} requiredRole="admin" />} />
+                <Route path="/ProjectStatus" element={<ProtectedRoute element={<ProjectStatus />} requiredRole="admin" />} />
+                <Route path="/ManageProject" element={<ProtectedRoute element={<ManageProject />} requiredRole="admin" />} />
+                <Route path="/AddMember" element={<ProtectedRoute element={<AddMember />} requiredRole="admin" />} /> 
+                <Route path="/access-denied" element={<AccessDenied />} />
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
             </main>
           </div>
         </div>

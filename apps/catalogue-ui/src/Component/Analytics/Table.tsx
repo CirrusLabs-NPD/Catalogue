@@ -7,12 +7,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
 import { getPercentDash } from '../../api/analytics';
-import { formatDate } from '../../api/projects';
 
 interface Column {
-  id: 'projectName' | 'members' | 'startDate' | 'completionDate'| 'projectStatus' | 'progressPercent';
+  id: 'projectName' | 'members' | 'projectStatus' | 'progressPercent';
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -22,8 +22,6 @@ interface Column {
 const columns: readonly Column[] = [
   { id: 'projectName', label: 'Project Name', minWidth: 170 },
   { id: 'members', label: 'Members', minWidth: 200 },
-  { id: 'startDate', label: 'Start Date', minWidth: 100 },
-  { id: 'completionDate', label: 'Completion Date', minWidth: 100 },
   {
     id: 'projectStatus',
     label: 'Project Status',
@@ -40,8 +38,6 @@ const columns: readonly Column[] = [
 interface RowData {
   projectName: string;
   members: string[];
-  startDate: string;
-  completionDate: string;
   projectStatus: string;
   progressPercent: number;
 }
@@ -50,6 +46,7 @@ export default function StickyHeadTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState<RowData[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,8 +70,22 @@ export default function StickyHeadTable() {
     setPage(0);
   };
 
+  const filteredRows = rows.filter((row) =>
+    row.members.some(member =>
+      member.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: 2, borderRadius: '0.5rem', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+      <TextField
+        fullWidth
+        variant="outlined"
+        placeholder="Search users"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        sx={{ marginBottom: '1rem' }}
+      />
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -97,7 +108,7 @@ export default function StickyHeadTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {filteredRows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
@@ -108,8 +119,6 @@ export default function StickyHeadTable() {
                         <TableCell key={column.id} align={column.align} sx={{ fontSize: '0.875rem', fontFamily: 'inherit' }}>
                           {column.id === 'members' && Array.isArray(value)
                             ? value.join(', ')
-                            : column.id === 'startDate' || column.id === 'completionDate'
-                            ? typeof value === 'string' && formatDate(value)
                             : column.format && typeof value === 'number'
                             ? column.format(value)
                             : value}
@@ -125,7 +134,7 @@ export default function StickyHeadTable() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={filteredRows.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
