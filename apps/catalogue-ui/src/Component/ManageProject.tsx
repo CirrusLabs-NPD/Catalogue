@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { deleteProject, getProjects, cancelDeleteProject } from '../api/projects';
+import { deleteProject, getProjects } from '../api/projects';
 import { Project } from './ProjectInterface';
 
 const ProjectSearch: React.FC = () => {
@@ -44,28 +44,10 @@ const ProjectSearch: React.FC = () => {
     if (window.confirm('Are you sure you want to delete this project?')) {
       try {
         await deleteProject(id);
-        setProjects(prev =>
-          prev.map(project =>
-            project._id === id ? { ...project, projectStatus: 'Awaiting Deletion' } : project
-          )
-        );
+        // Remove the deleted project from the local state
+        setProjects(prev => prev.filter(project => project._id !== id));
       } catch (err) {
         handleError('Failed to delete project', err);
-      }
-    }
-  };
-
-  const handleCancelDelete = async (id: string) => {
-    if (window.confirm('Are you sure you want to cancel the deletion of this project?')) {
-      try {
-        const updatedProject = await cancelDeleteProject(id);
-        setProjects(prev =>
-          prev.map(project =>
-            project._id === id ? { ...project, projectStatus: updatedProject.projectStatus } : project
-          )
-        );
-      } catch (err) {
-        handleError('Failed to cancel deletion', err);
       }
     }
   };
@@ -114,13 +96,7 @@ const ProjectSearch: React.FC = () => {
                   <tr key={project._id} className="border-b border-gray-200 hover:bg-gray-100 transition duration-150 ease-in-out">
                     <td className="py-3 px-6">{project.projectName}</td>
                     <td className="py-3 px-6">
-                      <span
-                        className={`px-2 py-1 rounded text-sm font-bold ${
-                          project.projectStatus === 'Awaiting Deletion'
-                            ? 'bg-red-100 text-red-600'
-                            : 'bg-green-100 text-green-600'
-                        }`}
-                      >
+                      <span className={`px-2 py-1 rounded text-sm font-bold bg-green-100 text-green-600`}>
                         {project.projectStatus}
                       </span>
                     </td>
@@ -133,24 +109,11 @@ const ProjectSearch: React.FC = () => {
                           View 
                         </Link>
                         <button
-                          className={`font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-opacity-50 transition duration-150 ease-in-out text-lg ${
-                            project.projectStatus === 'Awaiting Deletion'
-                              ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                              : 'bg-red-500 hover:bg-red-600 text-white focus:ring-red-500'
-                          }`}
+                          className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-150 ease-in-out text-lg"
                           onClick={() => handleDelete(project._id)}
-                          disabled={project.projectStatus === 'Awaiting Deletion'}
                         >
-                          {project.projectStatus === 'Awaiting Deletion' ? 'Awaiting Deletion' : 'Delete'}
+                          Delete
                         </button>
-                        {project.projectStatus === 'Awaiting Deletion' && (
-                          <button
-                            className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-150 ease-in-out text-lg"
-                            onClick={() => handleCancelDelete(project._id)}
-                          >
-                            Cancel Deletion
-                          </button>
-                        )}
                       </div>
                     </td>
                   </tr>

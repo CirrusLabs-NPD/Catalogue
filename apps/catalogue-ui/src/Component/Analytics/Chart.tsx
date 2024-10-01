@@ -68,11 +68,11 @@ const ProjectVisualization: React.FC = () => {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto p-6 bg-white rounded-xl shadow-lg">
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-lg">
       {error ? (
         <div className="text-red-500 text-center mt-4">{error}</div>
       ) : (
-        <ResponsiveContainer width="100%" height={500}>
+        <ResponsiveContainer width="100%" height={400}>
           <PieChart>
             <Pie
               data={membersData}
@@ -80,8 +80,8 @@ const ProjectVisualization: React.FC = () => {
               nameKey="name"
               cx="50%"
               cy="50%"
-              outerRadius={200}
-              innerRadius={100}
+              outerRadius={150} // Reduced outer radius
+              innerRadius={80} // Reduced inner radius
               labelLine={false}
             >
               {membersData.map((entry, index) => (

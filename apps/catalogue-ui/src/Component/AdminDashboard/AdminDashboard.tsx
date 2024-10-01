@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { faTrash, faUsers, faProjectDiagram } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faUsers, faProjectDiagram } from '@fortawesome/free-solid-svg-icons';
 import { TextField, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, CircularProgress } from '@mui/material';
 import { getUsers, deleteUser, assignRole, assignStatus } from '../../api/auth';
 import { getProjects, approveProject, rejectProject } from '../../api/projects'; 
@@ -233,6 +233,12 @@ export default function AdminDashboard() {
             description="Click to manage project statuses"
             onClick={() => navigate('/ProjectStatus')}
           />
+          <DashboardCard
+            icon="../src/app/assets/user1.png"
+            title="Manage Members"
+            description="Click to manage members"
+            onClick={handleAddMemberClick}
+          />
         </div>
         
         <div className="my-4">
@@ -245,14 +251,6 @@ export default function AdminDashboard() {
               variant="outlined"
               size="small"
             />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleAddMemberClick}
-              className="ml-4"
-            >
-              Add Member
-            </Button>
           </div>
           <UserTable
             users={currentUsers}
