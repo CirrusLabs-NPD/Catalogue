@@ -4,7 +4,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { ProjectClass } from './schemas/project.schemas';
 import { MemberClass } from '../members/schemas/member.schema';
 import { StatusesService } from '../statuses/statuses.service';
-import { NotFoundException, ConflictException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 import mongoose from 'mongoose';
 
 describe('ProjectsService', () => {
@@ -77,35 +77,5 @@ describe('ProjectsService', () => {
     expect(result).toEqual(project);
   });
 
-  it('should approve a project successfully', async () => {
-    const project = { _id: '123', projectStatus: 'Pending' };
-    jest.spyOn(projectModel, 'findById').mockResolvedValueOnce(project);
-    jest.spyOn(projectModel, 'findByIdAndUpdate').mockResolvedValueOnce({ ...project, projectStatus: 'Approved' });
-
-    const result = await service.approveProject('123');
-    expect(result.projectStatus).toEqual('Approved');
-  });
-
-  it('should throw an error if trying to approve an already approved project', async () => {
-    const project = { _id: '123', projectStatus: 'Approved' };
-    jest.spyOn(projectModel, 'findById').mockResolvedValueOnce(project);
-
-    await expect(service.approveProject('123')).rejects.toThrow(ConflictException);
-  });
-
-  it('should reject a project successfully', async () => {
-    const project = { _id: '123', projectStatus: 'Pending' };
-    jest.spyOn(projectModel, 'findById').mockResolvedValueOnce(project);
-    jest.spyOn(projectModel, 'findByIdAndUpdate').mockResolvedValueOnce({ ...project, projectStatus: 'Rejected' });
-
-    const result = await service.rejectProject('123');
-    expect(result.projectStatus).toEqual('Rejected');
-  });
-
-  it('should throw an error if trying to reject an already rejected project', async () => {
-    const project = { _id: '123', projectStatus: 'Rejected' };
-    jest.spyOn(projectModel, 'findById').mockResolvedValueOnce(project);
-
-    await expect(service.rejectProject('123')).rejects.toThrow(ConflictException);
-  });
+ 
 });

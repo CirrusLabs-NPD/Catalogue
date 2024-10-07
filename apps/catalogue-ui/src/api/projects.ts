@@ -87,19 +87,15 @@ export function formatDate(dateString: string | undefined): string {
   if (!dateString) return 'N/A';
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-}
-
-export const approveProject = async (id: string) => {
-  return AxiosUtility({
-    url: `${API_BASE_URL}/projects/${id}/approve`,
-    method: 'PUT',
-  });
 };
 
-export const rejectProject = async (id: string) => {
+// Update to store approval/rejection status in demoURL
+export const updateProjectStatus = async (id: string, status: 'Approved' | 'Rejected') => {
+  const updateData = { demoURL: status }; // Set the demoURL to the approval/rejection status
   return AxiosUtility({
-    url: `${API_BASE_URL}/projects/${id}/reject`,
+    url: `${API_BASE_URL}/projects/${id}`,
     method: 'PUT',
+    data: updateData,
   });
 };
 
@@ -114,4 +110,13 @@ export const getProjectsByStatus = async (status: 'pending' | 'approved' | 'reje
     console.error('Error fetching projects by status:', error);
     throw error;
   }
+};
+
+// Example usage
+export const approveProject = async (id: string) => {
+  return updateProjectStatus(id, 'Approved');
+};
+
+export const rejectProject = async (id: string) => {
+  return updateProjectStatus(id, 'Rejected');
 };

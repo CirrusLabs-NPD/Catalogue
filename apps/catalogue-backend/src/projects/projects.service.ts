@@ -48,7 +48,8 @@ export class ProjectsService {
                 title: member.title,
                 techStack: member.techStack,
                 projects: member.projects
-            }))
+            })),
+            demoURL: '', // Initialize demoURL or set it to any default value if needed
         });
 
         return newProject.save();
@@ -109,7 +110,7 @@ export class ProjectsService {
         if (!project) {
             throw new NotFoundException(`Project with ID "${id}" not found`);
         }
-        project.projectStatus = 'Active'; // Or appropriate status for non-deletion
+        project.projectStatus = 'Active'; 
         return project.save();
     }
 
@@ -118,10 +119,8 @@ export class ProjectsService {
         if (!project) {
             throw new NotFoundException(`Project with ID "${id}" not found`);
         }
-        if (project.projectStatus === 'Approved') {
-            throw new ConflictException('Project is already approved');
-        }
-        project.projectStatus = 'Approved'; // Update to approved status
+
+        project.demoURL = 'approved';
         return project.save();
     }
 
@@ -130,10 +129,8 @@ export class ProjectsService {
         if (!project) {
             throw new NotFoundException(`Project with ID "${id}" not found`);
         }
-        if (project.projectStatus === 'Rejected') {
-            throw new ConflictException('Project is already rejected');
-        }
-        project.projectStatus = 'Rejected'; // Update to rejected status
+
+        project.demoURL = 'rejected'; 
         return project.save();
     }
 }

@@ -111,7 +111,7 @@ const AddPage: React.FC = () => {
         members: selectedMembers,
         description: data.description,
         progressPercent: Number(data.progressPercent),
-        demoURL: data.demoURL,
+        demoURL: "Pending approval",
         completionDate: data.completionDate || null,
         readmeFile: data.readmeFile,
         approvalStatus: 'pending', // Set initial approval status
@@ -312,23 +312,7 @@ const AddPage: React.FC = () => {
                 />
                 {errors.progressPercent && <p className="text-red-500 text-sm mt-1">{errors.progressPercent.message}</p>}
               </div>
-
-              {/* Demo URL Field */}
-              <div className="mb-4">
-                <label htmlFor="demoURL" className="text-lg block text-gray-700 font-bold mb-2">Demo URL</label>
-                <input
-                  type="url"
-                  id="demoURL"
-                  placeholder="Enter demo URL"
-                  {...register('demoURL', {
-                    required: 'Demo URL is required',
-                    pattern: { value: /^(ftp|http|https):\/\/[^ "]+$/, message: 'Enter a valid URL' },
-                  })}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:shadow-outline ${errors.demoURL ? 'border-red-500' : 'border-gray-300'}`}
-                />
-                {errors.demoURL && <p className="text-red-500 text-sm mt-1">{errors.demoURL.message}</p>}
-              </div>
-
+            
               {/* Completion Date Field */}
               <div className="mb-4">
                 <label htmlFor="completionDate" className="text-lg block text-gray-700 font-bold mb-2">Completion Date</label>

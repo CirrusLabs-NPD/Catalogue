@@ -30,9 +30,7 @@ describe('ProjectsController', () => {
             updateProject: jest.fn(),
             deleteProject: jest.fn(),
             cancelDeleteProject: jest.fn(),
-            approveProject: jest.fn().mockResolvedValue(mockProject),  // Mock resolved value
-            rejectProject: jest.fn().mockResolvedValue(mockProject),   // Mock resolved value
-          },
+         },
         },
       ],
     }).compile();
@@ -45,41 +43,5 @@ describe('ProjectsController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('approveProject', () => {
-    it('should call approveProject on the service', async () => {
-      await controller.approveProject(projectId);
-      expect(service.approveProject).toHaveBeenCalledWith(projectId);
-    });
-
-    it('should return the approved project', async () => {
-      const result = await controller.approveProject(projectId);
-      expect(result).toEqual(mockProject);
-    });
-
-    it('should handle errors when approveProject fails', async () => {
-      const error = new Error('Approval failed');
-      jest.spyOn(service, 'approveProject').mockRejectedValueOnce(error);
-
-      await expect(controller.approveProject(projectId)).rejects.toThrow(error);
-    });
-  });
-
-  describe('rejectProject', () => {
-    it('should call rejectProject on the service', async () => {
-      await controller.rejectProject(projectId);
-      expect(service.rejectProject).toHaveBeenCalledWith(projectId);
-    });
-
-    it('should return the rejected project', async () => {
-      const result = await controller.rejectProject(projectId);
-      expect(result).toEqual(mockProject);
-    });
-
-    it('should handle errors when rejectProject fails', async () => {
-      const error = new Error('Rejection failed');
-      jest.spyOn(service, 'rejectProject').mockRejectedValueOnce(error);
-
-      await expect(controller.rejectProject(projectId)).rejects.toThrow(error);
-    });
-  });
+  
 });

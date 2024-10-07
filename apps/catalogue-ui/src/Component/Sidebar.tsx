@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { PlusCircle, LayoutDashboard, PieChart, Shield, Plus } from "lucide-react";
+import { PlusCircle, LayoutDashboard, PieChart, Shield, Plus, AlertTriangle } from "lucide-react";
 import { useStatusContext } from "./StatusContext";
 
 interface SidebarProps {
@@ -41,6 +41,10 @@ const Sidebar: React.FC<SidebarProps> = ({ userRole }) => {
     navigate("/ProjectStatus");
   };
 
+  const handleRejectedProjectsClick = () => {
+    navigate('/RejectedProjects');
+  };
+
   return (
     <aside className="fixed top-18 left-0 h-full w-72 bg-white shadow-lg">
       <div className="p-6 space-y-6">
@@ -54,6 +58,15 @@ const Sidebar: React.FC<SidebarProps> = ({ userRole }) => {
         <nav className="space-y-2">
           <NavLink to="/home" icon={<LayoutDashboard size={20} />} label="Projects" />
           <NavLink to="/analytics" icon={<PieChart size={20} />} label="Analytics" />
+          {userRole === "editor" && (
+            <button
+              onClick={handleRejectedProjectsClick}
+              className="w-full flex items-center p-2 rounded-md text-white bg-red-500 hover:bg-red-600 transition duration-300"
+            >
+              <AlertTriangle size={20} className="mr-3" />
+              <span>View Rejected Projects</span>
+            </button>
+          )}
           {userRole === "admin" && (
             <NavLink to="/AdminDashboard" icon={<Shield size={20} />} label="Admin Dashboard" />
           )}

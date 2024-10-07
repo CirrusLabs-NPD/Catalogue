@@ -57,10 +57,10 @@ export class UpdateProjectDto {
     @ApiProperty({ example: 50, description: 'Percent completion of project', required: false })
     progressPercent?: number;
 
-    @IsUrl()
+    @IsString()
     @IsOptional()
-    @ApiProperty({ example: 'https://resumeminner.azurewebsites.net/', description: 'Link to demo URL or finished project', required: false })
-    demoURL?: string;
+    @ApiProperty({ example: 'Approved', description: 'Approval status: Approved or Rejected', required: false })
+    demoURL?: string; 
 
     @IsDateString()
     @IsOptional()

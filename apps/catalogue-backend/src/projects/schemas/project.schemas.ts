@@ -34,7 +34,7 @@ export class ProjectClass extends Document {
     @Prop({ required: true })
     progressPercent: number;
 
-    @Prop({ required: true })
+    @Prop({ required: false })
     demoURL: string;
 
     @Prop()

@@ -18,6 +18,7 @@ interface User {
 }
 
 interface Project {
+  demoURL: string;
   _id: string;
   projectName: string;
   projectManager: string;
@@ -103,6 +104,13 @@ export default function AdminDashboard() {
     setUserToDelete(user);
     setDeleteDialogOpen(true);
   };
+
+  const pendingProjects = projects.filter(
+    (project) => project.demoURL !== "Approved" && project.demoURL !== "Rejected"
+  );
+  const rejectedProjects = projects.filter(
+    (project) => project.demoURL === "Rejected"
+  );
   
   const handleApproveProject = async (projectId: string) => {
     try {
@@ -217,10 +225,11 @@ export default function AdminDashboard() {
           <StatCard
             icon={faProjectDiagram}
             title="Total Projects"
-            total={projectCounts.total.toString()}
-            active={`Pending Approval ${projectCounts.pending}`}
-            inactive={`Approved ${projectCounts.approved}`}
+            total={projects.length.toString()}
+            active={`Pending Approval ${pendingProjects.length}`}
+            inactive={`Approved ${projects.filter((project) => project.demoURL === "Approved").length}`}
           />
+
           <DashboardCard
             icon="../src/app/assets/Managestatus.png"
             title="Manage Projects"

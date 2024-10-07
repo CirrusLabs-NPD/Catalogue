@@ -8,7 +8,7 @@ export class CreateProjectDto {
     projectName: string;
 
     @IsDateString()
-    @IsOptional() // Optional if the project can start without a date
+    @IsOptional() 
     @ApiProperty({ example: '2020-01-31', description: 'Start date of the project in YYYY-MM-DD format', required: false })
     startDate?: string;
 
@@ -25,7 +25,7 @@ export class CreateProjectDto {
 
     @IsArray()
     @IsString({ each: true })
-    @IsOptional() // Allow empty resources
+    @IsOptional()
     @ApiProperty({ example: ["Resource 1", "Resource 2"], description: 'Resources used in the project', required: false })
     resources?: string[];
 
@@ -56,11 +56,12 @@ export class CreateProjectDto {
     @IsNotEmpty()
     @ApiProperty({ example: 50, description: 'Percent completion of the project', required: true })
     progressPercent: number;
-
-    @IsUrl()
+    
+    @IsOptional()
+    @IsString()
     @IsNotEmpty()
-    @ApiProperty({ example: 'https://resumeminner.azurewebsites.net/', description: 'Link to demo URL or finished project', required: true })
-    demoURL: string;
+    @ApiProperty({ example: 'Approved', description: 'Approval status: Approved or Rejected', required: true })
+    demoURL: string; 
 
     @IsDateString()
     @IsOptional()

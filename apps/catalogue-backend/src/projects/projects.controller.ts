@@ -7,7 +7,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UpdateProjectDto } from './dto/update.project.dto';
 import { NotFoundException } from '@nestjs/common';
 
-@ApiTags('projects') // Tag for Swagger documentation
+@ApiTags('projects') 
 @Controller('projects')
 export class ProjectsController {
     constructor(private readonly projectsService: ProjectsService) {}
@@ -74,25 +74,5 @@ export class ProjectsController {
     @ApiResponse({ status: 404, description: 'Project not found.' })
     cancelDeleteProject(@Param('id') id: string): Promise<ProjectClass> {
         return this.projectsService.cancelDeleteProject(id);
-    }
-
-    @Put(':id/approve')
-    @UseGuards(AuthGuard('jwt'))
-    @ApiBearerAuth('access-token')
-    @ApiParam({ name: 'id', type: String })
-    @ApiResponse({ status: 200, description: 'Approves a project by ID.' })
-    @ApiResponse({ status: 404, description: 'Project not found.' })
-    approveProject(@Param('id') id: string): Promise<ProjectClass> {
-        return this.projectsService.approveProject(id);
-    }
-
-    @Put(':id/reject')
-    @UseGuards(AuthGuard('jwt'))
-    @ApiBearerAuth('access-token')
-    @ApiParam({ name: 'id', type: String })
-    @ApiResponse({ status: 200, description: 'Rejects a project by ID.' })
-    @ApiResponse({ status: 404, description: 'Project not found.' })
-    rejectProject(@Param('id') id: string): Promise<ProjectClass> {
-        return this.projectsService.rejectProject(id);
     }
 }

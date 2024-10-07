@@ -4,7 +4,6 @@ import { Project } from './ProjectInterface';
 import FilterDropdown from './FilterDropdown/filter';
 import SortDropdown from './FilterDropdown/SortDropdown';
 import ProjectCard from './ProjectCard';
-import { Loader2 } from 'lucide-react';
 
 const Home: React.FC = () => {
   const [projectData, setProjects] = useState<Project[]>([]);
@@ -20,14 +19,15 @@ const Home: React.FC = () => {
       setLoading(true);
       const response = await getProjects();
       if (Array.isArray(response)) {
-        const approvedProjects = response.filter(project => project.approvalStatus === 'approved');
+        const approvedProjects = response.filter(project => project.demoURL === 'Approved');
         setProjects(approvedProjects);
       } else {
-        throw new Error('Unexpected data format received');
+        console.error('Received non-array response:', response);
+        setError('Unexpected data format received');
       }
     } catch (err) {
       console.error('Failed to fetch projects:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load projects');
+      setError('Failed to load projects');
     } finally {
       setLoading(false);
     }
@@ -42,32 +42,31 @@ const Home: React.FC = () => {
     }
   };
 
+  if (loading) {
+    return <div>Loading...</div>; // You can add a loading spinner here
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
-    <div className="ml-64 mt-6 pl-10 max-h-[calc(100vh-100px)]">
+    <div className="ml-64 pl-7 mt-6 max-h-[calc(100vh-100px)]">
       <div className="h-full">
-        <h1 className="text-[#2C4B84] text-4xl pl-8 pt-1">Approved Projects</h1>
-        <div className="flex space-x-4 mt-5 ml-4 mb-4">
+        <h1 className="text-[#2C4B84] text-4xl pl-8 pt-1">Project Catalogue</h1>
+        <div className="flex pl-5 space-x-4 mt-5 mb-4">
           <FilterDropdown />
           <SortDropdown onSortChange={handleSortChange} />
         </div>
-        {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <Loader2 className="w-12 h-12 text-[#2C4B84] animate-spin" />
-            <span className="ml-3 text-lg text-[#2C4B84]">Loading approved projects...</span>
-          </div>
-        ) : error ? (
-          <div className="text-red-500 text-center text-lg">{error}</div>
-        ) : (
-          <div className="flex flex-wrap justify-center">
-            {projectData.length > 0 ? (
-              projectData.map(project => (
-                <ProjectCard key={project._id} project={project} />
-              ))
-            ) : (
-              <div>No approved projects available</div>
-            )}
-          </div>
-        )}
+        <div className="flex flex-wrap justify-center">
+          {Array.isArray(projectData) && projectData.length > 0 ? (
+            projectData.map((project, index) => (
+              <ProjectCard key={project._id} project={project} index={index} />
+            ))
+          ) : (
+            <div>No projects available</div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -43,6 +43,7 @@ const UserTable: React.FC<UserTableProps> = memo(({ users, onDelete, onStatusCha
                 aria-label={`Change role for ${user.name}`}
               >
                 <MenuItem value="admin">Admin</MenuItem>
+                <MenuItem value="editor">Editor</MenuItem>
                 <MenuItem value="member">Member</MenuItem>
               </Select>
             </td>

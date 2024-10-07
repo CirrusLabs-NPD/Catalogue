@@ -5,7 +5,11 @@ import { getProjectById, formatDate, updateProject, getMembers } from '../../api
 import ProjectStatusDropdown from './ProjectStatusDropdown';
 import { motion } from 'framer-motion';
 
-const ProjectDetails: React.FC = () => {
+interface ProjectDetailsProps {
+  userRole: string; 
+}
+
+const ProjectDetails: React.FC<ProjectDetailsProps> = ({ userRole }) => {
   const { id } = useParams<{ id: string }>();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
@@ -211,19 +215,6 @@ const ProjectDetails: React.FC = () => {
                 />
               </div>
               <div>
-                <label htmlFor="demoURL" className="block text-lg font-medium text-gray-700 mb-2">
-                  Demo URL
-                </label>
-                <input
-                  type="text"
-                  name="demoURL"
-                  id="demoURL"
-                  value={editedProject!.demoURL}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-              </div>
-              <div>
                 <label htmlFor="technology" className="block text-lg font-medium text-gray-700 mb-2">
                   Technology (comma-separated)
                 </label>
@@ -395,14 +386,6 @@ const ProjectDetails: React.FC = () => {
                 content={
                   <a href={project.gitHubLinks} className="text-indigo-600 hover:text-indigo-800 transition duration-150 ease-in-out" target="_blank" rel="noopener noreferrer">
                     {project.gitHubLinks}
-                  </a>
-                } 
-              />
-              <DetailItem 
-                title="Website" 
-                content={
-                  <a href={project.demoURL} className="text-indigo-600 hover:text-indigo-800 transition duration-150 ease-in-out" target="_blank" rel="noopener noreferrer">
-                    {project.demoURL}
                   </a>
                 } 
               />
