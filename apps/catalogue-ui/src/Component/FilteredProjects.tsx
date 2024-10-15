@@ -28,7 +28,9 @@ function FilteredProjects() {
       if (Object.keys(newFilters).length > 0) {
         try {
           const fetchedProjects = await getProjectsByFilters(newFilters);
-          setProjects(fetchedProjects);
+          const approvedProjects = fetchedProjects.filter(project => project.demoURL === "Approved");
+
+          setProjects(approvedProjects);
           setLoading(false);
         } catch (error) {
           console.error('Error fetching projects:', error);
@@ -51,7 +53,7 @@ function FilteredProjects() {
     return <div>{error}</div>;
   }
 
-    const renderFilterSummary = () => {
+  const renderFilterSummary = () => {
     return Object.entries(filters).map(([category, options]) => (
       <div key={category} className="mb-2">
         <span className="font-semibold">{category.charAt(0).toUpperCase() + category.slice(1)}:</span> {options.join(', ')}
@@ -62,10 +64,9 @@ function FilteredProjects() {
   return (
     <div className="ml-64 pl-4 mt-6 max-h-[calc(100vh-100px)]">
       <div className="h-full">
-      <h1 className="text-[#2C4B84] text-4xl pl-8 pt-1">Projects Filtered By:</h1>
-      <h1 className="text-[#2C4B84] text-3xl pl-8 pt-1">{renderFilterSummary()}</h1>
-        <div className="flex space-x-4 p-4 ml-4 mt-5 mb-4">
-        </div>
+        <h1 className="text-[#2C4B84] text-4xl pl-8 pt-1">Projects Filtered By:</h1>
+        <h1 className="text-[#2C4B84] text-3xl pl-8 pt-1">{renderFilterSummary()}</h1>
+        <div className="flex space-x-4 p-4 ml-4 mt-5 mb-4"></div>
         <div className="flex flex-wrap pl-4 justify-center">
           {Array.isArray(projects) && projects.length > 0 ? (
             projects.map((project, index) => (

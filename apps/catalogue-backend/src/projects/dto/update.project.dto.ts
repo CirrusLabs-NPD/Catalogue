@@ -60,7 +60,8 @@ export class UpdateProjectDto {
     @IsString()
     @IsOptional()
     @ApiProperty({ example: 'Approved', description: 'Approval status: Approved or Rejected', required: false })
-    demoURL?: string; 
+    approveStatus?: string;
+    
 
     @IsDateString()
     @IsOptional()
